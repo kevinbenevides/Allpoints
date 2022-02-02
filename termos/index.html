@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Allpoints Club</title>
+
+    <!-- <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+    <script type="module" src="/_models/auth/auth.js"></script>
+    <script type="module" src="/_models/balance/balance-service.js"></script>
+    <script type="module" src="/_models/promo/promo-service.js"></script>
+
+    <!-- Header -->
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <script src="/_components/dropdowns/home-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+    <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+
+    <!-- Modal -->
+    <script src="/_components/modais/modal-success.js"></script>
+    <script src="/_components/modais/modal-error.js"></script>
+
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- <script src="./webkit-input-range-fill-lower-master/dist/webkit-input-range-fill-lower.js"></script> -->
+    <link href="/_assets/_css/hamburgers.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="termos">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+        <header>
+            <header-card v-bind:logged='logged' v-bind:subscriber='noSubscription'></header-card>
+            <section class="home-mobile-menu">
+                <home-user-menu page="" v-bind:subscription='!noSubscription'></home-user-menu>
+            </section>
+            <home-user-menu-desktop v-bind:subscription='!noSubscription'></home-user-menu-desktop>
+        </header>
+        <main>
+            <div class="terms-first-content">
+                <section class="regulation-allpoints">
+                    <h2>Regulamento Allpoints</h2>
+                    <div class="document-regulation">
+                        <h3>Regulamento do Programa Allpoints</h3>
+
+                        <h4>INTRODUÇÃO</h4>
+
+                        <p>O Programa Allpoints, de propriedade e administração da ALLPOINTS MARKETING E 
+                            FIDELIDADE LTDA. (“ALLPOINTS”), é uma plataforma de fidelidade e benefícios constituída 
+                            por serviços de viagens por meio de parcerias estratégicas com prestadoras de serviços 
+                            de hospedagem, passagens aéreas, passagens rodoviárias, aluguéis de carros,  seguradoras 
+                            de viagens e prestadores de serviços financeiros, denominadas PARCEIROS. </p>
+
+                        <p>A ALLPOINTS permite a participação de pessoas físicas, nacionais ou estrangeiras, ou 
+                            jurídicas, denominadas PARTICIPANTES, que podem escolher em quais Parceiros desejam 
+                            acumular pontos (“Allpoints”), e em quais desejam resgatar benefícios, produtos e 
+                            serviços, conforme sua conveniência. </p>
+
+                        <p>É de total responsabilidade dos Participantes o conhecimento do completo teor deste 
+                            Regulamento. No caso de qualquer discordância, seja ela total ou parcial, o Participante 
+                            deverá abster-se de efetuar o cadastro e de utilizar qualquer canal da ALLPOINTS.</p>
+
+                        <p>A adesão a este Regulamento e/ou a utilização do Programa Allpoints significará que o 
+                            Participante concordou com todos os seus termos e condições, sendo a ele vedada a 
+                            alegação de desconhecimento. </p>
+
+                        <h4>1. DAS REGRAS GERAIS DE FUNCIONAMENTO DO PROGRAMA ALLPOINTS</h4>
+
+                        <h5>1.1. DEFINIÇÕES</h5>
+
+                        <p>Para fins deste Regulamento, as Partes adotam as seguintes definições e conceitos:</p>
+
+                        <p><b>“Acúmulo de Allpoints”</b> ou <b>“Acúmulo”</b> ou <b>“Acumular”</b> significa o acúmulo de pontos pelos
+                            Participantes em razão (I) da contratação dos serviços oferecidos pelos Parceiros ALLPOINTS;
+                            ou (II) da participação nos programas de benefícios flexíveis do setor corporativo; ou (III)
+                            da participação do clube de benefícios e vantagens administrado pela ALLPOINTS, o Allpoints
+                            Club ou, ainda, (IV) da participação em promoções ou ações de incentivo promovidas
+                            pela ALLPOINTS.</p>
+
+                        <p><b>“Allpoints”</b> é a unidade de medida utilizada pela ALLPOINTS para efeitos de Acúmulo e Resgate
+                            dos Benefícios oferecidos pelas Parceiras.</p>
+
+                        <p><b>“Allpoints Club”</b> é um clube de vantagens exclusivas, administrado pela Allpoints, em que o 
+                            Participante Allpoints pode associar-se, em conformidade com os termos e condições, para obter 
+                            condições especiais em acúmulo e resgate de Allpoints. </p>
+
+                        <p><b>“Allpoints de volta”</b> é a condição de acúmulo de Allpoints  e/ou pontuação atribuída quando o Participante 
+                            adquire um produto ou serviço entre os Parceiros Allpoints. </p>
+
+                        <p><b>“Allpoints + Dinheiro”</b> é uma das condições de resgate em que o Participante, optativamente, pode 
+                            usar os Allpoints somados a um valor da moeda vigente no país de origem do resgate como forma de
+                             pagamento do produto ou serviço adquiridos no Programa Allpoints. </p>
+
+                        <p><b>“Chave de Acesso”</b> é o documento de identificação, e-mail e celular em que o Participante informa no momento
+                             do seu cadastro, utilizados para fins de identificação no Programa Allpoints. </p>
+
+                        <p><b>“Colaboradores Corporativos”</b> são os Participantes adeptos do Allpoints Club por meio de condições exclusivas 
+                            concedidas pela empresa em que trabalha no formato de benefício flexível. </p>
+
+                        <p><b>“Conta Allpoints”</b> é a conta de propriedade única e exclusiva do Participante do Programa Allpoints, em que são 
+                            registrados os acúmulos e resgates de Allpoints, bem como prazo de expiração e dados pessoais concedidos 
+                            pelo Participante no momento do cadastro no Programa Allpoints. </p>
+
+                        <p><b>“Empresas Parceiras”</b>, <b>“Parcerias com Seguradoras de Viagens”</b>, <b>“Parcerias Rodoviárias”</b>, <b>“Parcerias de 
+                            Aluguéis de Carros”</b>, <b>“Hotéis Parceiros”</b> ou <b>“Parceiros Allpoints”</b> significa cada uma das empresas que 
+                            permitem o Acúmulo e/ou o Resgate de Allpoints no Programa Allpoints. </p>
+
+                        <p><b>“Participantes”</b> significam toda pessoa física ou jurídica devidamente cadastrada 
+                            como participante da ALLPOINTS. </p>
+
+                        <p><b>“Parcerias Aéreas”</b> ou <b>“Parceiros Aéreos”</b> são as empresas que oferecem serviço de passagens aéreas, mantenedoras 
+                            das regras e condições de aquisição deste serviço, no Programa Allpoints. </p>
+
+                        <p><b>“Parcerias Corporativas”</b> ou <b>“Parceiros Corporativos”</b> são as empresas, clientes da Allpoints, que oferecem o Allpoints Club 
+                            na forma de benefício flexível aos seus colaboradores. </p>
+
+                        <p><b>“Parceiros Financeiros”</b> são as empresas prestadoras de serviços financeiros na plataforma de viagens do Programa Allpoints. </p>
+
+                        <p><b>“Programa Allpoints”</b> ou <b>“Plataforma Allpoints”</b>  é a plataforma de viagens mantida pela ALLPOINTS para o acúmulo e 
+                            resgate de Allpoints para obtenção de produtos e serviços de viagens no Brasil e no mundo. </p>
+
+                        <p><b>“Plano de Assinatura”</b> é o plano contratado pelo Participante Allpoints ao assinar o Allpoints Club para obter vantagens e condições 
+                            exclusivas de acúmulo e resgate de Allpoints. </p>
+
+                        <p><b>“Senha Allpoints”</b> é a senha de uso pessoal e intransferível para acesso à Conta Allpoints. </p>
+
+                        <p><b>“Resgate de Allpoints”</b>, <b>“Resgate”</b> ou <b>“Resgatar”</b> significa a conversão de Allpoints acumulados pelos Participantes em produtos ou serviços 
+                            oferecidos pelos Parceiros Allpoints. </p>
+
+                        <h5>1.2. ADESÃO DOS PARTICIPANTES À PLATAFORMA ALLPOINTS</h5>
+
+                        <p><b>1.2.1</b> Poderão participar do Programa Allpoints:</p>
+
+                        <p class="sub-item">a.  Pessoas físicas brasileiras, maiores de 18 anos ou menores,
+                            devidamente assistidos por
+                            seus responsáveis legais, com inscrição ativa no Cadastro de Pessoas Físicas junto ao
+                            Ministério da Fazenda</p>
+
+                        <p class="sub-item">b.  Pessoas físicas estrangeiras, maiores de 18 anos ou menores, devidamente 
+                            assistidos por seus responsáveis legais, com documento de identificação válido no país 
+                            de sua residência </p>
+
+                        <p class="sub-item last-item">c.  Pessoas jurídicas com CNPJ ativo junto ao Ministério da Fazenda 
+                            ou documento de identificação legalmente válido no país de origem e/ou estabelecimento </p>
+
+                        <p><b>1.2.2</b> Para fazer parte do Programa Allpoints, o Participante deverá efetuar um cadastro por 
+                            meio de uma das seguintes formas: (I) cadastrar-se diretamente por meio do site do Programa 
+                            Allpoints  (www.allpoints.club)); (II) cadastrar-se por meio do aplicativo do Programa Allpoints, 
+                            disponível nos sistemas Android e IOS; (III) cadastrar-se por meio de acesso ao link de confirmação 
+                            de check out das reservas realizadas nos Hotéis Parceiros; (IV) adesão ao Allpoints Club por meio 
+                            de nossas Parcerias Corporativas. </p>
+
+                        <p><b>1.2.3</b> A participação no Programa Allpoints é pessoal e intransferível, não podendo o Participante 
+                            gerenciar, administrar ou comandar contas de diferentes titularidades, exceto por representação 
+                            legal regida pelas leis vigentes no país de residência do Participante titular 
+                        </p>
+
+                        <p><b>1.2.4</b> Ao informar seu CPF (ou CNPJ ou documento de identificação de pessoa estrangeira, quando 
+                            aplicável) e e-mail, o Participante terá efetuado seu pré-cadastro no Programa Allpoints, podendo 
+                            assim passar a acumular Allpoints em sua conta, os quais estarão disponíveis para resgate somente 
+                            após a conclusão do cadastro e a elaboração de uma senha. 
+                        </p>
+
+                        <p><b>1.2.5</b> Para cadastro de Pessoas Jurídicas, estabelece-se: </p>
+
+                        <p class="sub-item">(I) a nomeação de dois administradores na condição de Pessoa Física que terão toda e 
+                            qualquer responsabilidade sob os dados jurídicos cadastrados e movimentação da Conta Allpoints. É 
+                            igualmente de sua responsabilidade a manutenção da Conta Allpoints com os dados atualizados e a 
+                            responsabilidade de gerir os Allpoints Acumulados e os Resgates de Allpoints. </p>
+
+                        <p class="sub-item">(II) os administradores da Conta Jurídica poderão administrar a conta de um único 
+                            CNPJ por vez; em caso de desligamento da empresa em que trabalha, a condição de desvinculação da 
+                            Conta Corporativa deverá ser solicitada à ALLPOINTS diretamente pelo responsável legal da empresa 
+                            administrada.</p>
+
+                        <p class="sub-item">(III) a nomeação dos administradores da Conta Jurídica fica a critério do 
+                            responsável legal da empresa, ficando sob responsabilidade deste, no momento do Resgate 
+                            Allpoints, emitir à Allpoints carta assinada e em papel timbrado autorizando a transação.</p>
+
+                        <p class="sub-item last-item">(IV) Os Allpoints acumulados poderão ser usados para fins de viagens 
+                            corporativas ou ainda para a bonificação de funcionários que, ao receber o bônus concedido 
+                            pela empresa, fica responsável por criar um cadastro na Plataforma Allpoints e utilizar seus 
+                            Allpoints conforme regras previstas neste Regulamento. </p>
+
+                        <p><b>1.2.6</b> O Participante é o único responsável pela veracidade e integridade de todas as informações 
+                            prestadas, devendo manter atualizados seus dados cadastrais, especialmente, seu nome, chaves 
+                            de acesso (CPF, CNPJ, Documento de Identificação de Pessoa Estrangeira, quando aplicável, e-mail, 
+                            endereço, celular e telefone para contato.) A ALLPOINTS não se responsabiliza, em hipótese alguma, 
+                            por quaisquer danos ou prejuízos decorrentes de informações incorretas apresentadas pelo Participante.</p>
+
+                        <p><b>1.2.7</b> A adesão e participação do Participante no Programa Allpoints está sujeita aos termos e 
+                            condições do presente Regulamento, o qual será expressamente aceito pelo Participante no momento 
+                            da efetivação do seu cadastro, por meio de seu clique no botão “Aceito”. Após efetivação do cadastro,
+                             o Participante usará o seu CPF, CNPJ, celular ou documento de pessoa estrangeira como login, e irá
+                              elaborar a sua senha de acesso, os quais o identificarão como participante do Programa Allpoints
+                               e permitirão o acesso aos dados e informações de sua Conta Allpoints.</p>
+
+                        <p><b>1.2.8</b> A Conta Allpoints reunirá todas as informações sobre os Allpoints do Participantes, 
+                            abrangendo o saldo e o prazo de validade dos Allpoints acumulados, cabendo ao Participante 
+                            consultá-los por meio do site <a href="/">www.allpoints.club</a>.</p>
+
+                        <p><b>1.2.9</b> As informações de acesso à Conta Allpoints e senha de acesso são de uso pessoal, 
+                            intransferível e de exclusivo conhecimento do Participante, sendo seu dever mantê-las sob estrito 
+                            sigilo, não os divulgando, fornecendo ou compartilhando, por qualquer meio ou forma. O uso ou acesso
+                             indevido a tais informações por terceiros são de responsabilidade exclusiva do Participante, o que 
+                             inclui a responsabilidade por prejuízos em decorrência da utilização indevida, eximindo a ALLPOINTS
+                              de qualquer responsabilidade. </p>
+
+                        <p><b>1.2.10</b> Mediante solicitação do Participante, a senha de acesso poderá ser reemitida pelo Programa 
+                            Allpoints e enviada ao Participante pelos canais oficiais de comunicação informados no momento de seu 
+                            cadastro. A ALLPOINTS reserva o direito de solicitar o envio de documentação pertinente para atender a 
+                            eventual pedido de alteração de cadastro, emissão de novas senhas pelo Participante ou mesmo Resgate de 
+                            Allpoints.</p>
+
+                        <p><b>1.2.11</b> O Participante é o único responsável por notificar à ALLPOINTS sobre qualquer alteração 
+                            de endereço e demais dados cadastrais. A ALLPOINTS não se responsabilizará por perdas ou extravios ou 
+                            quaisquer outros problemas decorrentes da falta de atualização dos dados ou decorrentes de omissões
+                             por parte do Participante.</p>
+
+                        <p><b>1.2.12</b> O Participante poderá ter apenas 01 (um) cadastro no Programa Allpoints, que resultará em somente
+                             01 (uma) Conta Allpoints. Eventual duplicidade será cancelada pela ALLPOINTS, a seu único e exclusivo
+                              critério, sem qualquer indenização dos Allpoints eventualmente acumulados, sem prejuízo da aplicação
+                               das demais sanções legais ou previstas neste Regulamento.</p>
+
+                        <p><b>1.2.13</b> A ALLPOINTS não se responsabiliza pelos programas de relacionamento e/ou incentivo à fidelidade 
+                            comercial de seus Parceiros, nem pela coleta e tratamento dos dados em razão da adesão aos seus programas. </p>
+
+                        <h5>1.3. ALLPOINTS E FORMAS DE ACÚMULO</h5>
+
+                        <p><b>1.3.1</b> São definidos como “Allpoints” ou “Pontos Allpoints” as unidades de medida utilizadas pela ALLPOINTS 
+                            para contabilizar o Acúmulo e o Resgate realizados por meio do Programa Allpoints. Todo e qualquer Allpoints 
+                            disponível para Acúmulo e/ou Resgate na Plataforma Allpoints, que compreenda as suas Parcerias, deve ser 
+                            entendido como propriedade da ALLPOINTS, sendo certo de que a sua utilização deverá ser realizada em 
+                            conformidade com os termos deste Regulamento.</p>
+
+                        <p><b>1.3.2</b> Uma vez obedecidas outras condições comerciais e promocionais definidas pela ALLPOINTS, o Acúmulo 
+                            de Allpoints ocorrerá quando os Participantes: </p>
+
+                        <p class="sub-item">(I) contratarem e efetivamente utilizarem os serviços de hospedagens, passagens aéreas, 
+                            passagens rodoviárias, aluguel de carros, contratação de seguros e recebimento de cashback em Allpoints, 
+                            oferecidos pelos Parceiros Allpoints; </p>
+
+                        <p class="sub-item"> (II) contratarem e efetivamente utilizarem os serviços de hospedagens oferecidos 
+                            exclusivamente pela plataforma <a href="/">www.allpoints.club</a>, com a conversão em Allpoints unicamente da parte 
+                            quitada com a moeda vigente no país de origem da contratação da reserva; excluem-se da conversão os valores 
+                            quitados com Allpoints, cupons de descontos e qualquer outra forma de pagamento que não seja exclusivamente 
+                            a moeda vigente no país de origem da contratação do serviço.</p>
+
+                        <p class="sub-item">(III) contratarem os serviços e/ou adquirirem produtos oferecidos por outros estabelecimentos 
+                            comerciais cuja atividade esteja relacionada àquela desempenhada pelos Parceiros Allpoints, tais como SPAs,
+                             restaurantes e lojas, localizados ou não no estabelecimento comercial do Parceiro, dentre outos, e desde 
+                             que tal parceria seja objeto de um novo instrumento no caso de serem geridos por um terceiro;</p>
+
+                        <p class="sub-item">(IV) forem beneficiados com Allpoints emitidos pela ALLPOINTS, que para tanto poderá, 
+                            exemplificativamente, (a) convidar os Participantes a participar de pesquisas e concursos; (b) solicitar 
+                            o fornecimento de informações, dados e o preenchimento de cadastros; (c) incentivar que o Participante 
+                            indique outras pessoas para integrarem o Programa Allpoints na condição de Participante; ou, ainda (d) 
+                            incentivar que o participante, colaborador da empresa em que trabalha, indique sua empresa para integrar 
+                            o Programa Allpoints na condição de Parceiro Corporativo; entre outros.</p>
+
+                        <p class="sub-item last-item">(V) Aderirem à contratação de um dos planos de assinatura do Allpoints Club, 
+                            com situação ativa e sem pendências de pagamentos, seja por meio do Programa Allpoints ou por seus Parceiros
+                             Corporativos. </p>
+
+                        <p><b>1.3.3</b> O Acúmulo de Allpoints pelo Participante mediante a contratação e utilização dos serviços 
+                            oferecidos pelos Parceiros Allpoints e suas parcerias somente ocorrerá quando o Participante (I) estiver 
+                            com cadastro ativo no Programa Allpoints; e (II) os Parceiros Allpoints comunicarem aquisição e quitação 
+                            do serviço adquirido pelo Participante, e compartilharem os dados à ALLPOINTS para acúmulo, de acordo com 
+                            as regras e prazos de acúmulo definidos por cada Parceiro. </p>
+
+                        <p><b>1.3.4</b> No caso de Reservas exclusivas em Hotéis, estabelece-se que a contratação de serviços extras 
+                            gerará acúmulo de Allpoints apenas e tão somente se contratados por meio do Marketplace do Hotel, no momento
+                             da realização da Reserva por meio do site <a href="/">www.allpoints.club</a>. Não serão convertidos em Allpoints os 
+                             serviços contratados diretamente no hotel após realização da Reserva. </p>
+
+                        <p><b>1.3.5</b> A ALLPOINTS se reserva o direito de definir em sua plataforma o modelo da mecânica de acúmulo 
+                            a ser oferecida, se por conversão igualitária ao valor do serviço adquirido ou se por meio de 
+                            porcentagem em Allpoints de Volta. </p>
+
+                        <p><b>1.3.6</b> Os Allpoints adquiridos na contratação de serviços diretamente nos Parceiros Allpoints serão 
+                            lançados no extrato da Conta do Participante Allpoints após o compartilhamento da transação do Parceiro 
+                            Allpoints à ALLPOINTS conforme métodos estabelecidos pela parceria. Estes Allpoints poderão ser 
+                            visualizados na condição de “Pendentes” na Conta Allpoints, sendo liberados após confirmação de utilização 
+                            do serviço pelo Parceiro Allpoints ou conforme regras e prazos de acúmulos comunicados no momento da 
+                            transação. </p>
+
+                        <p><b>1.3.7</b> Os Allpoints acumulados pelos Participantes terão validade e expiração estabelecidos conforme as 
+                            seguintes condições: </p>
+
+                        <p class="sub-item">I. Contados da sua emissão e na devida condição de Conta Allpoints Ativa, os Allpoints 
+                            acumulados passam a ter 6 meses de validade; após este período serão cancelados e tornados sem efeito, 
+                            de forma que não poderão ser usados em Resgate Allpoints de qualquer espécie, não cabendo aos Participantes
+                             qualquer valor ou indenização, a que título for.</p>
+
+                        <p class="sub-item last-item">II. O Participante que for assinante do Allpoints Club na condição de Plano de Assinatura 
+                            Ativo, não terá os seus Allpoints expirados enquanto manter-se na condição de Plano Ativo. </p>
+
+                        <p><b>1.3.8</b> Os Allpoints são acumulados de acordo com as informações compartilhadas pelos Parceiros 
+                            Allpoints, de maneira que eventual inconsistência e/ou divergência em relação à quantidade de Allpoints 
+                            acumulados serão de responsabilidade dos Parceiros. Da mesma forma, a ALLPOINTS não poderá ser 
+                            responsabilizada por atraso ou demora no Acúmulo de Allpoints em decorrência do não envio ou do envio 
+                            incompleto de informações pelos Parceiros Allpoints. 
+                        </p>
+
+                        <p><b>1.3.9</b> A realização de campanhas ou promoções especiais que impliquem o Acúmulo de Allpoints de forma 
+                            diversa do previsto neste Regulamento ou em <a href="/">www.allpoints.club</a>  deverá ser prévia e expressamente autorizada 
+                            e definida pela ALLPOINTS. </p>
+
+                        <p><b>1.3.10</b> Em nenhuma hipótese, os Allpoints serão convertidos total ou parcialmente em dinheiro por meio das 
+                            regras de gestão e funcionamento ou mecanismos promocionais do Programa Allpoints, seja em crédito em conta 
+                            e/ou em pecúnia; esclarece-se, no entanto, que tal condição de conversão em dinheiro no todo ou em parte do 
+                            valor quitado pode vir a ser aplicada exclusivamente pelos Parceiros Financeiros Allpoints, sendo destes 
+                            qualquer responsabilidade sobre eventuais divergências, discordâncias não conformidades sobre este processo. </p>
+
+                        <p><b>1.3.11</b> A ALLPOINTS reserva o direito de excluir do Programa Allpoints qualquer Participante que venha a 
+                            infringir as regras deste Regulamento, ou que se utilize de qualquer meio inidôneo ou ilegal em relação
+                             à utilização dos Allpoints e/ou dos Benefícios, independentemente da adoção das medidas judiciais e 
+                             administrativas para apurar responsabilidades civis e criminais. O Participante obriga-se a indenizar 
+                             por todo e qualquer prejuízo causado à ALLPOINTS. </p>
+
+                        <p><b>1.3.12</b> Os Allpoints acumulados não serão cedidos ou transferidos por sucessão, herança ou divórcio/término 
+                            de união estável, não sendo devido o pagamento de qualquer valor ou indenização pela ALLPOINTS. Em caso 
+                            de falecimento do Participante titular dos Allpoints acumulados, a respectiva Conta Allpoints será 
+                            terminada e seus Allpoints serão imediatamente cancelados. </p>
+
+                        <p><b>1.3.13</b> Além das condições aqui previstas, o Acúmulo de Allpoints será realizado de acordo com
+                            os termos e condições indicados em <a href="/">www.allpoints.club</a> ou nos estabelecimentos físicos ou virtuais dos
+                            Parceiros Allpoints, podendo sofrer variações, conforme os critérios promocionais e/ou
+                            políticas comerciais específicas que vierem a ser definidas ou modificadas, sempre
+                            devidamente informadas aos Participantes através do site <a href="/">www.allpoints.club</a>, canais
+                            oficiais de comunicação do Programa Allpoints ou dos Parceiros Allpoints. Os
+                            Parceiros Allpoints deverão agir em conformidade com as regras das promoções estipuladas
+                            pela ALLPOINTS, de acordo os critérios por esta definidos sob qualquer forma, a fim de
+                            garantir a efetividade do ganho de Allpoints pelos Participantes, sob pena de tais Allpoints
+                            não serem acumulados ou resgatados.</p>
+
+                        <p><b>1.3.14</b> Após o Parceiro Allpoints ter compartilhado com a ALLPOINTS as informações necessárias
+                            para o Acúmulo de Allpoints, a ALLPOINTS terá o prazo de até 60 (sessenta) dias para
+                            creditar os Allpoints na Conta Allpoints.</p>
+
+                        <p><b>1.3.15</b> Os créditos serão realizados com base na informação repassada pelo Parceiro Allpoints,
+                            razão pela qual eventuais divergências sobre o crédito de Allpoints serão de
+                            responsabilidade deste. A ALLPOINTS, contudo, envidará seus maiores esforços para contatar o
+                            Parceiro e verificar o motivo da divergência, a fim de solucionar a questão.</p>
+
+                        <h5>1.4. RESGATE DE ALLPOINTS</h5>
+
+                        <p><b>1.4.1</b> O Resgate de Allpoints deverá ser realizado no formato online, por meio da Plataforma
+                            Allpoints ou pelos canais oficiais de relacionamento da ALLPOINTS, devidamente municiado de
+                            sua Senha Allpoints nesta operação que é inteiramente pessoal e de responsabilidade única do
+                            titular da Conta Allpoints. Uma vez efetivado o Resgate Allpoints, o Participante renunciará
+                            a todos os direitos sobre os Allpoints utilizados na transação. </p>
+
+                        <p><b>1.4.2</b> Fica estabelecido que o Resgate de Allpoints poderá ocorrer nas situações que se
+                            seguem:</p>
+
+                        <p class="sub-item">(I) A Conta Allpoints precisará estar em situação ativa, com e-mail validado
+                            e senha
+                            devidamente elaborada e registrada de acordo com os critérios da Plataforma Allpoints</p>
+
+                        <p class="sub-item last-item">(II) A Conta Allpoints deverá dispor de ao menos 1 (UM) Allpoints
+                            acumulado, excluindo deste
+                            total os Allpoints eventualmente ainda não liberados pelos Parceiros Allpoints. </p>
+
+                        <p><b>1.4.3</b> Na situação de o Participante Allpoints não dispor do total em Allpoints requerido no
+                            momento do Resgate, fica estabelecido que a transação poderá ser complementada por valores
+                            na moeda vigente do país de origem do Resgate, no formato de cartão de crédito, à vista ou
+                            parcelado, conforme disponibilidade da plataforma no momento do Resgate; estabelece-se,
+                            ainda, que o valor complementado na moeda vigente do país de origem do Resgate poderá ser
+                            convertido em Allpoints, conforme regras de conversão vigentes no momento da transação,
+                            estabelecidas entre a Allpoints e seus Parceiros.</p>
+
+                        <p><b>1.4.4</b> Para fins de cancelamento do Resgate Allpoints, fica estabelecido: </p>
+
+                        <p class="sub-item">(I) que um Resgate Allpoints somente poderá ser cancelado na contratação de
+                            serviços cujo
+                            cancelamento é permitido e cuja permissão esteja expressamente notificada na descrição do
+                            serviço a ser contratado no momento do Resgate; </p>
+
+                        <p class="sub-item">(II) a possibilidade de cobrança de taxa de cancelamento, em Allpoints ou em
+                            dinheiro,
+                            conforme indicação e estabelecimento do Parceiro Allpoints provedor do serviço a ser
+                            contratado no momento da contratação;</p>
+
+                        <p class="sub-item">(III) no caso de permissão de cancelamento sem penalidade, o prazo de
+                            reembolso em dinheiro
+                            ou em Allpoints é de responsabilidade exclusiva do Parceiro Allpoints fornecedor do serviço
+                            cancelado. </p>
+
+                        <p class="sub-item">(IV) no caso de Resgate Allpoints por Reservas em Hotéis cuja forma de
+                            pagamento foi
+                            concretizada com parte em Allpoints e parte em dinheiro, havendo penalidade no cancelamento,
+                            estipula-se que:</p>
+
+                        <p class="sub-sub-item">a. Multas e taxas por motivo de cancelamento, aplicadas e
+                            quitadas na moeda vigente do
+                            local da realização da reserva, serão convertidas em Acúmulo de Allpoints conforme
+                            regra de acúmulo vigente no momento da operação</p>
+
+                        <p class="sub-sub-item last-item">b. no caso de cancelamento de Reservas em Hotéis quitadas
+                            integralmente em Allpoints,
+                            havendo penalidade, as multas e taxas serão cobradas em Allpoints.</p>
+
+                        <p><b>1.4.5</b> A ALLPOINTS poderá realizar o Reembolso de Allpoints, a seu exclusivo critério, mediante
+                            solicitação do Parceiro Allpoints ou, em caráter excepcional, mediante solicitação dos
+                            Participantes, sendo que, em ambos os casos estará sujeita à avaliação e apuração da
+                            solicitação específica, cancelando o Acúmulo ou Resgate realizado e devolvendo os Allpoints
+                            à Conta Allpoints do Participante requerente. Os motivos que poderão ensejar o Reembolso de
+                            Allpoints resgatados incluem, mas não se limitam a erro sistêmico e falha humana. O
+                            reembolso de Allpoints referentes ao resgate de produtos, serviços e promoções eventualmente
+                            oferecidos pelos Parceiros Allpoints deverão respeitar as regras e prazos específicos de
+                            cada um dos Parceiros Allpoints.</p>
+
+                        <p><b>1.4.6</b> Os serviços com a finalidade de resgate indicados em <a
+                                href="/">www.allpoints.club</a> poderão ser
+                            resgatados pelo Participante Allpoints enquanto permanecerem disponíveis, não havendo
+                            direito adquirido em relação à conversão de Allpoints em Benefícios perante os
+                            Parceiros Allpoints  que eventualmente tiverem sua parceria cancelada com a ALLPOINTS. Dessa
+                            forma, após a exclusão de um Hotel Parceiro ou outro Parceiro Allpoints, o Participante não
+                            será mais elegível para acumular e/ou resgatar Allpoints neste Parceiro, ainda que uma
+                            reserva tenha sido realizada antes da data de exclusão.</p>
+
+                        <p><b>1.4.7</b> Se, por exemplo, um Hotel Parceiro deixar de fazer parte
+                            da ALLPOINTS depois que o
+                            Participante tiver usufruído sua estada, o período de permanência no hotel ou a aquisição
+                            e/ou utilização de serviços neste hotel não serão mais elegíveis para o Acúmulo de
+                            Allpoints, inclusive para fins de concessão de Allpoints bônus. Os Allpoints já acumulados
+                            antes da exclusão do Parceiro, porém, serão mantidos na Conta Allpoints  e poderão ser
+                            resgatados em Benefícios até o período de validade da pontuação.</p>
+
+                        <p><b>1.4.8</b> Caso o Hotel Parceiro não faça mais parte da relação de
+                            Parceiros Allpoints,
+                            a ALLPOINTS não garante que o Participante poderá resgatar Benefícios perante o Parceiro
+                            excluído. A ALLPOINTS, contudo, envidará todos os esforços razoáveis para providenciar
+                            acomodações e/ou o fornecimento de produtos e serviços por outros Parceiros Allpoints.</p>
+
+                        <p><b>1.4.9</b> O Resgate de Allpoints e/ou sua conversão em Benefícios poderão estar sujeitos à
+                            cobrança de taxas. Os procedimentos específicos e as regras para o Resgate de Allpoints,
+                            incluindo fatores de conversão, quantidade e equivalência de Benefícios, são definidos
+                            exclusivamente pela ALLPOINTS, sujeitos à alteração sem prévio aviso, e estão disponíveis
+                            em <a href="/">www.allpoints.club</a>. O
+                            Participante é o único responsável por todos os atos que forem efetivados mediante o uso de
+                            sua Senha Allpoints, que é pessoal e intrasferível.</p>
+
+                        <p><b>1.4.10</b> Se houver a atribuição de serviços promocionais disponibilizados pelos Parceiros
+                            Allpoints, tais como diárias promocionais, extensão de utilização de serviço, etc, fica o
+                            Participante ciente de que a utilização da deste serviço estará sujeita às condições e
+                            períodos de resgate a serem definidas pelo Parceiro Allpoints e pela ALLPOINTS. Todas as
+                            regras estarão disponíveis no site <a href="/">www.allpoints.club</a>.</p>
+
+                        <p><b>1.4.11</b> O PARTICIPANTE TEM PLENA CIÊNCIA DE QUE A ALLPOINTS NÃO POSSUI QUALQUER
+                            RESPONSABILIDADE, DIRETA, INDIRETA, SUBSIDIÁRIA OU SOLIDÁRIA COM RELAÇÃO ÀS RECLAMAÇÕES,
+                            QUESTIONAMENTOS E/OU DEMANDAS JUDICIAIS DE QUALQUER NATUREZA QUE DIGAM RESPEITO AOS PRODUTOS
+                            E/OU SERVIÇOS FORNECIDOS PELOS PARCEIROS ALLPOINTS, INCLUINDO ALTERAÇÃO DE PROPOSTA,
+                            FRUSTRAÇÃO OU QUEBRA DE EXPECTATIVA, BEM COMO EM RELAÇÃO AOS PROGRAMAS E/OU PROMOÇÕES DE
+                            INCENTIVO À FIDELIDADE COMERCIAL OFERECIDOS PELOS PARCEIROS ALLPOINTS.</p>
+
+                        <p><b>1.4.12</b> O PARTICIPANTE TEM CIÊNCIA DE QUE (I) O USO DOS SERVIÇOS PRESTADOS PELOS PARCEIROS, OU
+                            DOS PRODUTOS DELES ADQUIRIDOS, CORRE POR CONTA E RISCO DO PARTICIPANTE E DOS PARCEIROS,
+                            FICANDO A ALLPOINTS ISENTA DE TODA E QUALQUER RESPONSABILIDADE; E (II) QUE TAIS SERVIÇOS E
+                            PRODUTOS ESTÃO SUJEITOS À DISPONIBILIDADE.</p>
+
+                        <p><b>1.4.13</b> A ALLPOINTS NÃO É RESPONSÁVEL POR INCORREÇÕES RELACIONADAS ÀS INFORMAÇÕES E DESCRIÇÕES
+                            DE SERVIÇOS E PRODUTOS DOS PARCEIROS, PRINCIPALMENTE QUANDO REFERENTES À DESCRIÇÃO DOS
+                            HOTÉIS PARCEIROS, PARCEIROS AÉREOS, RODOVIÁRIOS, PARCEIROS DE ALUGUEL DE CARROS E PROVEDORES
+                            DE SEGUROS DE VIAGENS, TARIFAS E EVENTUAIS BENEFÍCIOS CONCEDIDOS POR ESTES. A ALLPOINTS
+                            RESERVA O DIREITO DE CORRIGIR EVENTUAIS INCORREÇÕES SOBRE AS INFORMAÇÕES DISPONIBILIZADAS EM
+                            SEU SITE, AS QUAIS NÃO VINCULARÃO A ALLPOINTS E NÃO DARÃO ENSEJO À INDENIZAÇÃO.</p>
+
+                        <p><b>1.4.14</b> A ALLPOINTS NÃO TEM NENHUMA RESPONSABILIDADE E NÃO FARÁ NENHUM REEMBOLSO NO CASO DE
+                            ATRASO, CANCELAMENTO, EXCESSO DE RESERVAS (OVERBOOKING), GREVE, FORÇA MAIOR, OU OUTRAS
+                            CAUSAS FORA DE SEU CONTROLE E QUE SÃO DE RESPONSABILIDADE DOS PARCEIROS.</p>
+
+                        <p><b>1.4.15</b> A ALLPOINTS NÃO GARANTE:</p>
+
+                        <p class="sub-item">(I) QUE OS SERVIÇOS E OS PRODUTOS FORNECIDOS POR PARCEIROS ATENDERÃO ÀS
+                            EXPECTATIVAS E EXIGÊNCIAS DOS PARTICIPANTES;</p>
+
+                        <p class="sub-item">(II) QUE OS SERVIÇOS E OS PRODUTOS FORNECIDOS POR PARCEIROS OCORRERÃO DE
+                            MODO ININTERRUPTO, SEGURO, PRECISO E SEM ERROS;</p>
+
+                        <p class="sub-item">(III) A QUALIDADE OU SEGURANÇA DOS SERVIÇOS OU DOS PRODUTOS (E A INFORMAÇÕES
+                            RELACIONADAS A ELES) DOS PARCEIROS;</p>
+
+                        <p class="sub-item">(IV) QUE OS SERVIÇOS E OS PRODUTOS DE PARCEIROS QUE APRESENTEM VÍCIO E/OU
+                            DEFEITO SERÃO CORRIGIDOS E QUE OS PARTICIPANTES SERÃO INDENIZADOS PELOS PARCEIROS;</p>
+
+                        <p class="sub-item">(V) A VERACIDADE DAS INFORMAÇÕES E DO CONTEÚDO DISPONIBILIZADOS PELOS
+                            PARTICIPANTES NO SITE
+                            DA ALLPOINTS SOBRE AVALIAÇÕES DE QUALIDADE E A CLASSIFICAÇÃO DOS PARCEIROS (RATING);</p>
+
+                        <p class="sub-item last-item">(VI) O CONTEÚDO E NÃO É RESPONSÁVEL PELAS INFORMAÇÕES CONTIDAS EM
+                            SITES CUJOS HYPERLINKS SÃO
+                            DISPONIBILIZADOS NO SITE DA ALLPOINTS.</p>
+
+                        <p><b>1.4.16</b> O Participante Allpoints concorda em defender, indenizar e isentar de responsabilidades
+                            a ALLPOINTS contra quaisquer reinvindicações, pleitos, demandas judiciais ou procedimentos
+                            administrativos, perdas e danos, multas e penalidades ou outros custos ou despesas de
+                            qualquer natureza, incluindo honorários advocatícios, decorrentes, sem limitação, (I) de
+                            ações promovidas por terceiros e que estejam relacionadas às informações e ao conteúdo
+                            submetido pelo Participante no site da ALLPOINTS ou que envolvam serviços e/ou produtos
+                            fornecidos pelos Parceiros; (II) da utilização indevida, por qualquer pessoa, da Conta
+                            Allpoints e/ou de sua Senha de Acesso; ou (III) da violação deste Regulamento pelo
+                            Participante ou de qualquer lei, norma jurídica ou direito de terceiros.</p>
+
+                        <p><b>1.4.17</b> Os casos estipulados a seguir, que não são exaustivos, não darão ensejo ao Reembolso de
+                            Allpoints: (I) insatisfação do Participante ou vício ou frustração ou quebra de expectativa
+                            em relação ao serviço objeto de Resgate, uma vez que 
+                            eventuais reclamações deverão ser endereçadas aos Parceiros Allpoints, únicos responsáveis
+                            pelo serviço fornecido, sua qualidade e especificações; e (II) insatisfação do Participante
+                            em virtude da transferência dos Allpoints para promoções e/ou programas criados ou
+                            promovidos pelos Parceiros Allpoints.</p>
+
+                        <p><b>1.4.18</b> Se por algum motivo o Participante não reconhecer os Allpoints utilizados, este terá um
+                            prazo de 03 (três) meses, a contar da data em que foi efetuado o resgate, para proceder uma
+                            reclamação perante à Allpoints.</p>
+
+                        <p><b>1.4.19</b> Os Allpoints poderão ser utilizados nos Hotéis Parceiros ou demais Parceiros Allpoints
+                            cujo procedimento de resgate estiver vigente, sendo que a relação de Parceiros poderá ser
+                            alterada a qualquer momento pela ALLPOINTS, sem prévio aviso. A relação atualizada dos
+                            Hotéis Parceiros ou demais Parceiros Allpoints pode ser obtida por meio do site
+                            da ALLPOINTS (<a href="/">www.allpoints.club</a>) e
+                            a inclusão ou a supressão de Hotéis Parceiros e/ou demais Parceiros serão anunciadas ao
+                            longo do tempo. </p>
+
+                        <p><b>1.4.20</b> O Participante compreende e concorda que a ALLPOINTS (I) poderá coletar, reter, utilizar
+                            e compartilhar as informações disponibilizadas pelo Participante no momento do cadastro,
+                            além daquelas que forem coletadas ao longo da relação contratual, inclusive as informações
+                            fornecidas pelos Parceiros ALLPOINTS; (II) poderá utilizar as informações para a divulgação
+                            de opções de resgate e acúmulo de Pontos ou que a ALLPOINTS entenda relevante, incluindo
+                            para fins de apuração de fraudes; e (III) poderá compartilhar tais informações com seus
+                            Parceiros ALLPOINTS, com empresas parceiras de publicidade, monitoramento e análise, dentre
+                            outras, ou então utilizá-las para desenvolver ofertas e promoções para melhor servir o
+                            Participante e aprimorar os serviços prestados.</p>
+
+                        <p><b>1.4.21</b> SENDO ASSIM, O PARTICIPANTE, AO ACEITAR OS TERMOS E CONDIÇÕES DESTE REGULAMENTO, CONCEDE
+                            SEU CONSENTIMENTO LIVRE E EXPRESSO, PARA AUTORIZAR A ALLPOINTS A COLETAR, RETER, UTILIZAR E
+                            COMPARTILHAR AS INFORMAÇÕES OBTIDAS DO PARTICIPANTE COM EMPRESAS PARCEIRAS (INCLUINDO
+                            EMPRESAS DE PUBLICIDADE, MONITORAMENTO E ANÁLISE, DENTRE OUTRAS), COM A FINALIDADE DE
+                            PERSONALIZAR O ATENDIMENTO AO PARTICIPANTE, DESENVOLVER OFERTAS E PROMOÇÕES, BEM COMO APURAR
+                            O COMETIMENTO DE ATOS ILÍCITOS. </p>
+
+                        <p><b>1.4.22</b> O PARTICIPANTE TEM PLENA CIÊNCIA DE QUE É O ÚNICO RESPONSÁVEL POR INFORMAÇÕES, FOTOS,
+                            GRÁFICOS, MENSAGENS E QUALQUER CONTEÚDO POR ELE INSERIDO, POSTADO OU SUBMETIDO AO SITE DA
+                            ALLPOINTS OU DE UM PARCEIRO, INCLUINDO POR SUA LEGALIDADE. </p>
+
+                        <p><b>1.4.23</b> O PARTICIPANTE AUTORIZA QUE A ALLPOINTS UTILIZE, REPASSE A TERCEIROS, DISTRIBUA,
+                            REPRODUZA, MODIFIQUE OU ADAPTE ESSA INFORMAÇÃO OU CONTEÚDO, SEM QUE SEJA DEVIDO O PAGAMENTO
+                            DE QUALQUER VALOR PELA ALLPOINTS AO PARTICIPANTE.</p>
+
+                        <h5>1.5. CONDIÇÕES GERAIS</h5>
+
+                        <p><b>1.5.1</b> A ALLPOINTS poderá alterar, excluir, incluir ou complementar a relação dos
+                            Parceiros ALLPOINTS que fazem parte da ALLPOINTS, a seu único e exclusivo critério e
+                            independentemente de anuência prévia do Participante, bem como alterar os fatores de
+                            conversão e de equivalência dos Allpoints. Da mesma forma, este Regulamento poderá ser
+                            modificado e/ou aditado pela ALLPOINTS, que deverá comunicar o Participante acerca das
+                            alterações feitas.</p>
+
+                        <p><b>1.5.2</b> A ALLPOINTS poderá, a qualquer momento, corrigir a quantidade de Allpoints <b>acumulados</b>
+                            pelo Participante Allpoints, sem aviso prévio. Se eventualmente a ALLPOINTS negar ou
+                            creditar incorretamente a quantidade de Allpoints, a responsabilidade da ALLPOINTS estará
+                            limitada única e exclusivamente a proceder a tal retificação, não respondendo, em qualquer
+                            hipótese, por qualquer tipo de indenização. A ALLPOINTS não responderá por danos indiretos
+                            ou lucros cessantes perante o Participante.</p>
+
+                        <p><b>1.5.3</b> A ALLPOINTS poderá, a qualquer tempo e sob seu exclusivo critério, suspender ou cancelar
+                            o programa ALLPOINTS, desde que tal decisão seja comunicada aos Participantes. Em tais
+                            casos, a ALLPOINTS reserva-se o direito de cancelar os Pontos acumulados pelos
+                            Participantes, não cabendo a eles qualquer indenização ou pagamento, a que título for, em
+                            virtude do cancelamento. A ALLPOINTS está autorizada a ceder e transferir sua posição
+                            contratual, direitos e obrigações a terceiros.</p>
+
+                        <p><b>1.5.4</b> A conduta ilícita, contrária à lei e/ou a este Regulamento autorizará a ALLPOINTS a
+                            excluir o Participante da ALLPOINTS ou impedir que ele retorne à ALLPOINTS, bem como
+                            cancelar seus Pontos e Benefícios, sem prejuízo da adoção das medidas judiciais cabíveis,
+                            sendo que tais providências não acarretarão o pagamento de indenização ao Participante, a
+                            que título for.</p>
+
+                        <p><b>1.5.5</b> A ALLPOINTS permite que pessoas físicas ou jurídicas se
+                            associem, tornem-se Participantes e possam escolher em quais Parceiros Allpoints desejam
+                            acumular Pontos, e em quais desejam resgatar benefícios, produtos e serviços, conforme sua
+                            conveniência. Este Regulamento estabelece as regras e as condições para a participação dos
+                            Participantes na ALLPOINTS, cabendo aos Participantes terem conhecimento de seu inteiro
+                            teor. </p>
+
+                        <p><b>1.5.6</b> Ao efetivar seu cadastro, o Participante declara e confirma estar plenamente ciente de
+                            que os Allpoints não consistem em moeda financeira ou unidades de moeda em real, bem como
+                            que a ALLPOINTS não é uma instituição financeira, não estando sujeita à legislação aplicável
+                            ao sistema financeiro nacional.</p>
+
+                        <p><b>1.5.7</b> Fica eleito o foro da Comarca da Capital de São Paulo como o único competente para
+                            dirimir toda e qualquer controvérsia ou disputa oriunda ou relacionada com este
+                            Regulamento. </p>
+
+                        <p><b>1.5.8</b> As Partes elegem a lei brasileira como sendo a única legislação aplicável para
+                            solucionar toda e qualquer controvérsia ou disputa oriunda ou relacionada a este
+                            Regulamento.</p>
+
+                        <p><b>1.5.9</b> A ALLPOINTS, por meio da Política de Privacidade que complementa este Regulamento, segue
+                            os dispositivos da a Lei Federal n. 13.709/2018 (Lei Feral de Proteção de Dados).</p>
+
+
+                        <h4>2. ALLPOINTS CLUB</h4>
+
+                        <p>A Allpoints Marketing e Fidelidade Ltda (“Allpoints”), inscrita sob o CNPJ 22.956.310/0001-17, com 
+                            sede na Rua Irmã Gabriela, nº 51, Brooklin Novo, na cidade de São Paulo, no estado de São Paulo, criou 
+                            e administra o Allpoints Club, um programa de vantagens em que os participantes inscritos ganham pontos 
+                            de forma automática e recorrente em sua conta no Programa Allpoints Club, com o objetivo de acelerar e 
+                            facilitar o acúmulo e a troca de pontos.</p>
+
+                        <h5>2.1. Assinatura</h5>
+
+                        <p><b>2.1.1</b> Poderá participar do Programa Allpoints Club qualquer pessoa com mais de 18 anos de idade, 
+                            cadastrada no Programa Allpoints, que possua CPF/MF válido no Brasil e portadora de um cartão de crédito 
+                            emitido obrigatoriamente no Brasil para pagamento da recorrência mensal do plano escolhido. </p>
+                            
+                        <p><b>2.1.2</b> A assinatura do Allpoints Club está atrelada à obrigatoriedade de leitura e aceitação do presente 
+                            regulamento, além da concordância específica com as regras determinadas no plano escolhido. </p>
+
+                        <p><b>2.1.3</b> A assinatura do Allpoints Club pode ser realizada por meio do site da Allpoints (<a href="/">www.allpoints.club</a>), onde todas as informações necessárias sobre a Allpoints e Allpoints Club estão designadas.  </p>
+
+                        <p><b>2.1.4</b> É de inteira responsabilidade do assinante atestar a veracidade dos dados informados durante a assinatura, além de manter todas as informações devidamente atualizadas, em especial, nome, documento de identificação, e-mail, endereço, telefone e dados do cartão de crédito válidos.  </p>
+
+                        <p><b>2.1.5</b> No caso de discordância do presente regulamento e de sua não aceitação, fica esclarecido que o cliente não deverá prosseguir com assinatura do Allpoints Club. </p>
+
+                        <p><b>2.1.6</b> A adesão é confirmada em até 24h, contadas da realização da assinatura por meio dos canais oficiais de assinatura. </p>
+
+                        <p><b>2.1.7</b> O crédito dos Allpoints da adesão será realizado em até 24h após a confirmação da assinatura  </p>
+
+                        <p><b>2.1.8</b> Os créditos mensais de Allpoints pela assinatura, bem como de promoções e bônus atrelados à assinatura serão realizados em até 24h após a confirmação do pagamento do plano adquirido e/ou solicitação da Empresa Parceira em que o Assinante é colaborador.</p>
+
+                        <h5>2.2. Plano de Assinatura</h5>
+
+                        <p><b>2.2.1</b> O Allpoints Club oferece a possibilidade de assinaturas de planos a partir de R$ 10,00 até R$ 1.000,00, cujas regras e benefícios são estipulados no site do Programa Allpoints Club, bem como em seus canais oficiais de comunicação</p>
+
+                        <p class="sub-item"><b>2.2.1.1</b> A Allpoints se reserva o direito de alterar, excluir ou criar novos planos a qualquer momento, sem aviso. Na situação de exclusão de algum plano, o cliente receberá os Allpoints e benefícios referentes ao mês vigente, podendo escolher entre alterar o plano ou cancelar sua assinatura no Allpoints Club </p>
+
+                        <p class="sub-item last-item"><b>2.2.1.2</b> Fica a critério da Allpoints, em caso de extinção de algum plano, permitir que o cliente permaneça registrado neste plano, podendo sua assinatura ser cancelada mediante a atraso no pagamento </p>
+
+                        <p><b>2.2.2</b> Em caso de alteração do plano assinado, a efetivação do novo plano ocorrerá a partir do pagamento da nova mensalidade, cuja cobrança poderá ocorrer no mês vigente ou não. </p>
+
+                        <p><b>2.2.3</b> Somente os Clientes que estiverem com os pagamentos das mensalidades em dia poderão realizar a mudança de Plano. </p>
+
+                        <p><b>2.2.4</b> Fica limitada a adesão de um plano por assinante e cadastro no Programa Allpoints. </p>
+
+                        <p><b>2.2.5</b> A Allpoints se reserva o direito de oferecer benefícios, bonificações, promoções e descontos exclusivos de acordo com o plano aderido, bem como o tempo de permanência em cada plano, além de outros critérios definidos pela Allpoints. </p>
+
+                        <h5>2.3. Pagamento</h5>
+
+                        <p><b>2.3.1</b> A cobrança do plano aderido será realizada mensalmente por meio do cartão de crédito cadastrado no momento da assinatura. </p>
+
+                        <p><b>2.3.2</b> Os valores das mensalidades poderão ser reajustados a qualquer momento. </p>
+
+                        <p><b>2.3.3</b> A cobrança do plano adquirido ocorrerá mensalmente, de forma automática, por meio dos dados do cartão de crédito informado no momento da assinatura. </p>
+
+                        <p><b>2.3.4</b> Em caso da não realização do pagamento ocasionada por falta de limite no cartão de crédito, bloqueio, cancelamento ou qualquer outro impedimento, a Allpoints encaminha pelo menos três e-mails com opções para a normalização da forma de pagamento. Em caso de não normalização do pagamento em até 72h após o vencimento, a Allpoints se reserva o direito de cancelar a assinatura, bem como todos os benefícios relacionados a ela, sem a possibilidade de revogação </p>
+
+                        <h5>2.4. Cancelamento</h5>
+
+                        <p><b>2.4.1</b> O plano poderá ser alterado a qualquer momento pelo cliente por meio do acesso à sua Conta Allpoints em <a href="/">www.allpoints.club</a>. </p>
+
+                        <p class="sub-item last-item"><b>2.4.1.1</b> Esclarece-se que o Assinante pode desistir do Plano assinado no prazo de 07 (sete) dias, a contar da data de adesão ou da solicitação de alteração do Plano. Caso esse direito de arrependimento seja exercido, os valores eventualmente pagos, a qualquer título, durante o prazo de reflexão serão devolvidos.</p>
+
+                        <p><b>2.4.2</b> O cancelamento ou alteração do plano pode ser solicitado a qualquer momento. </p>
+
+                        <p><b>2.4.3</b> Caso haja o desejo de nova adesão após o cancelamento, todas as etapas iniciais deverão ser respeitadas para a nova contratação </p>
+
+                        <p><b>2.4.4</b> Em caso de cancelamento de plano aderido por ações promocionais, uma nova assinatura por meio de ações promocionais poderá ser contratada a partir de 180 dias contados da data do cancelamento; no entanto, assinaturas fora de ações promocionais poderão ser adquiridas a qualquer momento </p>
+
+                        <p><b>2.4.5</b> Poderá ocorrer cancelamento automático do plano contratado em caso de não confirmação do pagamento da mensalidade em até 72h após o vencimento. </p>
+
+                        <p><b>2.4.6</b> Em caso de cancelamento do Plano, os Allpoints acumulados permanecerão de propriedade do cliente titular da Conta Allpoints por até 6 meses e não poderão ser devolvidos na forma de dinheiro. </p>
+
+                        <h5>2.5. Reserva em Hotéis para Assinantes do Allpoints Club </h5>
+
+                        <p><b>2.5.1</b> Os Allpoints adquiridos por meio da participação no Allpoints Club podem ser utilizados para realização de reservas em hotéis com mais de 600 mil opções no mundo inteiro, com possibilidade de pagamento total ou em parte da reserva. </p>
+
+                        <p><b>2.5.2</b> A Allpoints reserva-se o direito de oferecer ofertas de reservas em hotéis com valores e condições exclusivos para Assinantes do Allpoints Club. </p>
+
+                        <h5>2.6. Disposições Gerais </h5>
+
+                        <p><b>2.6.1</b> A Allpoints se reserva o direito de estabelecer benefícios e vantagens específicas por plano. Todos os planos e seus detalhes estão dispostos em <a href="/">https://www.allpoints.club</a> </p>
+
+                        <p><b>2.6.2</b> O Allpoints Club poderá ser descontinuado pela Allpoints a qualquer momento, por meio de aviso prévio com noventa dias de antecedência. Todos os benefícios permanecerão segurados até o término do prazo informado. </p>
+
+                        <p><b>2.6.3</b> Toda e qualquer situação não mencionada neste regulamento será analisada e decidida diretamente pela Allpoints </p>
+
+                        <p><b>2.6.4</b> Este regulamento poderá ser alterado a qualquer momento. </p>
+
+                        <p><b>2.6.5</b> A Allpoints se reserva o direito de cancelar a participação de qualquer cliente da Allpoints Club a qualquer momento, sendo comprovada conduta ilegal ou contrária aos termos estabelecidos neste regulamento. </p>
+
+                        <h4>2. POLÍTICA DE PRIVACIDADE</h4>
+
+                        <p>A Allpoints Marketing e Fidelidade Ltda (ALLPOINTS) , pessoa jurídica de direito privado, com sede na Rua Irmã Gabriela, 51, Cidade Monções, CEP 04571-130, e inscrita no CNPJ 22.956.310/0001-17, criou esta política de privacidade com a finalidade de proteger e esclarecer o manuseio e utilização dos dados pessoais disponibilizados pelo Participante Allpoints a partir do momento que se cadastra no Programa Allpoints ou utiliza qualquer canal ou serviço disponibilizado pela ALLPOINTS.</p>
+
+                        <p>CASO VOCÊ NÃO CONCORDE COM QUALQUER TERMO DISPOSTO NESTA POLÍTICA DE PRIVACIDADE, SOLICITAMOS QUE NÃO UTILIZE OS NOSSOS PRODUTOS OU SERVIÇOS, OU REALIZE QUALQUER OPERAÇÃO NA PLATAFORMA ALLPOINTS. </p>
+
+                        <h5>2.1. Disposições Gerais </h5>
+
+                        <p>A Allpoints coleta os dados que são fornecidos voluntariamente pelo Participante no
+                            momento que efetiva o seu cadastro no Programa Allpoints e podem ser enriquecidos
+                            posteriormente.</p>
+
+                        <p><b>2.1.1</b> Com a finalidade de identificar o Titular da Conta, cumprir com obrigações legais,
+                            cumprir com os objetivos de participação no Programa Allpoints, como realização de reservas
+                            em Hotéis, Parceiros Aéreos, Parceiros Rodoviários, Locadoras de Carros, Gestoras de Seguro
+                            Viagem e prestadoras de serviços financeiros, viabilizar estudos estatísticos, inteligência
+                            de mercado,  análise de crédito, promover produtos e serviços da Allpoints, informar sobre
+                            novidades, funcionalidades, conteúdos, notícias, e a fim de propor e oferecer sempre a
+                            melhor experiência possível, a Allpoints poderá coletar os seguintes dados pessoais: Nome
+                            completo, E-mail, Documento de identificação (CPF, CNPJ ou Documento de Identificação de
+                            Estrangeiro), Número do telefone, Senha de acesso, Data de nascimento, Gênero, Endereço de
+                            Residência e Empresa Privada em que o Participante trabalha.</p>
+
+                        <p><b>2.1.2</b> Com a finalidade de oferecer ofertas e promoções, a Allpoints poderá coletar os
+                            seguintes dados referentes a questionários e pesquisas opcionais: E-mail, total de Allpoints
+                            adquiridos, data e período da transação. </p>
+
+                        <p><b>2.1.3</b> Com a finalidade de créditos de Allpoints e de realizar prevenções a fraudes, a Allpoints
+                            poderá coletar as seguintes informações sobre transações: E-mail, número de Dotz adquiridos,
+                            data e período da transação. </p>
+
+                        <p><b>2.1.4</b> Com a finalidade de identificar o Participante, administrar, creditar e disponibilizar
+                            os serviços adquiridos por meio de uso de Allpoints, cumprir as obrigações decorrentes do
+                            uso destes serviços  e de realizar prevenção a fraudes, a Alpoints poderá coletar os
+                            seguintes dados de identificação digital: Endereço IP e Porta Lógica de Origem, Registros de
+                            interações com a Allpoints, Telas acessadas, dispositivo (versão do sistema operacional,
+                            geolocalização e outros aplicativos instalados, se necessário), Session ID e Cookies.</p>
+
+                        <p><b>2.1.5</b> A Allpoints poderá coletar os dados do Titular da Conta nas seguintes situações: </p>
+
+                        <p class="sub-item">a) Dados Pessoais, fornecidos pelo Participante no momento do cadastro no
+                            Programa
+                            Allpoints, ou fornecidos pela empresa em que o Colaborador Participante trabalha no
+                            momento da assinatura do Allpoints Club, ou fornecidos pelos Parceiros Allpoints no
+                            momento em que o Participante utiliza seus serviços. </p>
+
+                        <p class="sub-item last-item">b) Dados coletados de forma automática, como características dos
+                            dispositivos de acesso,
+                            do navegador utilizado, do IP (data, hora e origem), histórico de cliques e páginas
+                            acessadas, termos de buscas digitados nos canais Allpoints. A Allpoints poderá
+                            utilizar-se do uso das seguintes tecnologias para providenciar essa coleta de
+                            informações: cookies, pixel tags, beacons e local shared objects. </p>
+
+                        <p><b>2.1.6</b> A Allpoints esclarece que é possível desabilitar, por meio das configurações de seu
+                            navegador de internet, a coleta automática de informações por meio de algumas tecnologias,
+                            como cookies e caches. No entanto, o Participante deve estar ciente de que, se desabilitadas
+                            estas tecnologias, alguns recursos oferecidos pelo site, que dependem do tratamento dos
+                            referidos dados, poderão não funcionar corretamente.</p>
+
+                        <p><b>2.1.7</b> O Participante poderá acessar, atualizar e complementar seus dados, bem como poderá
+                            solicitar a exclusão à Allpoints, por meio das funções disponíveis no site da Allpoints ou
+                            por meio do Encarregado de Proteção de Dados pelo e-mail <a
+                                href="mailto:dpallpoints@allpointshotels.com"
+                                target="_blank">dpallpoints@allpointshotels.com</a>, sob responsabilidade de Juliana
+                            Marciano.</p>
+
+                        <p><b>2.1.8</b> A Allpoints não se responsabiliza pela veracidade dos dados informados pelo Participante
+                            ou sua atualização. É de total e completa responsabilidade do Participante a prestação
+                            destas informações, bem como suas atualizações. </p>
+
+                        <p><b>2.1.9</b> A Allpoints esclarece que o Participante pode ser conduzido a outros links, ainda que de
+                            Parceiros Allpoints, que poderão coletar suas informações mediante Política de Privacidade
+                            própria e desvinculada da Allpoints. </p>
+
+                        <p><b>2.1.10</b> A Allpoints poderá centralizar os dados pessoais coletados, os quais poderão ser
+                            utilizados em demais Serviços relacionados a todas as marcas da Allpoints, respeitadas as
+                            finalidades dispostas e o consentimento do Participante, sempre que exigido por lei</p>
+
+                        <h5>2.2. Compartilhamento dos Dados Coletados</h5>
+
+                        <p><b>2.2.1</b> Os dados coletados e as atividades registradas poderão ser compartilhados: </p>
+
+                        <p class="sub-item">I. Com Empresas Parceiras e fornecedores, no desenvolvimento dos Serviços
+                            voltados ao
+                            Participante incluindo, mas não se limitando, a Parceiros Financeiros e/ou com empresas
+                            responsáveis por atualizar e manter a qualidade dos dados de nossos clientes; </p>
+
+                        <p class="sub-item">II. Com autoridades judiciais, administrativas ou governamentais
+                            competentes, sempre que
+                            houver requerimento, requisição ou ordem judicial, além da proteção dos interesses da
+                            Allpoints em qualquer tipo de conflito, incluindo ações judiciais e processos
+                            administrativos;</p>
+
+                        <p class="sub-item">III. De forma automática em caso de movimentações societárias, como fusão,
+                            aquisição e
+                            incorporação;</p>
+
+                        <p class="sub-item last-item">IV. Para promover os serviços da DOTZ e de seus parceiros, além de
+                            informar sobre novidades,
+                            funcionalidades, demais informações relevantes para funcionamento da Allpoints.</p>
+
+                        <p><b>2.2.2</b> A base de dados formada por meio da coleta de dados na Allpoints é de propriedade e
+                            responsabilidade da Allpoints, sendo que seu uso, acesso e compartilhamento, quando
+                            necessários, serão feitos dentro dos limites e propósitos dos negócios da Allpoints e
+                            descritos nesta Política de Privacidade. </p>
+
+                        <p><b>2.2.3</b> O Titular é corresponsável pelo sigilo de seus dados pessoais. O
+                            compartilhamento de
+                            senhas e dados de acesso viola esta Política de Privacidade e os Termos de Uso da Allpoints.
+                        </p>
+
+                        <h4>3. Armazenamento e Segurança dos Dados Coletados </h4>
+
+                        <p><b>3.1</b> Os dados coletados e os registros de atividades estarão armazenados em ambiente seguro e
+                            controlado pelo prazo mínimo de 6 (seis) meses, nos termos do Marco Civil da Internet,
+                            observado o estado da técnica disponível.</p>
+
+                        <p><b>3.2</b> A Allpoints utiliza-se dos meios e ferramentas de mercado para preservar a privacidade
+                            dos dados pessoais que coleta. Desta forma, adota diversas precauções, em observância às
+                            diretrizes sobre padrões de segurança estabelecidas no Decreto nº 8.771/2016, tais como:
+                        </p>
+
+                        <p class="sub-item sub-item-center"><i class="fas fa-circle"></i>Utilização dos métodos padrão e
+                            de mercado para criptografar e anonimizar os dados
+                            coletados; </p>
+
+                        <p class="sub-item sub-item-center"><i class="fas fa-circle"></i>Proteção contra acessos
+                            indevidos e não autorizados ao sistema </p>
+
+                        <p class="sub-item sub-item-center"><i class="fas fa-circle"></i>Acesso por pessoas previamente
+                            autorizadas e com o compromisso de confidencialidade e
+                            preservação da privacidade nos termos desta Política de Privacidade </p>
+
+                        <p class="sub-item sub-item-center last-item"><i class="fas fa-circle"></i>Comprometimento de
+                            sigilo absoluto com pessoas que possuem acesso aos dados, sendo
+                            sua quebra de sigilo sujeita à responsabilização civil aos moldes das leis
+                            brasileiras </p>
+
+                        <h4>4. Dos Direitos do Titular </h4>
+
+                        <p><b>4.1</b> Em cumprimento à regulamentação aplicável, no que diz respeito ao tratamento de dados
+                            pessoais, a Allpoints respeita e garante ao Titular, a possibilidade de apresentação de
+                            solicitações baseadas nos seguintes direitos:</p>
+
+                        <p class="sub-item">I) a confirmação da existência de tratamento;</p>
+
+                        <p class="sub-item">II) o acesso aos dados; </p>
+
+                        <p class="sub-item">III) a correção de dados incompletos, inexatos ou desatualizados; </p>
+
+                        <p class="sub-item">IV) a anonimização, bloqueio ou eliminação de dados desnecessários,
+                            excessivos ou tratados em
+                            desconformidade; </p>
+
+                        <p class="sub-item">V) a portabilidade de seus dados a outro fornecedor de serviço ou produto,
+                            mediante
+                            requisição expressa pelo Titular; </p>
+
+                        <p class="sub-item">VI) a eliminação dos dados tratados com consentimento do Titular;</p>
+
+                        <p class="sub-item">VII) a obtenção de informações sobre as entidades públicas ou privadas com
+                            as quais a
+                            Allpoints compartilhou seus dados; </p>
+
+                        <p class="sub-item">VIII) a informação sobre a possibilidade de não fornecer o seu consentimento, bem como de ser informado sobre as consequências, em caso de negativa;</p>
+
+                        <p class="sub-item last-item">IX) a revogação do consentimento.</p>
+
+                        <p><b>4.2</b> Parte destes direitos poderá ser exercida diretamente pelo Titular, a partir da gestão de
+                            informações sobre sua conta, enquanto que outra parte dependerá do envio de requisição para
+                            nosso Encarregado de Proteção de Dados uma vez que a Lei Federal n. 13.709/2018 (Lei Feral
+                            de Proteção de Dados) estiver vigente, para posterior avaliação e adoção de demais
+                            providências pela Allpoints.</p>
+
+                        <p><b>4.3</b> O Titular fica ciente de que a exclusão das informações essenciais para gestão de sua
+                            conta junto à Allpoints implicará no término de seu cadastro, com consequente cancelamento
+                            dos serviços então prestados.</p>
+
+                        <p><b>4.4</b> Por fim, o Titular deve estar ciente que sua requisição poderá ser legalmente rejeitada,
+                            seja por motivos formais (a exemplo de sua incapacidade de comprovar sua identidade) ou
+                            legais (a exemplo do pedido de exclusão de dados cuja manutenção é livre exercício de
+                            direito pela Allpoints).</p>
+
+                        <h4>5. Cookies</h4>
+
+                        <p><b>5.1</b> A Allpoints utiliza Cookies em seus websites, sendo que o Titular concorda com essa
+                            utilização ao aceitar essa Política de Privacidade. Os cookies podem ser utilizados para
+                            diversos propósitos, incluindo lembrar-se de você e de suas preferências, persistir
+                            informações relacionadas a suas atividades no site visitado, ou coletar informações que
+                            podem ser usadas para oferecer conteúdo de uma forma personalizada.</p>
+
+                        <p><b>5.2</b> A maioria dos navegadores permite que você escolha se aceita os cookies. A maioria também
+                            permite eliminar os cookies já definidos. As opções disponíveis e o mecanismo usado variam
+                            de navegador para navegador. Essas configurações do navegador são normalmente encontradas no
+                            menu "opções", "ferramentas" ou "preferências". Você também poderá consultar o menu "ajuda"
+                            do navegador. </p>
+
+                        <h4>6. Disposições Gerais</h4>
+
+                        <p><b>6.1</b> Esta Política será regida, interpretada e executada de acordo com as Leis da República
+                            Federativa do Brasil, especialmente a Lei nº 13.709/2018 (Lei Geral de Proteção de Dados),
+                            independentemente das Leis de outros estados ou Países, sendo competente o foro de domicílio
+                            do Titular para dirimir qualquer dúvida decorrente deste documento.</p>
+
+                        <p><b>6.2</b> A Allpoints reserva-se o direito de alterar o teor desta Política de Privacidade a
+                            qualquer momento, conforme a finalidade ou necessidade para adequação e conformidade legal.
+                            Ocorrendo atualizações neste documento e que demandem nova coleta de consentimento, a
+                            Allpoints notificará o Participante pelos meios de contato por ele fornecidos.</p>
+
+                        <h4>Regulamento do Programa Allpoints válido a partir de 15 de Junho de 2021. </h4>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="home-footer">
+            <section class="footer-links">
+                <div class="footer-logo">
+                    <img src="/_assets/_imgs/logo-allpoints-white.png" alt="">
+                </div>
+                <div class="footer-content footer-about-us">
+                    <!-- <h3>Sobre nós</h3> -->
+                    <!-- <a href=""><span>A ALLPOINTS</span></a>
+                    <a href=""><span>TIME</span></a> -->
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">NEWSROOM</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">CARREIRA</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-how-it-works">
+                    <h3>Como funciona</h3>
+                    <!-- <a href=""><span>GANHE ALLPOINTS</span></a> -->
+                    <a href="/empresas"><span>PARA EMPRESAS</span></a>
+                    <a href="/carreira"><span>CARREIRA</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span>PARA HOTEIS </span></a> -->
+                    <!-- <a href=""><span>FAQ</span></a> -->
+                </div>
+                <div class="footer-content footer-know-more">
+                    <h3>Sobre</h3>
+                    <a href="/sobre"><span>A ALLPOINTS</span></a>
+                    <a href="/time"><span>TIME</span></a>
+                    <a href="/perguntas"><span>FAQ</span></a>
+                    <a href="/termos"><span>REGULAMENTO</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">BLOG</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">ALLPOINTS ACADEMY</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-contact">
+                    <h3>Contato</h3>
+                    <a href=""><span><b>E-mail:</b> contato@allpointshotels.com</span></a>
+                    <a href=""><span><b>Whatsapp:</b> +55 (11) 99022-3760</span></a>
+                    <a href=""><span><b>www.allpoints.club</b></span></a>
+                </div>
+            </section>
+            <div class="footer-line-division"></div>
+            <section class="footer-copyrigth">
+                <span>© 2015-2021 Allpoints<br>
+                    Todos os direitos reservados.</span>
+            </section>
+        </footer>
+    </div>
+    <script type="module" src="/termos/termos-viewmodel.js"></script>
+
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+    </script>
+
+    <script type="text/javascript">
+        zE('webWidget', 'setLocale', 'pt_br');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZZQSLK2SP6');
+    </script>
+
+</body>
+
+</html>

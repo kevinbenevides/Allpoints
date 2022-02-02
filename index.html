@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Allpoints Club</title>
+
+    <!-- <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@latest/dist/css/splide.min.css">
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+    <script type="module" src="/_models/auth/auth.js"></script>
+    <script type="module" src="/_models/balance/balance-service.js"></script>
+    <script type="module" src="/_models/promo/promo-service.js"></script>
+
+    <script type="module" src="/script.js"></script>
+    <!-- Modal -->
+    <script src="/_components/modais/modal-success.js"></script>
+    <script src="/_components/modais/modal-error.js"></script>
+    <script src="/_components/cookies/cookies.js"></script>
+    <script type="module" src="/_components/modais/welcome-modal.js"></script>
+
+    <script src="/_components/cookies/cookies.js"></script>
+
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <script src="/_components/dropdowns/home-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+    <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+    <link rel="stylesheet" href="_assets/_css/app.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <!-- <script type="module" src="/webkit-input-range-fill-lower-master/webkit-input-range-fill-lower.js"></script> -->
+    <link href="/_assets/_css/hamburgers.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="home">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+        <header>
+            <header-card v-bind:subscriber='!subscription'></header-card>
+            <section v-show="!logged" class="home-mobile-signup">
+                <a href="/create-profile/">CRIE SUA CONTA GRÁTIS</a>
+            </section>
+            <section class="home-mobile-menu">
+                <home-menu v-if="!logged"></home-menu>
+                <home-user-menu v-if="logged" page="home" v-bind:subscription='subscription'></home-user-menu>
+            </section>
+            <home-user-menu-desktop v-bind:subscription='subscription'></home-user-menu-desktop>
+        </header>
+        <main>
+            <div class="home-first-content">
+                <!-- Slide-Images -->
+                <div class="splide splide-banner-height">
+                    <div class="splide__track">
+                        <ul class="splide__list">
+                            <li class="splide__slide slide1">
+                                <div class="slide-content">
+                                    <h2 class="slide-title">10% DE VOLTA EM <b>TODOS OS HOTÉIS DO MUNDO</b></h2>
+                                    <p class="slide-subtitle">Escolha entre mais de 550 mil hotéis no mundo todo e
+                                        ainda <br /> <b>receba no mínimo
+                                            10% de
+                                            volta em Allpoints sempre</b></p>
+                                </div>
+                            </li>
+                            <li class="splide__slide slide2">
+                                <div class="slide-content">
+                                    <h2 class="slide-title"><b>5% DE VOLTA</b> EM VÔOS, <b>5%</b> EM CARROS <br /> E
+                                        <b>10%</b> EM ÔNIBUS
+                                    </h2>
+                                    <p class="slide-subtitle">Ganhe Allpoints de volta na <b>Viajanet, Rentcars</b>
+                                        ou
+                                        <b>ClickBus</b>
+                                    </p>
+                                </div>
+                            </li>
+                            <li class="splide__slide slide3">
+                                <div class="slide-content">
+                                    <h2 class="slide-title"><b>ASSINE ALLPOINTS:</b></h2>
+                                    <p class="slide-subtitle">A partir de R$ 10,00 e <b>ganhe 10% na hora</b> e seus
+                                        Allpoints <b>não
+                                            expiram nunca
+                                            mais</b></p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Search-Card -->
+                <section class="search-card">
+                    <ul class="search-card-tabs">
+                        <div class="search-card-tabs-content search-card-tabs-hotel"
+                            :class="{searchCardTabActive: tabSelected == 'hotel'}">
+                            <div class="search-card-cashback"><span>10% de Volta</span></div>
+                            <div class="search-card-cashback-mobile"><span>10%</span></div>
+                            <li @click="changeTabs('hotel')">
+                                <span class="search-card-tabs-content-options">Reservar <b
+                                        class="text-pink">Hotéis</b></span>
+                                <span class="search-card-tabs-content-options-mobile"><b
+                                        class="text-pink">Hotéis</b></span>
+                            </li>
+                        </div>
+                        <div class="search-card-tabs-content search-card-tabs-fly"
+                            :class="{searchCardTabActive: tabSelected == 'fly'}">
+                            <img src="/_assets/_icons/viajanet.svg" alt="">
+                            <div class="search-card-cashback"><span>5% de Volta</span></div>
+                            <div class="search-card-cashback-mobile"><span>5%</span></div>
+                            <li @click="changeTabs('fly')">
+                                <span class="search-card-tabs-content-options">Buscar <b
+                                        class="text-pink">Voos</b></span>
+                                <span class="search-card-tabs-content-options-mobile"><b
+                                        class="text-pink">Voos</b></span>
+                            </li>
+                        </div>
+                        <div class="search-card-tabs-content search-card-tabs-car"
+                            :class="{searchCardTabActive: tabSelected == 'car'}">
+                            <img src="/_assets/_icons/rentcars.svg" alt="">
+                            <div class="search-card-cashback"><span>5% de Volta</span></div>
+                            <div class="search-card-cashback-mobile"><span>5%</span></div>
+                            <li @click="changeTabs('car')">
+                                <span class="search-card-tabs-content-options">Alugar <b
+                                        class="text-pink">Carros</b></span>
+                                <span class="search-card-tabs-content-options-mobile"><b
+                                        class="text-pink">Carros</b></span>
+                            </li>
+                        </div>
+                        <div class="search-card-tabs-content search-card-tabs-buss"
+                            :class="{searchCardTabActive: tabSelected == 'buss'}">
+                            <img src="/_assets/_icons/clickbus.svg" alt="">
+                            <div class="search-card-cashback"><span>10% de Volta</span></div>
+                            <div class="search-card-cashback-mobile"><span>10%</span></div>
+                            <li @click="changeTabs('buss')">
+                                <span class="search-card-tabs-content-options">Buscar <b
+                                        class="text-pink">Ônibus</b></span>
+                                <span class="search-card-tabs-content-options-mobile"><b
+                                        class="text-pink">Ônibus</b></span>
+                            </li>
+                        </div>
+                        <div class="search-card-tabs-content search-card-tabs-security"
+                            :class="{searchCardTabActive: tabSelected == 'security'}">
+                            <img src="/_assets/_icons/chubb.svg" alt="">
+                            <div class="search-card-cashback"><span>10% de Volta</span></div>
+                            <div class="search-card-cashback-mobile"><span>10%</span></div>
+                            <li @click="changeTabs('security')">
+                                <span class="search-card-tabs-content-options"> Buscar <b class="text-pink">Seguros</b>
+                                </span>
+                                <span class="search-card-tabs-content-options-mobile"><b
+                                        class="text-pink">Seguros</b></span>
+                            </li>
+                        </div>
+                    </ul>
+                    <!-- Conteudo do Niara -->
+                    <div class="search-card-box">
+                        <div id="search-form" class="search-form" v-show="tabSelected == 'hotel'"></div>
+                        <div id="widget-clickbus-wrapper" v-show="tabSelected == 'buss'"></div>
+                        <div class="search-form" style="display: flex; justify-content: center; align-items: center;"
+                            v-show="tabSelected == 'security'">
+                            <div>
+                                <p
+                                    style="color: white; font-size: 24px; font-family: 'Poppins-Bold'; text-align: center;">
+                                    EM BREVE</p>
+                                <p
+                                    style="color: white; font-size: 16px; font-family: 'Poppins-Bold'; text-align: center;">
+                                    Deseja fazer uma reserva? Então fale conosco através do botão de 'Ajuda', e
+                                    realizaremos a reserva para você.</p>
+                            </div>
+                        </div>
+                        <div class="search-form-container search-form" v-show="tabSelected == 'fly' || tabSelected == 'car'">
+                            <div class="search-form-item" v-show="tabSelected == 'fly'">
+                                <div class="search-form-img">
+                                    <img src="/_assets/_icons/plane.svg">
+                                </div>
+                                <div>
+                                    <h3>Encontre Voos</h3>
+                                    <span>Procure pelos melhores <b>voos com a Viajanet</b></span>
+                                </div>
+                            </div>
+
+                            <div class="search-form-item" v-show="tabSelected == 'car'">
+                                <div class="search-form-img">
+                                    <img src="/_assets/_icons/car.svg">
+                                </div>
+                                <div>
+                                    <h3>Alugue Carros</h3>
+                                    <span>Procure pelos melhores <b>alugueis de carro com a Rentcars</b></span>
+                                </div>
+                            </div>
+
+                            <div class="search-form-item">
+                                <div class="search-form-img"> 
+                                    <img src="/_assets/_icons/heart-purple.svg">
+                                </div>
+                                <div>
+                                    <h3>Acumule Allpoints</h3>
+                                    <span>Com a compra, você receberá <b>5% de Allpoints de volta</b></span>
+                                </div>
+                            </div>
+                            <div class="search-form-item">
+                                <div class="search-form-img">
+                                    <img src="/_assets/_icons/equals.svg">
+                                </div>
+                                <div>
+                                    <h3>1 Allpoints = R$ 1</h3>
+                                    <span>É simples: <b>1 Allpoints vale R$1</b> na hora de gastar</span>
+                                </div>                               
+                            </div>
+                            <button class="sign-your-plan-btn-pink btn-home" style="margin: 0px" @click="searchFormRedirect('fly')" v-show="tabSelected == 'fly'">Acessar Viajanet</button>
+                            <button class="sign-your-plan-btn-pink btn-home" style="margin: 0px" @click="searchFormRedirect('car')" v-show="tabSelected == 'car'">Acessar Rentcars</button>
+                        </div>
+                        <!-- <iframe src="/_components/niara/niara-search-widget.html" class="iframe-niara"
+                            frameborder="0"></iframe> -->
+                    </div>
+                </section>
+            </div>
+            <div class="home-second-content">
+                <!-- Covid-19-Alert -->
+                <section class="covid-alert">
+                    <div class="covid-alert-container">
+                        <p>COVID-19: Todos os serviços e parceiros estão seguindo os protocolos de prevenção durante a
+                            pandemia.
+                        </p>
+                    </div>
+                </section>
+                <!-- How-It-Works-Allpoints -->
+                <section class="how-it-works">
+                    <div class="how-it-works-container">
+                        <div class="how-it-works-text-top">
+                            <h3>Como a Allpoints funciona</h3>
+                            <span>Allpoints é igual ao seu dinheiro, <b>só que melhor</b>, pois sempre <br> vale mais
+                                para viajar</span>
+                        </div>
+                        <img src="/_assets/_imgs/howitworks.svg" alt="">
+                    </div>
+                    <div class="how-it-works-container-mobile">
+                        <img src="/_assets/_imgs/allpoints-howto.svg" alt="">
+                    </div>
+                </section>
+            </div>
+            <div class="home-third-content">
+                <!-- Promotions-Travels -->
+                <h3 class="section-title travels-title" v-if="showPromo"><b>Viagens promocionais:</b> Mais Allpoints de volta para você!
+                </h3>
+                <div v-if="showPromo" class="promotion-travels">
+                    <div class="splide splide-caroussel">
+                        <div class="splide__track">
+                            <ul class="splide__list promo-container">
+                                <li class="splide__slide promo-card" v-for="item in promos">
+                                    <img class="promo-card-image"
+                                        :src="item.externalLink"
+                                        alt="">
+                                    <section class="promo-noite">
+                                        <p>{{item.noites}} NOITES</p>
+                                    </section>
+                                    <section class="promo-content">
+                                        <p><b>{{item.tipo}}</b></p>
+                                        <h3>{{item.name}}</h3>
+                                        <span class="promo-line"></span>
+                                        <p>Reserve agora por R$ {{item.value}}</p>
+                                        <h3>{{item.promotionalPercentage}}% de volta</h3>
+                                        <p>Ganhe {{item.accumulatedAllpoints}} Allpoints</p>
+                                        <a target="_blank" :href="item.details"><b>VER OFERTAS</b></a>
+                                    </section>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Sign-Your-Plan-->
+                <section class="sign-your-plan" v-if="this.subscription == false">
+                    <div class="sign-your-plan-header">
+                        <h3 class="section-title">
+                            Assine seu Plano e tenha sua<br>
+                            <span class="text-pink">
+                                Poupança de Viagens
+                            </span>
+                        </h3>
+                        <p> A partir de R$ 10,00 você define e altera seu plano quando quiser e sem nenhuma penalidade.
+                        </p>
+                    </div>
+                    <div class="sign-your-plan-content">
+                        <h4>Escolha seu plano</h4>
+                        <span>Pague <b>R$<span id="planValue" class=""></span>,00</b> /mês</span>
+                        <span>e receba</span>
+                        <span><b class="sign-your-plan-content-value"><span id="allpointValue"></span> Allpoints
+                            </b> /mês</span>
+                        <div class="slidecontainer">
+                            <input @change="handleSlider" type="range" min="10" max="1000" step="10" value="10"
+                                class="slider" id="bar">
+                        </div>
+                        <div class="sign-your-plan-benefits">
+                            <h5>Vantagens para assinantes:</h5>
+                            <ul>
+                                <li>Ganhe 10% + Allpoints na hora</li>
+                                <li>Allpoints não expiram</li>
+                                <li>1 Allpoints = R$1 para viajar</li>
+                                <a style="color: var(--pink);" href="/perguntas">
+                                    <li class="li-benefits-exeption">E muito mais...</li>
+                                </a>
+                            </ul>
+                        </div>
+                        <button class="sign-your-plan-btn-pink btn-home" @click="redirectSubscription">ASSINAR
+                            AGORA</button>
+                    </div>
+                </section>
+            </div>
+            <div class="home-fourth-content">
+                <!-- Go-Visa -->
+                <!-- <section class="go-visa">
+                    <img src="/_assets/_imgs/visa.png" alt="">
+                    <h3>#VaideVisa: Pague suas reservas de Hotel com seu cartão VISA e <br> escolha: + Allpoints ou 10% de Cashback no seu banco</h3>
+                    <span>Cadastre seu cartão no programa #VaideVisa e aproveite!</span>
+                    <button class="go-visa-btn-yellow btn-home" @click='redirectVaiDeVisa'>Quero Participar</button>
+                </section> -->
+                <!-- Questions -->
+                <section class="common-questions">
+                    <h3 class="section-title">
+                        Perguntas Frequentes
+                    </h3>
+                    <div @click="openDrawer(0)" class="common-questions-item">
+                        <span>O que é Allpoints?</span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Allpoints é uma plataforma de viagens que engloba vários serviços para te ajudar a viajar
+                            mais, melhor, e gastar menos.
+                            <br><br> Você acumula Allpoints e pode trocar por reserva em mais de 600 mil hotéis no mundo
+                            inteiro. E, se não tiver Allpoints suficientes, poderá complementar o valor com R$ e ganhar
+                            10% de volta em Allpoints no valor que
+                            você pagou.
+                            <br><br> Os Allpoints que você acumula equivalem a R$ 1,00, de modo que você tem uma visão
+                            transparente de quanto custa a reserva que realizará com a gente, mesmo pagando em
+                            Allpoints.
+                            <br><br> E ainda poderá acumular mais Allpoints adquirindo passagens aéreas pelo nosso site,
+                            passagens rodoviárias, aluguel de carros e até seguro de viagens.
+                        </p>
+                    </div>
+                    <hr>
+                    <div @click="openDrawer(1)" class="common-questions-item">
+                        <span>O que é Allpoints Club? </span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Allpoints Club é o clube de assinatura da Allpoints com vários benefícios especiais.
+                            Assinando um dos nossos planos, você receberá Allpoints todo mês e poderá trocar por
+                            reservas em mais de 600 mil hotéis no mundo.
+                            <br><br> Sendo assinante de planos a partir de R$ 10,00, os seus Allpoints não expiram nunca
+                            e você ganha 10% de bônus na hora. Somos a sua poupança de viagens!
+                        </p>
+                    </div>
+                    <hr>
+                    <div @click="openDrawer(2)" class="common-questions-item">
+                        <span>Por que eu devo assinar o Allpoints Club? </span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Assinando qualquer plano a partir de R$ 10,00 do Allpoints Club você tem benefícios
+                            exclusivos e a oportunidade de programar a sua viagem com calma e gastando pouco.
+                            <br><br> • Seus Allpoints não expiram nunca
+                            <br> • Você ganha 10% de volta na hora
+                            <br> • 1 Allpoints = R$ 1,00 para viajar
+                            <br><br> Allpoints Club é a sua poupança de viagens, onde você viaja mais e melhor!
+                        </p>
+                    </div>
+                    <hr>
+                    <div @click="openDrawer(3)" class="common-questions-item common-questions-last-item">
+                        <span>Como eu acumulo Allpoints?</span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Você pode acumular Allpoints das seguintes maneiras:
+                            <br><br> 1. Realizando reservas de hotéis por meio do www.allpoints.club: ao realizar
+                            reservas por meio da nossa plataforma, além de ter os melhores valores do mercado, 10% do
+                            valor gasto é convertido em pontos para você.
+                            <br><br> 2. Assinando um plano do Allpoints Club: na Allpoints, você pode acumular Allpoints
+                            todo mês, fazer a sua Poupança de Viagens e ainda por cima ter vantagens exclusivas para
+                            assinantes:
+                            <br><br> • 10% do valor pago volta para você em Allpoints
+                            <br> • Os seus Allpoints não expiram nunca!
+                        </p>
+                    </div>
+
+                    <button class="btn-home common-questions-button" @click='redirectPerguntas'>Veja Mais</button>
+                </section>
+
+                <!-- Indicate-Allpoints -->
+                <section class="indicate-allpoints">
+                    <h3 class="section-title">
+                        <span class="text-pink">Indique Allpoints para o seu RH.</span> Sua empresa terá <br> custo zero
+                        e muitos benefícios para ela e para você!
+                    </h3>
+                    <button class="indicate-allpoints-btn btn-home" @click="redirectEmpresas">Quero os benefícios para
+                        empresa</button>
+                    <div class="indicate-allpoints-content">
+                        <img src="/_assets/_icons/ifood.svg" alt="">
+                        <img src="/_assets/_icons/boticario.svg" alt="">
+                        <img src="/_assets/_icons/stefanini.svg" alt="">
+                        <img class="indicate-allpoints-your-company" src="/_assets/_icons/suaempresa.svg" alt="">
+                    </div>
+                </section>
+            </div>
+            <button style="display: none;" class="home-btn-saq btn-home"><img src="" alt="">como podemos te
+                ajudar</button>
+            <!-- <button class="home-btn-saq btn-home"><img src="" alt="">COMO PODEMOS TE AJUDAR</button> -->
+        </main>
+        <footer class="home-footer">
+            <section class="footer-links">
+                <div class="footer-logo">
+                    <img src="/_assets/_imgs/logo-allpoints-white.png" alt="">
+                </div>
+                <div class="footer-content footer-about-us">
+                    <!-- <h3>Sobre nós</h3> -->
+                    <!-- <a href=""><span>A ALLPOINTS</span></a>
+                    <a href=""><span>TIME</span></a> -->
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">NEWSROOM</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">CARREIRA</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-how-it-works">
+                    <h3>Como funciona</h3>
+                    <!-- <a href=""><span>GANHE ALLPOINTS</span></a> -->
+                    <a href="/empresas"><span>PARA EMPRESAS</span></a>
+                    <a href="/carreira"><span>CARREIRA</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span>PARA HOTEIS </span></a> -->
+                    <!-- <a href=""><span>FAQ</span></a> -->
+                </div>
+                <div class="footer-content footer-know-more">
+                    <h3>Sobre</h3>
+                    <a href="/sobre"><span>A ALLPOINTS</span></a>
+                    <a href="/time"><span>TIME</span></a>
+                    <a href="/perguntas"><span>FAQ</span></a>
+                    <a href="/termos"><span>REGULAMENTO</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">BLOG</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">ALLPOINTS ACADEMY</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-contact">
+                    <h3>Contato</h3>
+                    <a href=""><span><b>E-mail:</b> contato@allpointshotels.com</span></a>
+                    <a href=""><span><b>Whatsapp:</b> +55 (11) 99022-3760</span></a>
+                    <a href=""><span><b>www.allpoints.club</b></span></a>
+                </div>
+            </section>
+            <div class="footer-line-division"></div>
+            <section class="footer-copyrigth">
+                <span>© 2015-2021 Allpoints<br>
+                    Todos os direitos reservados.</span>
+            </section>
+        </footer>
+        <welcome-modal v-if="this.showWelcome" @close="closeModalWelcome"></welcome-modal>
+        <cookies></cookies>
+        <!-- <modal-sucesso title="Bem Vindo a Allpoints.club"
+            subtitle="Você completou com sucesso seu cadastro na Allpoints.club, que tal agora vermos o seu Extrato atual!"
+            buttontext="Ver Extrato" v-bind:showsuccess='this.showsuccess' @close="closeModal" @button="">
+        </modal-sucesso> -->
+    </div>
+    <script src="https://allpoints.niara.tech/static/js/embeddedSearchForm.js" crossorigin="anonymous" async></script>
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+    </script>
+
+    <script type="text/javascript">
+        zE('webWidget', 'setLocale', 'pt_br');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+    
+    <script src="https://static.clickbus.com/live/ClickBus/frontend-widget/allpoints/script-min.js"></script>
+    
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZZQSLK2SP6');
+    </script>
+
+</body>
+
+</html>

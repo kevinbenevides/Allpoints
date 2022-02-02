@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Onboarding - Allpoints Club</title>
+
+    <!-- Header -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+
+    <!-- Images Mosaic -->
+    <script src="/_components/images-mosaic/images-mosaic.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <script src="/_components/cookies/cookies.js"></script>
+
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <script src="/_components/dropdowns/home-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+    <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+</head>
+
+<body style="background-color: var(--lightGray);">
+    <div id="onboarding" class="form-user">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+
+        <header>
+            <header-card v-bind:logged='true' v-bind:subscriber='noSubscription'></header-card>
+            <section class="home-mobile-menu">
+                <home-user-menu page="" v-bind:subscription='!noSubscription'></home-user-menu>
+            </section>
+            <home-user-menu-desktop v-bind:subscription='!noSubscription'></home-user-menu-desktop>
+        </header>
+
+        <main>
+            <section class="onboarding-content">
+                <h1>ASSINATURA MENSAL <span class="text-pink">ALLPOINTS</span></h1>
+                <p>Assine a partir de R$10 e ainda <span class="text-pink">ganhe mais 10% de Allpoints</span> de volta e
+                    seus Allpoints não vencem!</p>
+                <section style="display: flex; flex-direction: column;">
+                    <div class="onboarding-listing">
+                        <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M0 12.6875V14C0 15.125 2.6875 16 6 16C9.3125 16 12 15.125 12 14V12.6875C10.6875 13.5938 8.34375 14 6 14C3.625 14 1.28125 13.5938 0 12.6875ZM10 4C13.3125 4 16 3.125 16 2C16 0.90625 13.3125 0 10 0C6.6875 0 4 0.90625 4 2C4 3.125 6.6875 4 10 4ZM0 9.40625V11C0 12.125 2.6875 13 6 13C9.3125 13 12 12.125 12 11V9.40625C10.6875 10.4688 8.34375 11 6 11C3.625 11 1.28125 10.4688 0 9.40625ZM13 9.75C14.7812 9.40625 16 8.75 16 8V6.6875C15.25 7.1875 14.1875 7.53125 13 7.75V9.75ZM6 5C2.6875 5 0 6.125 0 7.5C0 8.90625 2.6875 10 6 10C9.3125 10 12 8.90625 12 7.5C12 6.125 9.3125 5 6 5ZM12.8438 6.78125C14.7188 6.4375 16 5.78125 16 5V3.6875C14.875 4.46875 12.9688 4.875 10.9688 5C11.875 5.4375 12.5625 6.03125 12.8438 6.78125Z"
+                                fill="#EC0080" />
+                        </svg>
+                        <span><b>Ganhe 10%</b> + Allpoints na hora</span>
+                    </div>
+                    <div class="onboarding-listing">
+                        <svg width="20" height="20" viewBox="0 0 14 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M13.625 5C13.8125 5 14 4.84375 14 4.625V3.5C14 2.6875 13.3125 2 12.5 2H11V0.375C11 0.1875 10.8125 0 10.625 0H9.375C9.15625 0 9 0.1875 9 0.375V2H5V0.375C5 0.1875 4.8125 0 4.625 0H3.375C3.15625 0 3 0.1875 3 0.375V2H1.5C0.65625 2 0 2.6875 0 3.5V4.625C0 4.84375 0.15625 5 0.375 5H13.625ZM0.375 6C0.15625 6 0 6.1875 0 6.375V14.5C0 15.3438 0.65625 16 1.5 16H12.5C13.3125 16 14 15.3438 14 14.5V6.375C14 6.1875 13.8125 6 13.625 6H0.375ZM10.7812 9C10.9062 9.15625 10.9062 9.40625 10.7812 9.53125L6.3125 13.9688C6.15625 14.125 5.90625 14.125 5.78125 13.9688L3.1875 11.375C3.0625 11.2188 3.0625 11 3.1875 10.8438L4.09375 9.96875C4.21875 9.8125 4.46875 9.8125 4.625 9.96875L6.0625 11.4062L9.375 8.125C9.5 7.96875 9.75 7.96875 9.90625 8.125L10.7812 9Z"
+                                fill="#EC0080" />
+                        </svg>
+                        <span>Allpoints <b>não expiram</b></span>
+                    </div>
+                    <div class="onboarding-listing">
+                        <svg width="20" height="20" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M14.4062 3H2.5C2.21875 3 2 2.78125 2 2.5C2 2.25 2.21875 2 2.5 2H14.5C14.75 2 15 1.78125 15 1.5C15 0.6875 14.3125 0 13.5 0H2C0.875 0 0 0.90625 0 2V12C0 13.125 0.875 14 2 14H14.4062C15.2812 14 16 13.3438 16 12.5V4.5C16 3.6875 15.2812 3 14.4062 3ZM13 9.5C12.4375 9.5 12 9.0625 12 8.5C12 7.96875 12.4375 7.5 13 7.5C13.5312 7.5 14 7.96875 14 8.5C14 9.0625 13.5312 9.5 13 9.5Z"
+                                fill="#EC0080" />
+                        </svg>
+                        <span>1 Allpoints = R$1</span>
+                    </div>
+                    <div class="onboarding-listing">
+                        <svg width="20" height="20" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M8.09375 0.5625L6.0625 4.71875L1.46875 5.375C0.65625 5.5 0.34375 6.5 0.9375 7.09375L4.21875 10.3125L3.4375 14.8438C3.3125 15.6562 4.1875 16.2812 4.90625 15.9062L9 13.75L13.0625 15.9062C13.7812 16.2812 14.6562 15.6562 14.5312 14.8438L13.75 10.3125L17.0312 7.09375C17.625 6.5 17.3125 5.5 16.5 5.375L11.9375 4.71875L9.875 0.5625C9.53125 -0.15625 8.46875 -0.1875 8.09375 0.5625Z"
+                                fill="#EC0080" />
+                        </svg>
+                        <span>E muito mais...</span>
+                    </div>
+                    <a href="/checkout" style="justify-content: center; margin-top: 32px; text-align: center; width: 100%;"
+                        class="sign-your-plan-btn-pink btn-home">QUERO ASSINAR ALLPOINTS</a>
+                    <a style="text-align: center; margin-top: 20px;" href="/"><b>CONTINUAR PARA PÁGINA INICIAL</b></a>
+                </section>
+
+            </section>
+            <!-- <section class="onboarding-content" v-show="!nextStep">
+                <img src="/_assets/_imgs/onboarding-1.png">
+                <h3>Nossas boas-vindas à<br>
+                    <span class="text-pink">Allpoints.Club</span>
+                </h3>
+                <p>Estamos felizes em ter você com a gente. A Allpoints.Club é a plataforma para você gerenciar seus
+                    Allpoints.</p>
+                <button @click="nextStep = true"
+                    class="btn-home header-card-content-btn onboarding-btn-next">Avançar</button>
+            </section>
+            <section class="onboarding-content" v-show="nextStep">
+                <h3>Como a Allpoints funciona</h3>
+                <p>Allpoints é igual ao seu dinheiro, só que melhor, pois sempre vale mais para viajar.</p>
+                <div>
+                    <div class="onboarding-content-two">
+                        <img src="/_assets/_imgs/bag icon.png" alt="">
+                        <div class="onboarding-content-two-text">
+                            <span class="text-pink"><b>JUNTE ALLPOINTS</b></span>
+                            <p>Escolha sua viagem e ganhe Allpoints de volta.</p>
+                        </div>
+                    </div>
+                    <div class="onboarding-content-two">
+                        <img src="/_assets/_imgs/heart purple icon.png" alt="">
+                        <div class="onboarding-content-two-text">
+                            <span class="text-pink"><b>1 ALLPOINTS = 1 REAL</b></span>
+                            <p>É muito fácil de entender: 1 Allpoints vale R$1 na hora de gastar.</p>
+                        </div>
+                    </div>
+                </div>
+                <button @click="metodo()" class="btn-home header-card-content-btn onboarding-btn-next">acessar
+                    allpoints.club</button>
+            </section> -->
+            <image-mosaic></image-mosaic>
+        </main>
+
+        <cookies></cookies>
+
+    </div>
+    <script type="module" src="/onboarding/onboarding-viewmodel.js"></script>
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+    </script>
+
+    <script type="text/javascript">
+        zE('webWidget', 'setLocale', 'pt_br');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZZQSLK2SP6');
+    </script>
+
+</body>
+
+</html>

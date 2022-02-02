@@ -1,0 +1,213 @@
+.carreira-banner{
+    position: relative;
+    height: 384px;
+    background-image: url("/_assets/_imgs/banner-carreira.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.carreira-banner-info {
+    position: absolute;
+    top: 80px;
+    left: 80px;
+    color: white;
+}
+
+.carreira-banner-info h2 {
+    font-family: 'Poppins';
+    font-size: 48px;
+    line-height: 72px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    width: 80%;
+}
+
+.carreira-banner-info p {
+    width: 50%;
+    font-size: 18px;
+    line-height: 27px;
+    margin-bottom: 32px;
+}
+
+.carreira-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.carreira-content h3{
+    font-size: 24px;
+    line-height: 24px;
+    font-family: 'Poppins-Bold';
+    margin-bottom: 16px;
+    color: #1C1C1C;
+}
+
+.carreira-content > p{
+    width: 50%;
+    margin-bottom: 40px;
+    color: #1C1C1C;
+}
+
+.carreira-first-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 80px 0;
+}
+
+.carreira-first-content-text{
+    text-align: start;
+    margin-left: 16px;
+    width: 40%;
+}
+.carreira-first-content-text p{
+    font-size: 14px;
+    line-height: 20px;
+    color: #1C1C1C;
+}
+
+.carreira-first-content-text a{
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--pink);
+    text-decoration: underline;
+}
+
+.carreira-card{
+    max-width: 992px;
+    width: 80%;
+    min-height: 128px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    padding: 24px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.carreira-card h4{
+    font-size: 24px;
+    line-height: 24px;
+    font-family: 'Poppins-Bold';
+    color: #1C1C1C;
+    margin-bottom: 20px;
+}
+
+.carreira-card a{
+    font-size: 14px;
+    line-height: 21px;
+    text-decoration-line: underline;
+    text-transform: uppercase;
+    color: var(--pink);
+    font-family: 'Poppins-Bold';
+}
+
+.carreira-tag{
+    width: 50%;
+    min-width: 124px;
+    height: 24px;
+    padding: 4px 16px;
+    font-size: 16px;
+    line-height: 16px;
+    font-family: 'Poppins-Bold';
+    color: white;
+    text-transform: uppercase;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carreira-tag-pink{
+    background-color: var(--pink);
+}
+
+.carreira-tag-purple{
+    background-color: var(--purple);
+}
+
+.carreira-place{
+    font-size: 18px;
+    line-height: 24px;
+    color: #1C1C1C;
+}
+
+.carreira-tempo{
+    font-size: 14px;
+    line-height: 16px;
+    color: #8f8f8f;
+    margin-bottom: 16px;
+}
+
+.carreira-card-right{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-align: end;
+}
+
+@media(max-width: 1000px){
+    .carreira-banner-info h2 {
+        font-size: 38px;
+        line-height: 50px;
+    }
+    .carreira-banner-info {
+        left: 30px;
+    }
+    .carreira-banner-info p {
+        font-size: 16px;
+        width: 70%;
+    }
+}
+
+@media(max-width: 750px){
+    .carreira-banner-info h2 {
+        font-size: 24px;
+        line-height: 30px;
+    }
+    .carreira-banner-info {
+        top: 100px;
+        left: 30px;
+    }
+    .carreira-banner-info p {
+        font-size: 14px;
+        width: 70%;
+    }
+    .carreira-first-content{
+        flex-direction: column-reverse;
+    }
+    .carreira-first-content-text{
+        width: 75%;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+    .carreira-content > p{
+        width: 75%;
+    }
+    .carreira-card{
+        width: 70%;
+        flex-direction: column;
+    }
+    .carreira-card-right{
+        justify-content: center;
+        text-align: center;
+    }
+    .carreira-tag{
+        margin: auto;
+        margin-bottom: 16px;
+    }
+}
+
+@media(max-width:450px){
+    .carreira-card{
+        width: 90%;
+        padding: 24px 24px;
+    }
+    .carreira-first-content-text{
+        width: 90%;
+    }
+}

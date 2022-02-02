@@ -1,0 +1,8 @@
+#select_countries{
+    width: 40%;
+    height: 48px;
+    border-top-left-radius: 24px;
+    border-bottom-left-radius: 24px;
+    padding-left: 10px;
+    border: 1px solid #bbbbbb;
+}

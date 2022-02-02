@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Allpoints Club</title>
+
+    <!-- <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+    <script type="module" src="/_models/auth/auth.js"></script>
+    <script type="module" src="/_models/balance/balance-service.js"></script>
+    <script type="module" src="/_models/promo/promo-service.js"></script>
+
+    <!-- <script type="module" src="/script.js"></script> -->
+
+    <!-- Modal -->
+    <script src="/_components/modais/modal-success.js"></script>
+    <script src="/_components/modais/modal-error.js"></script>
+
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <script src="/_components/dropdowns/home-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+    <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- <script src="./webkit-input-range-fill-lower-master/dist/webkit-input-range-fill-lower.js"></script> -->
+    <link href="/_assets/_css/hamburgers.css" rel="stylesheet">
+
+    <script src="/_components/cookies/cookies.js"></script>
+
+</head>
+
+<body>
+    <div id="vaidevisa">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+        <header>
+            <header-card></header-card>
+            <section v-show="!logged" class="home-mobile-signup">
+                <a href="/create-profile/">CRIE SUA CONTA GRÁTIS</a>
+            </section>
+            <section class="home-mobile-menu">
+                <home-menu v-if="!logged"></home-menu>
+                <home-user-menu v-if="logged" page="home"></home-user-menu>
+            </section>
+            <home-user-menu-desktop></home-user-menu-desktop>
+        </header>
+        <main>
+            <div class="vaidevisa-first-content">
+                <section class="card-vaidevisa">
+                    <!-- <img src="/_assets/_imgs/background-vaidevisa.svg" alt=""> -->
+                    <div class="info-card-vaidevisa">
+                        <h2>VAI DE VISA E ALLPOINTS</h2>
+                        <p>Participe do programa de vantagens VAI DE VISA e <b>ganhe 10% de cashback</b> utilizando seu
+                            cartão Visa em <b>reservas de hotéis do mundo todo</b> no site da Allpoints</p>
+                        <a href="#form-visa-block">Quero participar</a>
+                    </div>
+                </section>
+            </div>
+            <div class="vaidevisa-second-content">
+                <!-- Covid-19-Alert -->
+                <section class="offer-alert">
+                    <div class="offer-alert-container">
+                        <h5>Oferta válida para qualquer reserva de hotel do mundo feita a partir do dia 01/07/2021 no
+                            site Allpoints.club e paga com um cartão VISA cadastrado no programa VAI DE VISA. </h5>
+                    </div>
+                </section>
+                <section class="info-vaidevisa">
+                    <h2>O que é o <b>Vai de Visa</b></h2>
+                    <p>Vai de Visa é um <b>programa de benefícios com várias vantagens</b>. Aqui, você encontra
+                        descontos que te ajudam a estudar, cuidar da saúde, buscar um emprego e muito mais.</p>
+                </section>
+                <section id="form-visa-block" class="it-works-vaidevisa">
+                    <h2>Como funciona</h2>
+
+                    <div class="cards-container-vaidevisa">
+                        <div class="cards-vaidevisa">
+                            <img src="/_assets/_imgs/first-card-vaidevisa.svg">
+                            <h6>Participe do programa</h6>
+                            <p>Cadastre-se no site do programa</p>
+                        </div>
+                        <div class="cards-vaidevisa">
+                            <img src="/_assets/_imgs/second-card-vaidevisa.svg">
+                            <h6>Reserve hotel com Allpoints</h6>
+                            <p>Encontre o hotel ideal para você e <b>faça sua reserva</b> no site da Allpoints</p>
+                        </div>
+                        <div class="cards-vaidevisa">
+                            <img src="/_assets/_imgs/third-card-vaidevisa.svg">
+                            <h6>Pague com Visa</h6>
+                            <p><b>Utilize seu cartão</b> Visa para <br> efetuar a reserva</p>
+                        </div>
+                        <div class="cards-vaidevisa">
+                            <img src="/_assets/_imgs/fourth-card-vaidevisa.svg">
+                            <h6>Receba 10% de cashback</h6>
+                            <p><b>Receba 10% de Cashback</b> na sua <br>fatura do cartão Visa</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="vaidevisa-third-content">
+                <h2><b>#VaideVisa:</b> Pague suas reservas de Hotel com seu cartão <br>VISA e escolha: + Allpoints ou
+                    10% de Cashback no seu banco</h2>
+                <p><b>Cadastre-se no programa</b> #VaideVisa e aproveite!</p>
+                <form class="form-vaidevisa">
+                    <input placeholder="Nome" type="text">
+                    <input placeholder="E-mail" type="text">
+                    <input placeholder="Celular" type="text">
+                    <input placeholder="CPF" type="text">
+
+                    <label class="vaidevisa-checkbox">
+                        <input type="checkbox">
+                        <p style="margin-bottom: 20px;">Criando a conta você concorda com os <a class="text-pink"
+                                target="_blank" href="/termos">Termos de Uso</a> e <a class="text-pink" target="_blank"
+                                href="/termos">Regulamento</a> da Allpoints</p>
+                    </label>
+
+                    <button type="button" @click='showsuccess = true'>Quero participar</button>
+                </form>
+            </div>
+            <div class="vaidevisa-fourth-content">
+                <section class="help-container">
+                    <div class="help-title-container">
+                        <h2 class="help-title">COMO PODEMOS TE AJUDAR?</h2>
+                    </div>
+
+                    <div class="help-content">
+                        <div class="help-icon-text">
+                            <i class="fal fa-question-circle"></i>
+                            <div class="help-text">
+                                <p>Atendimento </p>
+                                <p class="help-text-pink"> ALLPOINTS</p>
+                            </div>
+                        </div>
+
+                        <!-- <hr class="help-hr">
+
+                        <div class="help-icon-text">
+                            <i class="fal fa-comment-alt-lines"></i>
+                            <div class="help-text">
+                                <p>Fale conosco no </p>
+                                <p class="help-text-pink"> chat</p>
+                            </div>
+                        </div> -->
+                    </div>
+                </section>
+
+                <modal-sucesso title="Sua participação no #VaideVisa está confirmada com sucesso!" subtitle=""
+                    buttontext="Continuar" v-bind:showsuccess='this.showsuccess' @close="closeModal"
+                    @button="redirectHome">
+                </modal-sucesso>
+
+            </div>
+        </main>
+
+        <footer class="home-footer">
+            <section class="footer-links">
+                <div class="footer-logo">
+                    <img src="/_assets/_imgs/logo-allpoints-white.png" alt="">
+                </div>
+                <div class="footer-content footer-about-us">
+                    <!-- <h3>Sobre nós</h3> -->
+                    <!-- <a href=""><span>A ALLPOINTS</span></a>
+                    <a href=""><span>TIME</span></a> -->
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">NEWSROOM</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">CARREIRA</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-how-it-works">
+                    <h3>Como funciona</h3>
+                    <!-- <a href=""><span>GANHE ALLPOINTS</span></a> -->
+                    <a href="/empresas"><span>PARA EMPRESAS</span></a>
+                    <a href="/carreira"><span>CARREIRA</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span>PARA HOTEIS </span></a> -->
+                    <!-- <a href=""><span>FAQ</span></a> -->
+                </div>
+                <div class="footer-content footer-know-more">
+                    <h3>Sobre</h3>
+                    <a href="/sobre"><span>A ALLPOINTS</span></a>
+                    <a href="/time"><span>TIME</span></a>
+                    <a href="/perguntas"><span>FAQ</span></a>
+                    <a href="/termos"><span>REGULAMENTO</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">BLOG</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">ALLPOINTS ACADEMY</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-contact">
+                    <h3>Contato</h3>
+                    <a href=""><span><b>E-mail:</b> contato@allpointshotels.com</span></a>
+                    <a href=""><span><b>Whatsapp:</b> +55 (11) 99022-3760</span></a>
+                    <a href=""><span><b>www.allpoints.club</b></span></a>
+                </div>
+            </section>
+            <div class="footer-line-division"></div>
+            <section class="footer-copyrigth">
+                <span>© 2015-2021 Allpoints<br>
+                    Todos os direitos reservados.</span>
+            </section>
+        </footer>
+
+        <cookies></cookies>
+
+    </div>
+
+    <script type="module" src="/vaidevisa/vaidevisa-viewmodel.js"></script>
+
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+    </script>
+
+    <script type="text/javascript">
+        zE('webWidget', 'setLocale', 'pt_br');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZZQSLK2SP6');
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Allpoints Club</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+    <script type="module" src="/_models/auth/auth.js"></script>
+    <script type="module" src="/_models/balance/balance-service.js"></script>
+    <script type="module" src="/_models/promo/promo-service.js"></script>
+
+    <!-- Header -->
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <script src="/_components/dropdowns/home-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+    <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+    
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link href="/_assets/_css/hamburgers.css" rel="stylesheet">
+    <link href="/sobre/sobre.css" rel="stylesheet">
+
+    <script src="/_components/cookies/cookies.js"></script>
+
+</head>
+
+<body>
+    <div id="sobre">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+        <header>
+            <header-card v-bind:logged='logged' v-bind:subscriber='noSubscription'></header-card>
+            <section class="home-mobile-menu">
+                <home-user-menu page="" v-bind:subscription='!noSubscription'></home-user-menu>
+            </section>
+            <home-user-menu-desktop v-bind:subscription='!noSubscription'></home-user-menu-desktop>
+        </header>
+        <main>
+            <section class="sobre-banner">
+                <div class="sobre-banner-info">
+                    <h2>CONHEÇA MAIS SOBRE A ALLPOINTS</b></h2>
+                    <p>Plataforma de viagens que engloba vários serviços para te ajudar a viajar mais, melhor, e gastar
+                        menos. </p>
+                </div>
+            </section>
+            <section style="display: flex;">
+                <div class="sobre-nos">
+                    <h3>
+                        Sobre nós
+                    </h3>
+                    <br>
+                    <p>A Allpoints é uma plataforma de viagens que engloba vários serviços para te ajudar a viajar mais,
+                        melhor, e gastar menos. </p>
+                    <p>Assinando um dos planos do Allpoints Club, você receberá Allpoints todo mês e poderá trocar por
+                        reservas em mais de 600 mil hotéis no mundo. E, se não tiver Allpoints suficientes, poderá
+                        complementar o valor com R$ e ganhar 10% de volta em Allpoints no valor que você pagou.</p>
+                    <p>Sendo assinante de qualquer plano, seus Allpoints não expiram nunca e você ganha 10% de bônus na
+                        hora + 0,5% de bônus por mês por até 12 meses.</p>
+                    <p>Somos a sua poupança de viagens!</p>
+                    <p>Os Allpoints que você ganha equivalem a R$ 1,00, de modo que você tem uma visão transparente de
+                        quanto custa a reserva que realizará com a gente, mesmo pagando em Allpoints.
+                        E ainda poderá acumular mais Allpoints adquirindo passagens aéreas pelo nosso site, passagens
+                        rodoviárias, aluguel de carros e até seguro de viagens.</p>
+                </div>
+            </section>
+
+            <section>
+                <div class="onde-estamos">
+                    <img width="376" height="200" src="/_assets/_imgs/onde.png" alt="">
+                    <div>
+                        <h3>Onde nós estamos</h3>
+                        <p>Nosso escritório no moderno edifício Spaces, localizado na Zona Sul da capital paulista.</p>
+                        <br>
+                        <p>Rua Irmã Gabriela 51 , São Paulo, São Paulo 04571-130</p>
+                        <i class="fas fa-map-marker-alt" style="color: var(--pink);"><a
+                                href="https://goo.gl/maps/dJMpE6WcwXqjPoE26"
+                                style="color: var(--pink);margin-left: 6px;">Ver no mapa</a></i>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        <footer class="home-footer">
+            <section class="footer-links">
+                <div class="footer-logo">
+                    <img src="/_assets/_imgs/logo-allpoints-white.png" alt="">
+                </div>
+                <div class="footer-content footer-about-us">
+                    <!-- <h3>Sobre nós</h3> -->
+                    <!-- <a href=""><span>A ALLPOINTS</span></a>
+                    <a href=""><span>TIME</span></a> -->
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">NEWSROOM</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">CARREIRA</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-how-it-works">
+                    <h3>Como funciona</h3>
+                    <!-- <a href=""><span>GANHE ALLPOINTS</span></a> -->
+                    <a href="/empresas"><span>PARA EMPRESAS</span></a>
+                    <a href="/carreira"><span>CARREIRA</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span>PARA HOTEIS </span></a> -->
+                    <!-- <a href=""><span>FAQ</span></a> -->
+                </div>
+                <div class="footer-content footer-know-more">
+                    <h3>Sobre</h3>
+                    <a href="/sobre"><span>A ALLPOINTS</span></a>
+                    <a href="/time"><span>TIME</span></a>
+                    <a href="/perguntas"><span>FAQ</span></a>
+                    <a href="/termos"><span>REGULAMENTO</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">BLOG</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">ALLPOINTS ACADEMY</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-contact">
+                    <h3>Contato</h3>
+                    <a href=""><span><b>E-mail:</b> contato@allpointshotels.com</span></a>
+                    <a href=""><span><b>Whatsapp:</b> +55 (11) 99022-3760</span></a>
+                    <a href=""><span><b>www.allpoints.club</b></span></a>
+                </div>
+            </section>
+            <div class="footer-line-division"></div>
+            <section class="footer-copyrigth">
+                <span>© 2015-2021 Allpoints<br>
+                    Todos os direitos reservados.</span>
+            </section>
+        </footer>
+
+        <cookies></cookies>
+
+    </div>
+
+    <script type="module" src="/sobre/sobre-viewmodel.js"></script>
+
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+    </script>
+
+    <script type="text/javascript">
+        zE('webWidget', 'setLocale', 'pt_br');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZZQSLK2SP6');
+    </script>
+
+</body>
+
+</html>

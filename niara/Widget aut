@@ -1,0 +1,25 @@
+document.addEventListener("niara-search-ready", function (e) {
+  e.detail.initSearchForm(document.getElementById("search-form"), {
+    landingPage: "hoteis.allpoints.club",
+    isCustomDomain: true,
+    customSearch: ({
+      criteriaQueryString,
+      landingPagePrefix,
+      queryStringStringify,
+    }) => {
+      var access_token = localStorage["token-live"];
+      if (access_token) {
+        window.open(
+          landingPagePrefix +
+            "/allpoints/auth#" +
+            queryStringStringify({
+              access_token: access_token,
+              redirect_to: "/q?" + criteriaQueryString,
+            })
+        );
+      } else {
+        window.open(landingPagePrefix + "/q?" + criteriaQueryString);
+      }
+    },
+  });
+});

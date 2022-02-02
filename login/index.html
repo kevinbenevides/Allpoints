@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Login | Allpoints Club</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+    <script type="module" src="/_models/balance/balance-service.js"></script>
+
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <script src="/_components/select_countries/select_countries.js"></script>
+    <link rel="stylesheet" href="/_components/select_countries/select_countries.css">
+
+    <!-- Images Mosaic -->
+    <script src="/_components/images-mosaic/images-mosaic.js"></script>
+
+    <!-- Modal -->
+    <script src="/_components/modais/modal-success.js"></script>
+    <script src="/_components/modais/modal-error.js"></script>
+
+    <script src="/_components/cookies/cookies.js"></script>
+
+</head>
+
+<body>
+    <div id="login" class="form-user">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+
+        <header>
+            <header-card v-bind:logged='false' v-bind:empty='true' v-bind:subscriber='false'></header-card>
+        </header>
+        <main @click="">
+            <section class="form-user-content">
+                <section @click='stepBack()' class="form-user-return">
+                    <i class="fas fa-chevron-left"></i>
+                    Voltar
+                </section>
+                <div class="form-user-item" v-show="chooseAcess">
+                    <h1>Nossas boas-vindas de volta!</h1>
+                    <form onsubmit="return false" v-on:keyup.enter="checkAcessKey" class="form-user-form">
+                        <label>Utilize seu CPF, e-mail ou celular como chave de acesso.
+                            <div style="display: flex; margin-top: 10px; width: 100%;">
+                                <select_countries v-if='isPhone' v-on:change-value="onChangeValue"
+                                    style="height: 42px;"></select_countries>
+                                <input type="email" class="cpfCelEmail" v-model="accessKey"
+                                    placeholder="Chave de Acesso" name="email"
+                                    :id="[isPhone? 'phone-number-login' : '']">
+                            </div>
+                        </label>
+
+                        <!-- <span @click="changeStep('forgotPassword')" class="form-forgot-password"
+                            style="width: 100%; text-align: start; padding-left: 8px; padding-top: 8px;">Esqueci a
+                            senha</span> -->
+
+                        <p v-show="errorMessage != null" class="erro-message">{{errorMessage}}</p>
+
+                        <div class="lds-ellipsis" v-show="loadingForm">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+
+                        <button class="sign-your-plan-btn-pink btn-home" @click="checkAcessKey"
+                            type="button">Avançar</button>
+
+                        <p class="has-account">Não possuí um cadastro? <a href="/create-profile">Cadastre-se</a></p>
+
+                        <!-- <b>ou</b> -->
+                        <!-- <button class="btn-home form-social-buttons form-social-buttons-face" type="submit"><img src="/_assets/_icons/facebook-icon.svg"> Continuar com o Facebook</button> -->
+                        <!-- <button class="btn-home form-social-buttons form-social-buttons-google" type="submit"><img src="/_assets/_icons/google-icon.svg"> Continuar com o Google</button> -->
+                    </form>
+                </div>
+
+                <!-- Sessão de senha -->
+                <div class="form-user-item" v-show="renderPassword && !forgotPassword">
+                    <h1>Digite sua senha.</h1>
+                    <form onsubmit="return false" v-on:keyup.enter="login" class="form-user-form">
+                        <div style="display: flex; margin-top: 10px;width: 100%;">
+                            <select_countries v-if='isPhone' v-on:change-value="onChangeValue" style="height: 42px;">
+                            </select_countries>
+                            <input type="email" class="cpfCelEmail" v-model="accessKey" placeholder="Chave de Acesso"
+                                name="email" :id="[isPhone? 'phone-number-login' : '']">
+                        </div>
+                        <label>
+                            <input type="password" v-model="user.password" placeholder="Senha" name="password">
+                        </label>
+                        <p v-show="errorMessage != null" class="erro-message">{{errorMessage}}</p>
+
+                        <span @click="changeStep('forgotPassword')" class="form-forgot-password"
+                            style="width: 100%; text-align: start; padding-left: 8px; ">Esqueci a
+                            senha</span>
+
+                        <div class="lds-ellipsis" v-show="loadingForm">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+
+                        <button class="sign-your-plan-btn-pink btn-home" @click.prevent="login" type="button">ACESSAR
+                            ALLPOINTS.CLUB</button>
+                    </form>
+                </div>
+
+                <div class="form-user-item" v-show="forgotPassword && !selectedMethod">
+                    <h1>Esqueceu sua senha?</h1>
+
+                    <form onsubmit="return false" v-on:keyup.enter="changeStep('accessCode')" class="form-user-form">
+
+                        <label>Utilize seu email ou celular (xx) xxxxx-xxxx como chave de acesso para receber o código
+                            de verificação.
+                            <div style="display: flex; margin-top: 10px; width: 100%;">
+                                <select_countries v-if='isPhone' v-on:change-value="onChangeValue"
+                                    style="height: 42px;"></select_countries>
+                                <input type="email" class="cpfCelEmail" v-model="accessKey"
+                                    placeholder="Chave de Acesso" name="email"
+                                    :id="[isPhone? 'phone-number-login' : '']">
+                            </div>
+                        </label>
+
+                        <p v-show="errorMessage != null" class="erro-message">{{errorMessage}}</p>
+
+                        <div class="lds-ellipsis" v-show="loadingForm">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+
+                        <button class="sign-your-plan-btn-pink btn-home" @click.prevent="changeStep('accessCode')"
+                            type="button">AVANÇAR</button>
+                    </form>
+                </div>
+
+                <!-- Area do código de senha -->
+                <div class="form-user-item" v-show="accessCode">
+                    <h1 v-if="selectedMethod == 'mail'" style="margin-bottom: 0;">Confirme seu e-mail</h1>
+                    <h1 v-if="selectedMethod == 'phone'" style="margin-bottom: 0;">Confirme seu Número de Celular</h1>
+
+                    <p class="text-code-authenticate" v-if="selectedMethod == 'mail'">Insira o código de 5 números que
+                        enviamos para o <b>e-mail com final ...{{this.emailSplit}}</b> Expira em {{timeExpire}}</p>
+                    <p class="text-code-authenticate" v-if="selectedMethod == 'phone'">Insira o código de 5 números que
+                        enviamos para o <b> celular com o final ...{{this.phoneSplit}}</b> Expira em {{timeExpire}}</p>
+                    <form class="form-user-form form-code-authenticate">
+                        <input v-for="(item, chave, index) in code" type="number" @keyup="copiedCode(code[chave])"
+                            @keydown="alternate(chave, index)" v-model="code[chave]">
+                    </form>
+                    <span style="margin-top: 24px; margin-bottom: 16px;">Não recebeu? <a class="form-forgot-password"
+                            @click="sendCode">Enviar
+                            Novamente</a></span>
+                    <!-- <span style="margin-bottom: 12px;">Esse não é seu e-mail? <a
+                            @click="changeStep('forgotPassword', selectedMethod)"
+                            class="form-forgot-password">Tentar com o {{selectedMethod == 'mail' ? 'celular' :
+                            'e-mail'}}</a></span> -->
+
+                    <p v-show="errorMessage != null" class="erro-message">{{errorMessage}}</p>
+
+                    <div class="lds-ellipsis" v-show="loadingForm">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+
+                    <button class="sign-your-plan-btn-pink btn-home" type="button"
+                        @click="changeStep('restore')">Avançar</button>
+                </div>
+
+                <!-- Nova senha -->
+                <div class="form-user-item" v-show="restorePassword.canRestore">
+                    <h1>Escolha sua nova senha</h1>
+                    <form class="form-user-form">
+
+                        <label>
+                            <input type="password" v-model="restorePassword.currentPassword" placeholder="Senha"
+                                name="password">
+                        </label>
+
+                        <label>
+                            <input type="password" v-model="restorePassword.newPassword"
+                                placeholder="Confirme sua senha" name="password">
+                        </label>
+                        <p v-show="errorMessage != null" class="erro-message">{{errorMessage}}</p>
+                        <div class="lds-ellipsis" v-show="loadingForm">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+
+                        <button class="sign-your-plan-btn-pink btn-home" type="button" @click="verifyAccess()">SALVAR
+                            NOVA SENHA</button>
+                    </form>
+                </div>
+            </section>
+            <image-mosaic></image-mosaic>
+        </main>
+
+        <modal-sucesso title="Você alterou a sua Senha!" subtitle="Seus dados foram alterados!" buttontext="Continuar"
+            v-bind:showsuccess='this.showsuccess' @close="closeModal" @button="goToLogin">
+        </modal-sucesso>
+
+        <modal-erro text="Ocorreu um erro ao mudar a senha, por favor tente mais tarde!" buttontext="Continuar"
+            v-bind:showerro='this.showerro' @close="closeModal" @button="closeModal">
+        </modal-erro>
+
+        <cookies></cookies>
+        <section class="token-modal" v-if="showTokenModal">
+            <section class="token-modal-container">
+                <h3>Sua sessão expirou!</h3>
+                <p style="margin-top: auto; margin-bottom: auto;">Cuidamos da sua segurança, por isso precisamos que
+                    você faça o login novamente!</p>
+                <span @click="closeTokenModal" class="suporte-enviar-button">
+                    <p>CONFIRMAR</p>
+                </span>
+            </section>
+        </section>
+
+    </div>
+    <script type="module" src="/login/login-viewmodel.js"></script>
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+    </script>
+
+    <script type="text/javascript">
+        zE('webWidget', 'setLocale', 'pt_br');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZZQSLK2SP6');
+    </script>
+
+</body>
+
+</html>

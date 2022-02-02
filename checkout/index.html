@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Checkout | Allpoints Club</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+    <script type="module" src="/_models/balance/balance-service.js"></script>
+    <script type="module" src="/_models/subscription/subscription-service.js"></script>
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <!-- <script type="module" src="/webkit-input-range-fill-lower-master/dist/webkit-input-range-fill-lower.js"></script> -->
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <script type="text/javascript" src="https://js.iugu.com/v2"></script>
+
+    <!-- Header -->
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <script src="/_components/dropdowns/home-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+    <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+
+    <!-- Cookies -->
+    <script src="/_components/cookies/cookies.js"></script>
+    <script src="/_components/cookies/cookies.js"></script>
+
+    <!-- Modal -->
+    <script src="/_components/modais/modal-success.js"></script>
+    <script src="/_components/modais/modal-error.js"></script>
+
+    <!-- Images Mosaic -->
+    <script src="/_components/images-mosaic/images-mosaic.js"></script>
+
+    <script src="/checkout/checkout-view.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/maska@1.4.4/dist/maska.js"></script>
+
+</head>
+
+<body>
+    <div id="checkout" class="form-user">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+
+        <header>
+            <header-card :logged="false" v-bind:empty='true' :secure="true" v-bind:subscriber='false'></header-card>
+            <section class="home-mobile-menu">
+                <home-user-menu page=""></home-user-menu>
+            </section>
+            <home-user-menu-desktop></home-user-menu-desktop>
+        </header>
+        <main @click="">
+            <section class="form-user-content">
+                <section @click="backButton" class="form-user-return" style="margin-bottom: 20px;">
+                    <i class="fas fa-chevron-left"></i>
+                    Voltar
+                </section>
+                <div class="form-user-item" style="width: 100%;">
+                    <h1 style="color: #1c1c1c; margin-bottom: 20px;">Adicione seu cartão para completar a assinatura</h1>
+
+                    <p class="seu-plano">Escolha seu plano:</p>
+                    <span class="plano-points" style="font-size: 18px !important;">R$ <span id="planValue"
+                            class="plano-points"></span>,00 = <span id="allpointValue" class="plano-points"
+                            style="font-size: 18px !important;"></span> Allpoints</span>
+                    <div class="slidecontainer">
+                        <input @change="handleSlider" type="range" min="10" max="1000" step="10" value="10"
+                            class="slider" id="bar" style="width: 97%; padding: 0px; 
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            appearance: none; 
+                            background-color: var(--pink);
+                            border-bottom-left-radius: 6px;
+                            border-bottom-right-radius: 6px;
+                            border-top-left-radius: 6px;
+                            border-top-right-radius: 6px;
+                            box-sizing: border-box;
+                            color: green;
+                            height: 6px;
+                            margin-bottom: 0px;
+                            margin-left: 0px;
+                            margin-right: 0px;
+                            margin-top: 0px;
+                            outline-color: blue;
+                            outline-style: none;
+                            outline-width: 0px;
+                            padding-bottom: 0px;
+                            padding-left: 0px;
+                            padding-right: 0px;
+                            padding-top: 0px;
+                            text-align: start;
+                            border:0px;
+                            lighting-color: yellow;
+                            scrollbar-color: red;">
+                    </div>
+
+                    <input type="text" v-model="creditCard.full_name" placeholder="Nome no cartão" style="width: 98%;">
+                    <div style="display: flex;">
+                        <img :src="bandeira" class="bandeira">
+                        <input v-maska="'#### #### #### ####'" type="text" v-model="creditCard.number" placeholder="Número do cartão" style="width: 82%;">
+                    </div>
+                    <input v-maska="['###.###.###-##', '##.###.###/####-##']" type="text" v-model="cpf_cnpj" placeholder="CPF/CNPJ" style="width: 98%;">
+                    <div style="display: flex; width: 98%;">
+                        <input v-maska="'##/####'" type="text" v-model="creditCard.expiration" placeholder="Expiração"
+                            style="margin-right: 3%; width: 50%;">
+                        <input v-maska="['###', '####']" type="text" v-model="creditCard.verification_value" placeholder="CCV"
+                            style=" width: 50%;">
+                    </div>
+                    <div class="input-pais" style="width: 98%;">
+                        <img src="/_assets/_icons/brasil.svg">
+                        <input type="text" placeholder="Brasil" style="width: 100%;" disabled>
+                    </div>
+                    <div class="lds-ellipsis lds-checkout" v-show="loadingForm">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+
+                    <button style="width: 98%; margin-top: 60px;" class="sign-your-plan-btn-pink btn-card"
+                        @click="createTokenPayment()">
+                        <div style="display: flex; width: 100%; justify-content: center;">
+                            <i class="fas fa-lock"
+                                style="margin-right: auto; margin-left: 20px; margin-top: 0px; font-size: 20px;"></i>
+                            <p style="margin-right: auto; margin-left: -30px;"><b>Confirmar e assinar</b></p>
+                        </div>
+                    </button>
+                </div>
+            </section>
+            <image-mosaic></image-mosaic>
+
+            <modal-sucesso title="Assinatura efetuada com sucesso" subtitle="Obrigado por viajar conosco!"
+                buttontext="Continuar" v-bind:showsuccess='this.showsuccess' @close="closeModal"
+                @button="redirectProfile">
+            </modal-sucesso>
+
+            <modal-erro text="Ocorreu um erro na assinatura, por favor tente mais tarde!" buttontext="Continuar"
+                v-bind:showerro='this.showerro' @close="closeModal" @button="closeModal">
+            </modal-erro>
+        </main>
+
+        <cookies></cookies>
+
+    </div>
+    <script type="module" src="/checkout/checkout-viewmodel.js"></script>
+    <script id="ze-snippet"
+        src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644"> </script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Allpoints</title>
+</head>
+
+<body>
+    <div class="loading" v-show='loading'>
+        <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        <h3 class="title">O grande dia chegou!</h3>
+        <p class="text">Estamos preparando o novo site para você. Visite-nos mais tarde e confira as novidades para você acumular mais Allpoints durante toda a viagem!</p>
+    </div>
+</body>
+<style>
+    * {
+        margin: 0;
+        font-family: 'Poppins';
+        color: white;
+    }
+    @font-face {
+    font-family: 'Poppins';
+    src: url('/_assets/_fonts/Font_Poppins/Poppins-Medium.ttf');
+}
+    .loading {
+        height: 100vh;
+        width: 100vw;
+        background-color: #6D218C;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        position: fixed;
+    }
+
+    .title {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .text{
+        margin-top: 20px;
+        text-align: center;
+        width: 500px;
+    }
+
+    .lds-heart {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 70px;
+        z-index: 1000;
+    }
+
+    .lds-heart img {
+        width: 80px;
+        position: absolute;
+        animation: lds-heart 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        z-index: 1000;
+    }
+
+    .lds-heart img:after,
+    .lds-heart img:before {
+        content: " ";
+        position: absolute;
+        display: block;
+        width: 64px;
+        background: #fff;
+    }
+
+    .lds-heart img:before {
+        left: -24px;
+    }
+
+    .lds-heart img:after {
+        top: -24px;
+    }
+
+    @keyframes lds-heart {
+        0% {
+            transform: scale(0.95);
+        }
+
+        5% {
+            transform: scale(1.1);
+        }
+
+        39% {
+            transform: scale(0.85);
+        }
+
+        45% {
+            transform: scale(1);
+        }
+
+        60% {
+            transform: scale(0.95);
+        }
+
+        100% {
+            transform: scale(0.9);
+        }
+    }
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+<script>
+
+    (function (h, o, t, j, a, r) {
+        h.hj = h.hj || function () {
+            (h.hj.q = h.hj.q || []).push(arguments)
+        };
+        h._hjSettings = { hjid: 2437324, hjsv: 6 };
+        a = o.getElementsByTagName('head')[0];
+        r = o.createElement('script');
+        r.async = 1;
+        r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-ZZQSLK2SP6');
+</script>
+
+</html>

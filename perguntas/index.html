@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Allpoints Club</title>
+
+    <!-- <script src="https://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+    <script type="module" src="/_models/auth/auth.js"></script>
+    <script type="module" src="/_models/balance/balance-service.js"></script>
+    <script type="module" src="/_models/promo/promo-service.js"></script>
+
+    <!-- Modal -->
+    <script src="/_components/modais/modal-success.js"></script>
+    <script src="/_components/modais/modal-error.js"></script>
+
+    <!-- Header -->
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <script src="/_components/dropdowns/home-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+    <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <script type="module" src="/webkit-input-range-fill-lower-master/dist/webkit-input-range-fill-lower.js"></script>
+    <link href="/_assets/_css/hamburgers.css" rel="stylesheet">
+
+    <script src="/_components/cookies/cookies.js"></script>
+
+</head>
+
+<body>
+    <div style="background-color: var(--lightGray);" id="perguntas">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+        <header>
+            <header-card v-bind:logged='logged' v-bind:subscriber='noSubscription'></header-card>
+            <section class="home-mobile-menu">
+                <home-user-menu page="" v-bind:subscription='!noSubscription'></home-user-menu>
+            </section>
+            <home-user-menu-desktop v-bind:subscription='!noSubscription'></home-user-menu-desktop>
+        </header>
+        <main>
+            <section style="padding-top: 40px;">
+                <section class="common-questions">
+                    <h3 class="section-title">
+                        Perguntas Frequentes
+                    </h3>
+                    <div @click="openDrawer(0)" class="common-questions-item">
+                        <span>O que é Allpoints?</span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Allpoints é uma plataforma de viagens que engloba vários serviços para te ajudar a viajar
+                            mais, melhor, e gastar menos.
+                            <br><br> Você acumula Allpoints e pode trocar por reserva em mais de 600 mil hotéis no mundo
+                            inteiro. E, se não tiver Allpoints suficientes, poderá complementar o valor com R$ e ganhar
+                            10% de volta em Allpoints no valor que
+                            você pagou.
+                            <br><br> Os Allpoints que você acumula equivalem a R$ 1,00, de modo que você tem uma visão
+                            transparente de quanto custa a reserva que realizará com a gente, mesmo pagando em
+                            Allpoints.
+                            <br><br> E ainda poderá acumular mais Allpoints adquirindo passagens aéreas pelo nosso site,
+                            passagens rodoviárias, aluguel de carros e até seguro de viagens.
+                        </p>
+                    </div>
+                    <hr>
+                    <div @click="openDrawer(1)" class="common-questions-item">
+                        <span>O que é Allpoints Club? </span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Allpoints Club é o clube de assinatura da Allpoints com vários benefícios especiais.
+                            Assinando um dos nossos planos, você receberá Allpoints todo mês e poderá trocar por
+                            reservas em mais de 600 mil hotéis no mundo.
+                            <br><br> Sendo assinante de planos a partir de R$ 10,00, os seus Allpoints não expiram nunca
+                            e você ganha 10% de bônus na hora. Somos a sua poupança de viagens!
+                        </p>
+                    </div>
+                    <hr>
+                    <div @click="openDrawer(2)" class="common-questions-item">
+                        <span>Por que eu devo assinar o Allpoints Club? </span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Assinando qualquer plano a partir de R$ 10,00 do Allpoints Club você tem benefícios
+                            exclusivos e a oportunidade de programar a sua viagem com calma e gastando pouco.
+                            <br><br> • Seus Allpoints não expiram nunca
+                            <br> • Você ganha 10% de volta na hora
+                            <br> • 1 Allpoints = R$ 1,00
+                            <br><br> Allpoints Club é a sua poupança de viagens, onde você viaja mais e melhor!
+                        </p>
+                    </div>
+                    <hr>
+                    <div @click="openDrawer(3)" class="common-questions-item">
+                        <span>Como eu acumulo Allpoints?</span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Você pode acumular Allpoints das seguintes maneiras:
+                            <br><br> 1. Realizando reservas de hotéis por meio do www.allpoints.club: ao realizar
+                            reservas por meio da nossa plataforma, além de ter os melhores valores do mercado, 10% do
+                            valor gasto é convertido em pontos para você.
+                            <br><br> 2. Assinando um plano do Allpoints Club: na Allpoints, você pode acumular Allpoints
+                            todo mês, fazer a sua Poupança de Viagens e ainda por cima ter vantagens exclusivas para
+                            assinantes:
+                            <br><br> • 10% do valor pago volta para você em Allpoints
+                            <br> • Os seus Allpoints não expiram nunca!
+                        </p>
+                    </div>
+                    <div @click="openDrawer(4)" class="common-questions-item">
+                        <span>Quanto tempo os Allpoints da minha assinatura do Allpoints Club levam para serem
+                            depositados na minha conta?</span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Os Allpoints referentes à sua assinatura do Allpoints Club são depositados em sua conta no
+                            momento da confirmação da assinatura, ou seja, na hora. </p>
+                    </div>
+                    <div @click="openDrawer(5)" class="common-questions-item">
+                        <span>Quanto tempo os Allpoints da reserva que realizei no site www.allpoints.club levam para
+                            serem depositados na minha conta?</span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        Os Allpoints referentes à sua reserva são depositados em até 48h após o check out.
+                    </div>
+                    <div @click="openDrawer(6)" class="common-questions-item">
+                        <span>Como faço para pagar minha reserva com Allpoints?</span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>É muito simples. Você seleciona o destino, período e demais detalhes da sua reserva e, ao
+                            final, poderá escolher se deseja pagar a sua reserva com:</p>
+                        <br>
+                        <p>1. Allpoints</p>
+                        <p>2. Apenas dinheiro</p>
+                        <p>3. Allpoints + dinheiro</p>
+                        <br>
+                        <p>Ao escolher uma das opções de pagar com Allpoints, no momento do pagamento, o valor é
+                            debitado diretamente da sua Conta Allpoints.</p>
+                    </div>
+                    <div @click="openDrawer(7)" class="common-questions-item">
+                        <span>Como faço para pagar minha reserva com Allpoints + dinheiro?</span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>É muito simples. Você seleciona o destino, período e demais detalhes da sua reserva e, ao
+                            final, poderá escolher se deseja pagar a sua reserva com:</p>
+                        <br>
+                        <p>1. Allpoints</p>
+                        <p>2. Apenas dinheiro</p>
+                        <p>3. Allpoints + dinheiro</p>
+                        <br>
+                        <p>Ao escolher a opção para pagar com Allpoints + dinheiro, no momento do pagamento, você poderá
+                            informar o total que deseja pagar em Allpoints e o total que deseja pagar em dinheiro. Os
+                            valores em Allpoints são debitados diretamente
+                            da sua Conta Allpoints. E você ainda acumula 10% em Allpoints da parte que pagou em
+                            dinheiro. </p>
+                    </div>
+                    <!-- <div @click="openDrawer(8)" class="common-questions-item">
+                        <span>Posso receber cashback pelas minhas reservas realizadas?</span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Sim. Se você possui um Cartão Visa de sua titularidade e participa do Programa Vai de Visa poderá receber parte do valor pago em sua reserva na sua conta bancária.</p>
+                        <br>
+                        <a style="color: var(--pink);" href="https://vaidevisa.visa.com.br/vdv/">Clique aqui e saiba
+                            mais</a>
+                    </div> -->
+                    <div @click="openDrawer(9)" class="common-questions-item">
+                        <span>Meus Allpoints expiram?</span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Seus Allpoints tem validade de 6 meses. Mas, se você é assinante do Allpoints Club, seus
+                            Allpoints não expiram nunca. </p>
+                    </div>
+                    <div @click="openDrawer(10)" class="common-questions-item">
+                        <span>Posso realizar reservas para terceiros?</span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Sim, você pode, basta informar o nome dos hóspedes no momento em que estiver realizando a sua
+                            reserva. </p>
+                    </div>
+                    <div @click="openDrawer(11)" class="common-questions-item common-questions-last-item">
+                        <span>Posso ganhar Allpoints em outros lugares sem ser em hotéis? </span>
+                        <i class="fas fa-chevron-right slide-icon-questions"></i>
+                    </div>
+                    <div class="common-questions-drawer">
+                        <p>Você pode ganhar Allpoints realizando reservas por meio do www.allpoints.club, assinando um
+                            plano no Allpoints Club, adquirindo passagens aéreas, passagens rodoviárias, aluguel de
+                            carro e até seguro viagem.</p>
+                    </div>
+                </section>
+            </section>
+
+        </main>
+        <footer class="home-footer">
+            <section class="footer-links">
+                <div class="footer-logo">
+                    <img src="/_assets/_imgs/logo-allpoints-white.png" alt="">
+                </div>
+                <div class="footer-content footer-about-us">
+                    <!-- <h3>Sobre nós</h3> -->
+                    <!-- <a href=""><span>A ALLPOINTS</span></a>
+                    <a href=""><span>TIME</span></a> -->
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">NEWSROOM</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">CARREIRA</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-how-it-works">
+                    <h3>Como funciona</h3>
+                    <!-- <a href=""><span>GANHE ALLPOINTS</span></a> -->
+                    <a href="/empresas"><span>PARA EMPRESAS</span></a>
+                    <a href="/carreira"><span>CARREIRA</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span>PARA HOTEIS </span></a> -->
+                    <!-- <a href=""><span>FAQ</span></a> -->
+                </div>
+                <div class="footer-content footer-know-more">
+                    <h3>Sobre</h3>
+                    <a href="/sobre"><span>A ALLPOINTS</span></a>
+                    <a href="/time"><span>TIME</span></a>
+                    <a href="/perguntas"><span>FAQ</span></a>
+                    <a href="/termos"><span>REGULAMENTO</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">BLOG</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">ALLPOINTS ACADEMY</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-contact">
+                    <h3>Contato</h3>
+                    <a href=""><span><b>E-mail:</b> contato@allpointshotels.com</span></a>
+                    <a href=""><span><b>Whatsapp:</b> +55 (11) 99022-3760</span></a>
+                    <a href=""><span><b>www.allpoints.club</b></span></a>
+                </div>
+            </section>
+            <div class="footer-line-division"></div>
+            <section class="footer-copyrigth">
+                <span>© 2015-2021 Allpoints<br>
+                    Todos os direitos reservados.</span>
+            </section>
+        </footer>
+
+        <modal-sucesso title="Bem Vindo a Allpoints.club"
+            subtitle="Você completou com sucesso seu cadastro na Allpoints.club, que tal agora vermos o seu Extrato atual!"
+            buttontext="Ver Extrato" v-bind:showsuccess='this.showsuccess' @close="closeModal" @button="">
+        </modal-sucesso>
+
+        <cookies></cookies>
+    </div>
+
+    <script type="module" src="/perguntas/script.js"></script>
+
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+    </script>
+
+    <script type="text/javascript">
+        zE('webWidget', 'setLocale', 'pt_br');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZZQSLK2SP6');
+    </script>
+
+</body>
+
+
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Exemplo de busca integrado</title>
+        <meta name="viewport" content="initial-scale=1.0"/>
+        <meta charset="utf-8"/>
+        <script src="https://allpoints.niara.tech/static/js/embeddedSearchForm.js" crossorigin="anonymous" async></script>
+    </head>
+    <body>
+        <div id="search-form"></div>
+        <script>
+            document.addEventListener('niara-search-ready', function(e) {
+                e.detail.initSearchForm(document.getElementById('search-form'), {
+                    landingPage: 'allpoints'
+                })
+            })
+        </script>
+    </body>
+</html>

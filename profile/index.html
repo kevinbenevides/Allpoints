@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Perfil | Allpoints Club</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+    <script type="module" src="/_models/auth/auth.js"></script>
+    <script type="module" src="/_models/balance/balance-service.js"></script>
+    <script type="module" src="/_models/transactions/transactions-service.js"></script>
+
+    <!-- Components -->
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <script src="/_components/dropdowns/home-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+    <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+
+    <!-- Modal -->
+    <script src="/_components/modais/modal-success.js"></script>
+    <script src="/_components/modais/modal-error.js"></script>
+
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <script type="module" src="/webkit-input-range-fill-lower-master/dist/webkit-input-range-fill-lower.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/profile/profile.css">
+    <link rel="stylesheet" href="/profile/profile-mobile.css">
+
+    <script src="/_components/cookies/cookies.js"></script>
+
+</head>
+
+<body>
+    <div id="profile">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+
+        <header>
+            <header-card v-bind:logged='true' v-bind:subscriber='noSubscription'></header-card>
+            <section class="home-mobile-menu">
+                <home-user-menu page="" v-bind:subscription='!noSubscription'></home-user-menu>
+            </section>
+            <home-user-menu-desktop v-bind:subscription='!noSubscription'></home-user-menu-desktop>
+        </header>
+        <main>
+            <section id="profile-page">
+                <!-- Page header Extrato-->
+                <section id="profile-page-header" v-show="showContent == 'extract'">
+                    <h1 class="profile-pagetitle">EXTRATO</h1>
+                    <!-- <div id="profile-page-header-div">
+                        <a href="" class="profile-optiontitle margin-right">Imprimir</a>
+                        <a href="" class="profile-optiontitle">Enviar por e-mail</a>
+                    </div> -->
+                </section>
+                <!-- Page header Viajens-->
+                <section id="profile-page-header" v-show="showContent == 'travels'">
+                    <h1 class="profile-pagetitle">MINHAS VIAGENS</h1>
+                    <div class="filtro-minhas-viagens center right">
+                        <div @click="openFiltro" class="botao-filtro">
+                            <i class="far fa-filter botao-filtro-icon"></i>
+                            <div>
+                                <p class="botao-filtro-text">Filtrar</p>
+                                <p class="botao-filtro-text-bold">Todos</p>
+                            </div>
+                        </div>
+
+                        <div v-show="isOpen" class="dropdown-content">
+                            <p class="dropdown-text">STATUS</p>
+                            <hr style="margin-bottom: 16px;">
+                            <label class="dropdown-label">Todos
+                                <input type="checkbox" class="dropdown-content-input">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="dropdown-label">Próximas viagens
+                                <input type="checkbox" class="dropdown-content-input">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="dropdown-label">Viagens finalizadas
+                                <input type="checkbox" class="dropdown-content-input">
+                                <span class="checkmark"></span>
+                            </label>
+
+                            <p class="dropdown-text" style="margin-top: 41px;">SERVIÇO</p>
+                            <hr style="margin-bottom: 16px;">
+                            <label class="dropdown-label">Todos
+                                <input type="checkbox" class="dropdown-content-input">
+                                <span class="checkmark"></span>
+                            </label>
+                            <label class="dropdown-label">
+                                <input type="checkbox" class="dropdown-content-input">
+                                <span class="checkmark"></span>
+                                Hospedagem
+                            </label>
+                            <label class="dropdown-label">
+                                <input type="checkbox" class="dropdown-content-input">
+                                <span class="checkmark"></span>
+                                Passagem aérea
+                            </label>
+                            <label class="dropdown-label">
+                                <input type="checkbox" class="dropdown-content-input">
+                                <span class="checkmark"></span>
+                                Seguro de viagem
+                            </label>
+                            <label class="dropdown-label">
+                                <input type="checkbox" class="dropdown-content-input">
+                                <span class="checkmark"></span>
+                                Aluguel de carro
+                            </label>
+                            <label class="dropdown-label">
+                                <input type="checkbox" class="dropdown-content-input">
+                                <span class="checkmark"></span>
+                                Passagem de ônibus
+                            </label>
+                        </div>
+                    </div>
+                </section>
+                <!-- Page header Notificações-->
+                <section id="profile-page-header" v-show="showContent == 'notifications'">
+                    <h1 class="profile-pagetitle">Notificações</h1>
+                </section>
+                <!-- Page header Assinatura -->
+                <section id="profile-page-header" v-show="showContent == 'subscription'">
+                    <h1 class="profile-pagetitle">Assinatura</h1>
+                </section>
+
+                <!-- Page header visa -->
+                <section id="profile-page-header" v-show="showContent == 'visa'">
+                    <h1 class="profile-pagetitle">Visa</h1>
+                </section>
+
+                <div class="profile-tabs-div">
+                    <!-- Region menus -->
+                    <div id="profile-menu-region">
+                        <!-- Menu saldo -->
+                        <section id="profile-menu-saldo">
+                            <div id="profile-menu-saldo-header">
+                                <div id="profile-menu-saldo-header-divider">
+                                    <h5 class="profile-title center">MEU SALDO</h5>
+                                    <div style="display: flex;">
+                                        <img src="/_assets/_icons/allpoints-icon-pink.svg" style="margin-right: 9px;">
+                                        <div>
+                                            <p class="profile-valuetitle-saldo center" v-if="balance?.available">
+                                                {{balance.available}}</p>
+                                            <p class="profile-valuetitle-saldo center" v-else>0,00</p>
+                                            <p class="profile-subtitle-saldo">Allpoints</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="profile-menu-saldo-header-divider" v-if="noSubscription">
+                                    <div class="profile-expires">
+                                        <h5 class="profile-title center">Vencimento</h5>
+                                        <p style="font-size: 11px;">Nos próximos 6 meses</p>
+                                    </div>
+                                    <div style="display: flex;">
+                                        <p class="profile-valuetitle-saldo center"
+                                            style="color: black; margin-right: 4px;">-</p>
+                                        <img src="/_assets/_icons/allpoints-icon-small.svg" style="margin-right: 7px;">
+                                        <p class="profile-valuetitle-saldo center" style="color: black;">
+                                            {{expireAllpoints}}</p>
+                                        <!-- <p class="profile-valuetitle-saldo center" v-else style="color: black;">
+                                            {{expireAllpoints}}</p> -->
+                                    </div>
+                                </div>
+                                <div id="profile-menu-saldo-header-divider" v-else>
+                                    <div class="profile-dueDate">
+                                        <h5 class="profile-title center">Vencimento</h5>
+                                        <p style="font-size: 11px;">Nos próximos 6 meses
+                                        <p>
+                                    </div>
+                                    <div style="display: flex;">
+                                        <p class="profile-valuetitle-saldo center profile-dueDate-result">Seus Allpoints
+                                            Não Vencem</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div id="profile-menu-saldo-bottom">
+                                <div id="profile-menu-saldo-bottom-divider">
+                                    <div>
+                                        <p class="profile-subtitle">Membro desde: {{dateFormat(user._ct)}}</p>
+                                        <!-- <p class="profile-subtitle">Último acesso: 13/06/2021</p> -->
+                                    </div>
+                                    <a href="/profile/change-password/" class="profile-optiontitle center">Alterar
+                                        senha</a>
+                                </div>
+                                <a href="/profile/edit/">
+                                    <p class="profile-optiontitle profile-tagA">Alterar dados da conta</p>
+                                </a>
+                            </div>
+                        </section>
+                        <!-- Menu assinatura -->
+                        <section id="profile-menu-assinatura"
+                            v-show="showContent == 'extract' && noSubscription == true">
+                            <div id="profile-menu-assinatura-title">
+                                <h2>ASSINATURA MENSAL</h2>
+                                <h2>ALLPOINTS</h2>
+                            </div>
+                            <div id="profile-menu-assinatura-text">
+                                <p>Assine a partir de R$10 e ainda ganhe mais 10% de ALLPOINTS de volta!</p>
+                            </div>
+                            <button class="btn-home header-card-content-btn" @click="redirectAssinatura()">Assinar
+                                Allpoints</button>
+                        </section>
+                        <!-- Menu conta -->
+                        <section id="profile-menu-conta">
+                            <div id="profile-menu-conta-header">
+                                <h5 class="profile-title">MINHA CONTA</h5>
+                            </div>
+                            <div class="profile-menu-list">
+                                <a :class="[extract? 'profile-menu-option-active' : 'profile-menu-option']"
+                                    @click="menuclick('extract')">Extrato</a>
+                                <a :class="[travels? 'profile-menu-option-active' : 'profile-menu-option']"
+                                    @click="menuclick('travels')">Minhas Viagens</a>
+                                <a :class="[notifications? 'profile-menu-option-active' : 'profile-menu-option']"
+                                    @click="menuclick('notifications')">Notificações</a>
+                                <a :class="[subscription? 'profile-menu-option-active' : 'profile-menu-option']"
+                                    @click="menuclick('subscription')" v-show="!noSubscription">Assinatura</a>
+                                <!-- <a :class="[visa? 'profile-menu-option-active' : 'profile-menu-option']"
+                                    @click="menuclick('visa')">Programa #VaideVisa</a> -->
+                            </div>
+                        </section>
+                    </div>
+                    <!-- Box Extrato -->
+                    <section class="profile-box" v-show="showContent === 'extract'">
+                        <section class="profile-header">
+                            <div class="profile-header-container">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h3 class="profile-title">BUSCAR TRANSAÇÕES</h3>
+                                    <a v-if="isFiltered" @click="removeFiltro" style="cursor: pointer;"
+                                        class="profile-optiontitle center">Remover filtro</a>
+                                </div>
+                                <div class="profile-header-inputs">
+                                    <div class="profile-data">
+                                        <label class="profile-data-label" style="margin-right: 20px;">
+                                            <p style="margin-left: 10px;">Início</p>
+                                            <input type="date" placeholder="Início"
+                                                class="profile-input profile-data-pesquisar" v-model="date.inicio">
+                                        </label>
+                                        <label class="profile-data-label">
+                                            <p style="margin-left: 10px;">Fim</p>
+                                            <input type="date" placeholder="Fim"
+                                                class="profile-input profile-data-pesquisar" v-model="date.fim">
+                                        </label>
+                                    </div>
+                                    <input type="text" v-model="title" placeholder="O que deseja pesquisar?"
+                                        class="profile-input profile-pesquisar" style="margin-top: auto;">
+
+                                    <button @click="filtrar" style="margin-top: auto;"
+                                        class="profile-header-input-button"><i class="far fa-search"></i>
+                                        Buscar</button>
+                                </div>
+                            </div>
+                            <p style="color: red;">
+                                {{rangeError}}
+                            </p>
+                            <p style="margin-left: 10px;">Périodo de: </p>
+                            <div style="display: flex; margin-left: 10px;">
+                                <button v-bind:class="[period == 3? 'monthActive' : 'filterMonths']" @click="filterByPeriod(3)">3 meses</button>
+                                <button v-bind:class="[period == 6? 'monthActive' : 'filterMonths']" @click="filterByPeriod(6)">6 meses</button>
+                                <button v-bind:class="[period == 12? 'monthActive' : 'filterMonths']" @click="filterByPeriod(12)">1 ano</button>
+                            </div>
+                        </section>
+                        <section class="profile-body">
+                            <section>
+                                <h4 class="profile-title">RESUMO</h4>
+                                <div class="profile-resumo-container">
+                                    <div class="profile-resumo-info">
+                                        <p class="profile-subtitle">Período</p>
+                                        <div v-if="showdaterange == true" class="profile-title center">
+                                            <div
+                                                v-if="(date.inicio != null && date.inicio != '') && (date.fim != null && date.fim != '')">
+                                                De {{simpleDateFormat(date.inicio)}} até {{simpleDateFormat(date.fim)}}
+                                                </p>
+                                            </div>
+
+                                            <div
+                                                v-if="(date.inicio != null && date.inicio != '') && (date.fim == '' || date.fim == null)">
+                                                A partir de {{simpleDateFormat(date.inicio)}}</p>
+                                            </div>
+
+                                            <div
+                                                v-if="(date.inicio == '' || date.inicio == null) && (date.fim != null && date.fim != '')">
+                                                Até {{simpleDateFormat(date.fim)}}</p>
+                                            </div>
+                                        </div>
+                                        <p v-if="showdaterange == false" class="profile-title center">Todos</p>
+                                    </div>
+                                    <div class="profile-resumo-info">
+                                        <p class="profile-subtitle">Allpoints acumulados</p>
+                                        <div style="display: flex;">
+                                            <img src="/_assets/_icons/allpoints-icon-pink.svg" alt=""
+                                                style="margin-right: 8px;">
+                                            <p class="profile-boldtitle" v-if="earnTotal">{{earnTotal}}</p>
+                                            <p class="profile-boldtitle" v-else>0,00</p>
+                                        </div>
+                                    </div>
+                                    <div class="profile-resumo-info">
+                                        <p class="profile-subtitle">Allpoints resgatados</p>
+                                        <div style="display: flex;">
+                                            <img src="/_assets/_icons/allpoints-icon-pink.svg" alt=""
+                                                style="margin-right: 8px;">
+                                            <p class="profile-boldtitle" v-if="burnTotal">{{burnTotal}}</p>
+                                            <p class="profile-boldtitle" v-else>0,00</p>
+                                        </div>
+                                    </div>
+                                    <!-- <a href="" class="profile-optiontitle center">Ver minhas viagens deste período</a> -->
+                                </div>
+                            </section>
+                            <div class="margin-top">
+                                <h3 class="profile-title">TRANSAÇÕES</h3>
+                                <section class="profile-options" v-if="balance.frozen > 0">
+                                    <img class="profile-options-avatar" width="56px" height="56px" src="/_assets/_icons/clock.svg" alt="">
+                                    <div class="profile-options-divider">
+                                        <div class="center">
+                                            <p class="profile-tagtitle">Aguardando para ser debitado</p>
+                                            <p class="profile-title">Pontos Congelados</p>
+                                        </div>
+                                        <!-- <a href="" class="profile-optiontitle center right"
+                                            v-show="item.type != 'Acumulo'">Ver detalhes</a> -->
+                                        <div class="profile-options-value center">
+                                            <div class="flex" style="margin-left: auto;">
+                                                <!-- <p class="profile-title center" v-show="item.type == 'Resgate'">-</p> -->
+                                                <img src="/_assets/_icons/allpoints-icon-small.svg" alt=""
+                                                    class="center margin-left-small">
+                                                <p class="profile-valuetitle center margin-left-small">{{balance.frozen}}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- Options -->
+                                <section class="profile-options" v-if="loadingFilter === false"
+                                    v-for="item in transactions">
+                                    <img class="profile-options-avatar" width="56px" height="56px"
+                                        src="/_assets/_imgs/avatar-placeholder.png" alt="">
+                                    <div class="profile-options-divider">
+                                        <div class="center">
+                                            <p class="profile-tagtitle">{{item.type}}</p>
+                                            <p class="profile-title">{{item.title}}</p>
+                                        </div>
+                                        <!-- <a href="" class="profile-optiontitle center right"
+                                            v-show="item.type != 'Acumulo'">Ver detalhes</a> -->
+                                        <div class="profile-options-value center">
+                                            <div class="flex" style="margin-left: auto;">
+                                                <!-- <p class="profile-title center" v-show="item.type == 'Resgate'">-</p> -->
+                                                <img src="/_assets/_icons/allpoints-icon-small.svg" alt=""
+                                                    class="center margin-left-small">
+                                                <p class="profile-valuetitle center margin-left-small">{{item.value}}
+                                                </p>
+                                            </div>
+                                            <p class="profile-subtitle text-right">{{dateFormat(item.creation_time)}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </section>
+                                <section class="profile-options"
+                                    v-if="transactions.length == 0 && loadingFilter === false">
+                                    <p>Você não possui transações</p>
+                                </section>
+                                <section class="profile-options" v-if="loadingFilter === true">
+                                    <p style="margin: auto;"><b>Carregando transações...</b></p>
+                                </section>
+                            </div>
+                        </section>
+                    </section>
+                    <!-- Box Extrato Mobile -->
+                    <section class="profile-box-mobile" v-show="showContent === 'extract'">
+                        <section class="profile-box-mobile-container">
+                            <div>
+                                <h4 class="profile-title">RESUMO</h4>
+                                <h4 class="profile-title">De 01/01/2021 até 31/12/2021</h4>
+                            </div>
+                            <p class="profile-optiontitle right">Ver minhas viagens deste período</p>
+                            <span class="profile-line-break"></span>
+                        </section>
+                        <section class="profile-box-mobile-container">
+                            <!-- <div>
+                                <h4 class="profile-title">VENCIMENTO</h4>
+                                <h4 class="profile-title" style="font-weight: 400;">SEUS ALLPOINTS NÃO VENCEM</h4>
+                            </div> -->
+                            <div class="profile-acumulados">
+                                <div>
+                                    <h4 class="profile-title" style="text-align: center;">Allpoints acumulados</h4>
+                                    <div style="margin-left: auto; margin-right: auto;display: flex;">
+                                        <svg style="margin-top: auto; margin-bottom: auto; margin-right: 8px" width="22"
+                                            height="17" viewBox="0 0 22 17" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.0927 14.0937L14.0927 14.0937L19.42 8.76637C21.3107 6.87567 21.3107 3.8104 19.42 1.91971C17.5294 0.0290804 14.464 0.0290804 12.5734 1.91971L7.24602 7.24704L7.24602 7.24704C5.35533 9.13766 5.35533 12.203 7.24602 14.0937C9.13672 15.9844 12.2021 15.9844 14.0927 14.0937Z"
+                                                fill="#EFEFEF" stroke="#1C1C1C" />
+                                            <path
+                                                d="M15.5211 8.67615L8.76464 1.91964C8.76463 1.91964 8.76463 1.91963 8.76463 1.91963C6.87922 0.0342941 3.82555 0.0290899 1.93362 1.90405L1.91797 1.9197C0.0273418 3.8104 0.0273418 6.87567 1.91797 8.76637L7.2453 14.0937C9.136 15.9844 12.2013 15.9844 14.092 14.0937L16.7279 11.4578L17.0909 11.0948L17.0923 11.0962L18.4389 9.74962C18.3294 9.75962 18.2184 9.76474 18.1063 9.76474C17.2931 9.76474 16.5428 9.49557 15.9393 9.04268L15.9163 9.07143L15.5211 8.67615Z"
+                                                fill="#EFEFEF" stroke="#1C1C1C" />
+                                        </svg>
+                                        <p class="profile-boldtitle" v-if="earnTotal">{{earnTotal}}</p>
+                                        <p class="profile-boldtitle" v-else>0,00</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="profile-title" style="text-align: center;">Allpoints resgatados</h4>
+                                    <div style="margin-left: auto; margin-right: auto;display: flex;">
+                                        <svg style="margin-top: auto; margin-bottom: auto; margin-right: 8px" width="22"
+                                            height="17" viewBox="0 0 22 17" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M14.0927 14.0937L14.0927 14.0937L19.42 8.76637C21.3107 6.87567 21.3107 3.8104 19.42 1.91971C17.5294 0.0290804 14.464 0.0290804 12.5734 1.91971L7.24602 7.24704L7.24602 7.24704C5.35533 9.13766 5.35533 12.203 7.24602 14.0937C9.13672 15.9844 12.2021 15.9844 14.0927 14.0937Z"
+                                                fill="#EFEFEF" stroke="#1C1C1C" />
+                                            <path
+                                                d="M15.5211 8.67615L8.76464 1.91964C8.76463 1.91964 8.76463 1.91963 8.76463 1.91963C6.87922 0.0342941 3.82555 0.0290899 1.93362 1.90405L1.91797 1.9197C0.0273418 3.8104 0.0273418 6.87567 1.91797 8.76637L7.2453 14.0937C9.136 15.9844 12.2013 15.9844 14.092 14.0937L16.7279 11.4578L17.0909 11.0948L17.0923 11.0962L18.4389 9.74962C18.3294 9.75962 18.2184 9.76474 18.1063 9.76474C17.2931 9.76474 16.5428 9.49557 15.9393 9.04268L15.9163 9.07143L15.5211 8.67615Z"
+                                                fill="#EFEFEF" stroke="#1C1C1C" />
+                                        </svg>
+                                        <p class="profile-boldtitle" v-if="burnTotal">{{burnTotal}}</p>
+                                        <p class="profile-boldtitle" v-else>0,00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="profile-box-mobile-block">
+                            <div class="profile-box-mobile-block-buscar">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h4 class="profile-title">BUSCAR TRANSAÇÕES</h4>
+                                    <a v-if="isFiltered" @click="removeFiltro" style="cursor: pointer;"
+                                            class="profile-optiontitle center">Remover filtro</a>
+                                </div>
+                                <p style="margin-left: 7%; margin-top: 10px;margin-bottom: 5px;">Início</p>
+                                <input type="date" placeholder="Início" class="profile-input profile-data-pesquisar"
+                                    v-model="date.inicio" style="margin-bottom: 10px;">
+                                <p style="margin-left: 7%; margin-top: 10px;margin-bottom: 5px;">Fim</p>
+                                <input type="date" placeholder="Início" class="profile-input profile-data-pesquisar"
+                                    v-model="date.fim" style="margin-bottom: 10px;">
+                                <button @click="filtrar" class="profile-header-input-button"><i
+                                        class="far fa-search"></i>
+                                    Buscar</button>
+
+                                <p style="margin-left: 7%;">Périodo de: </p>
+                                <div style="display: flex; margin-left: 7%;">
+                                    <button v-bind:class="[period == 3? 'monthActive' : 'filterMonths']" @click="filterByPeriod(3)">3 meses</button>
+                                    <button v-bind:class="[period == 6? 'monthActive' : 'filterMonths']" @click="filterByPeriod(6)">6 meses</button>
+                                    <button v-bind:class="[period == 12? 'monthActive' : 'filterMonths']" @click="filterByPeriod(12)">1 ano</button>
+                                </div>
+                            </div>
+                            <div class="profile-box-mobile-block-buscar">
+                                <h3 class="profile-title">TRANSAÇÕES</h4>
+                                    <section class="profile-options" v-if="balance.frozen > 0">
+                                        <img class="profile-options-avatar" width="56px" height="56px" src="/_assets/_icons/clock.svg" alt="">
+                                        <div class="profile-options-divider">
+                                            <div class="center">
+                                                <p class="profile-tagtitle">Aguardando para ser debitado</p>
+                                                <p class="profile-title">Pontos Congelados</p>
+                                            </div>
+                                            <!-- <a href="" class="profile-optiontitle center right"
+                                                v-show="item.type != 'Acumulo'">Ver detalhes</a> -->
+                                            <div class="profile-options-value center">
+                                                <div class="flex" style="margin-left: auto;">
+                                                    <!-- <p class="profile-title center" v-show="item.type == 'Resgate'">-</p> -->
+                                                    <img src="/_assets/_icons/allpoints-icon-small.svg" alt=""
+                                                        class="center margin-left-small">
+                                                    <p class="profile-valuetitle center margin-left-small">{{balance.frozen}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="profile-options" v-if="loadingFilter === false"
+                                        v-for="item in transactions">
+                                        <img class="profile-options-avatar" width="56px" height="56px"
+                                            src="/_assets/_imgs/avatar-placeholder.png" alt="">
+                                        <div class="profile-options-divider">
+                                            <div class="center">
+                                                <p class="profile-tagtitle">{{item.type}}</p>
+                                                <p class="profile-title mobile-profile-title">{{item.title}}</p>
+                                            </div>
+                                            <!-- <a href="" class="profile-optiontitle center right"
+                                                v-show="item.type != 'Acumulo'">Ver detalhes</a> -->
+                                            <div class="profile-options-value center">
+                                                <div class="flex" style="margin-left: auto;">
+                                                    <!-- <p class="profile-title center" v-show="item.type == 'Resgate'">-
+                                                    </p> -->
+                                                    <img src="/_assets/_icons/allpoints-icon-small.svg" alt=""
+                                                        class="center margin-left-small">
+                                                    <p class="profile-valuetitle center margin-left-small"
+                                                        style="text-align: right;">
+                                                        {{item.value}}
+                                                    </p>
+                                                </div>
+                                                <!-- <p class="profile-subtitle text-right">{{item.creation_time}}</p> -->
+                                            </div>
+                                        </div>
+                                    </section>
+                                    <section class="profile-options"
+                                        v-if="transactions.length == 0 && loadingFilter === false">
+                                        <p>Você não possui transações</p>
+                                    </section>
+                                    <section class="profile-options" v-if="loadingFilter === true">
+                                        <p style="margin: auto;"><b>Carregando transações...</b></p>
+                                    </section>
+                            </div>
+                        </section>
+                    </section>
+                    <!-- Box Viajens -->
+                    <section class="profile-box-viajens" v-show="showContent == 'travels'">
+                        <h5 class="travels-subtitulo">PRÓXIMAS VIAGENS</h5>
+                        <p class="travels-subtitulo" v-if="bookings[0] == null">Você não tem próximas viagens</p>
+                        <div class="minhas-viagens-card" v-for="item in bookings">
+                            <div class="card-header color-purple">
+                                <p>Hospedagem</p>
+                                <img src="/_assets/_imgs/logo-allpoints-white.png" alt="">
+                            </div>
+
+                            <div class="card-content">
+                                <div class="card-content-left">
+                                    <!-- <img class='card-img-empresa' src="/_assets/_imgs/logo-allpoints.png" alt=""> -->
+                                    <h2>{{item.hotel}}</h2>
+                                    <p class="card-extra-text">{{item.apartment}}</p>
+
+                                    <div class="card-data-inicio-fim">
+                                        <div class="data-inicio">
+                                            <i class="far fa-calendar"></i>
+                                            <div>
+                                                <p class="data-header">Ida</p>
+                                                <p class="data-data">{{item.check_in.split("T")[0]}}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="data-fim">
+                                            <i class="far fa-calendar"></i>
+                                            <div>
+                                                <p class="data-header">Volta</p>
+                                                <p class="data-data">{{item.check_out.split("T")[0]}}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="data-fim">
+                                            <i class="far fa-clock"></i>
+                                            <div>
+                                                <p class="data-header">Status</p>
+                                                <p class="data-data">{{item.situation}}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="data-fim">
+                                            <i class="far fa-calendar"></i>
+                                            <div>
+                                                <p class="data-header">Reserva</p>
+                                                <p class="data-data">{{item.locator}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-content-right">
+                                    <div class="card-content-right-top">
+                                        <p v-show="item.bonus_type == 'POINTS'" class="card-right-allpoints">
+                                            Você acumulará {{ parseFloat(item.bonus_value.replace('.', ',')).toFixed(2)
+                                            }} Allpoints
+                                        </p>
+                                        <p v-show="item.bonus_type == 'CASHBACK'" class="card-right-allpoints">
+                                            Você acumulará R$ {{ parseFloat(item.bonus_value.replace('.',
+                                            ',')).toFixed(2) }}
+                                        </p>
+                                        <!-- <p class="dinheiro-extra">+ R$300</p>
+                                        <p class="sua-economia">Você economizou R$ 250</p> -->
+                                    </div>
+                                    <button class="card-ver-detalhes">ver detalhes</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <h5 class="travels-subtitulo" style="margin-top: 40px;">VIAGENS FINALIZADAS</h5>
+                        <p class="travels-subtitulo"
+                            v-if="bookings.filter((x) => x.situation == 'FINISHED').length == 0">Você não tem viagens
+                            finalizadas</p>
+                        <div class="minhas-viagens-card" v-for="item in bookings" v-if="item.situation != 'CONFIRMED'">
+                            <div class="card-header color-blue">
+                                <p>Hospedagem</p>
+                                <img src="/_assets/_imgs/logo-allpoints-white.png" alt="">
+                            </div>
+
+                            <div class="card-content">
+                                <div class="card-content-left">
+                                    <img class='card-img-empresa' src="/_assets/_imgs/logo-allpoints.png" alt="">
+                                    <h2>São Paulo para florianópolis</h2>
+                                    <p class="card-extra-text">Texto extra</p>
+
+                                    <div class="card-data-inicio-fim">
+                                        <div class="data-inicio">
+                                            <i class="far fa-calendar"></i>
+                                            <div>
+                                                <p class="data-header">Ida</p>
+                                                <p class="data-data">14 Mar</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="data-fim">
+                                            <i class="far fa-calendar"></i>
+                                            <div>
+                                                <p class="data-header">Volta</p>
+                                                <p class="data-data">30 Mar</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card-content-right">
+                                    <div class="card-content-right-top">
+                                        <p class="card-right-allpoints">200 Allpoints</p>
+                                        <p class="dinheiro-extra">+ R$300</p>
+                                        <p class="sua-economia">Você economizou R$ 250</p>
+                                    </div>
+                                    <button class="card-ver-detalhes">ver detalhes</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </section>
+                    <!-- Box Notifications -->
+                    <section class="profile-box" v-show="showContent == 'notifications'">
+                        <div class="profile-body">
+                            <div
+                                style="display: flex; justify-content: space-between; margin-top: 24px; margin-bottom: 24px;">
+                                <h5 class="profile-title">RECENTE</h5>
+                                <a href="#" class="profile-optiontitle center">Marcar tudo como lido</a>
+                            </div>
+                            <div>
+                                <!-- Notifications -->
+                                <div class="profile-options" v-for="item in notificationsSeen">
+                                    <img class="profile-options-avatar" width="56px" height="56px"
+                                        src="/_assets/_imgs/avatar-placeholder.png" alt="">
+                                    <!-- <img class="profile-options-avatar" width="56px" height="56px" :src="item.sender.avatar" alt=""> -->
+
+                                    <div class="profile-options-divider">
+                                        <div class="center">
+                                            <p class="profile-title">{{item.body["pt-br"]}}</p>
+                                            <p class="profile-title pink-text">{{notificationsDate(item._ct)}} atrás</p>
+                                        </div>
+                                        <div style="display: flex;">
+                                            <a href="" class="profile-optiontitle center"
+                                                style="margin-right: 80px;">Ver detalhes</a>
+                                            <i @click="openDropdownDots" class="far fa-ellipsis-v"></i>
+                                            <div v-if="isDotsOpen == true" class="dropdown-dots">
+                                                <label class="dropdown-label" style="margin-bottom: 0;">
+                                                    <input type="checkbox" class="dropdown-content-input"
+                                                        @click='notificationSeen(item.id)' v-model="seen"> Marcar como
+                                                    lido
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                            <span class="option-circle center"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p v-if="notificationsSeen.length == 0" class="profile-title">Você não tem nenhuma
+                                    notificação recente</p>
+                            </div>
+
+                            <div>
+                                <h5 class="profile-title" style="margin-top: 24px; margin-bottom: 24px;">ANTIGAS</h5>
+                            </div>
+                            <div>
+                                <!-- Notifications Old -->
+                                <div class="profile-options" v-for="item in notificationsNotSeen">
+                                    <img class="profile-options-avatar" width="56px" height="56px"
+                                        src="/_assets/_imgs/avatar-placeholder.png" alt="">
+                                    <!-- <img class="profile-options-avatar" width="56px" height="56px" :src="item.sender.avatar" alt=""> -->
+
+                                    <div class="profile-options-divider">
+                                        <div class="center">
+                                            <p class="profile-title gray-text">{{item.body["pt-br"]}}</p>
+                                            <p class="profile-title gray-text">{{notificationsDate(item._ct)}} atrás</p>
+                                        </div>
+                                        <a href="" class="profile-optiontitle center" style="margin-right: 175px;">Ver
+                                            detalhes</a>
+                                    </div>
+
+                                </div>
+                                <p v-if="notificationsNotSeen.length == 0" class="profile-title gray-text">Você não tem
+                                    nenhuma notificação antiga</p>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Box Assinatura -->
+                    <section class="profile-box" v-show="showContent == 'subscription'">
+                        <section class="subscription-card-container" v-if="noSubscription == false">
+                            <div class="subscription-card card-top" style="border-bottom: 0px;">
+                                <div style="display: flex;">
+                                    <div>
+                                        <p class="subscription-card-title">DETALHES DO MEU PLANO</p>
+                                        <p class="subscription-card-subtitle">Valor mensal</p>
+                                        <p class="subscription-card-text-bold">R${{plan.valueUnits}}</p>
+                                    </div>
+
+                                    <div class="align-bottom">
+                                        <p class="subscription-card-subtitle">Allpoints por mês</p>
+                                        <div class="subscription-points">
+                                            <img src="/_assets/_icons/allpoints-icon-pink.svg" alt="">
+                                            <p>{{plan?.points?.toFixed(2)}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--      <div class="subscription-button-container">
+                                  <button class="subscription-button" @click="showModalAssinatura = true">Cancelar
+                                        assinatura</button> -->
+                                <!-- <button class="subscription-button" @click="showModalPlano = true">Alterar
+                                        plano</button> 
+                                </div>-->
+                            </div>
+
+                            <div class="subscription-card card-bottom">
+                                <div style="display: flex;">
+                                    <div v-if="paymentMethod">
+                                        <p class="subscription-card-title">DADOS FINANCEIROS</p>
+                                        <p class="subscription-card-subtitle">Cartão de crédito</p>
+                                        <div style="display: flex; margin-top: 6px;">
+                                            <img :src="paymentFlag" style="width: 45px; margin-right: 15px;">
+                                            <p class="subscription-card-text-bold">Final
+                                                {{paymentMethod.data.display_number.replace('XXXX-XXXX-XXXX-','')}}</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="align-bottom">
+                                        <p class="subscription-card-subtitle">Próxima cobrança</p>
+                                        <p class="subscription-card-text-bold">10 de julho de 2021</p>
+                                    </div> -->
+                                </div>
+
+                                <!-- <div class="subscription-button-container" style="justify-content: flex-end;">
+                                     <button class="subscription-button">Alterar dados de pagamento</button> 
+                                </div>  -->
+                            </div>
+                        </section>
+                    </section>
+
+                    <!-- Box visa -->
+
+                    <section class="profile-box" v-show="showContent == 'visa'">
+                        <section class="visa-card-container">
+                            <section class="visa-card-header">
+                                <div>
+                                    <h3>ATIVAR CASHBACK VISA</h3>
+                                    <svg width="58" height="34" viewBox="0 0 58 34" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="0.5" y="0.5" width="57" height="33" rx="16.5" fill="white" />
+                                        <circle cx="41" cy="17" r="15" fill="#EC0080" stroke="white" stroke-width="2" />
+                                        <rect x="0.5" y="0.5" width="57" height="33" rx="16.5" stroke="#A5A5A5" />
+                                    </svg>
+                                </div>
+                            </section>
+                            <!-- <p>DADOS FINANCEIROS</p>
+                            <div style="display: flex;">
+                                <div class="chart-area">
+                                    <img src="/_assets/_imgs/vaidevisa.svg" style="margin: 30px">
+                                </div>
+                                <div class="dados-financeiros">
+                                    <div>
+                                        <p class="profile-subtitle">Conta de Recebimento</p>
+                                        <p class="profile-title">001 - Banco do Brasil | Ag 4532-0 | Conta 2902-1</p>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <p class="profile-subtitle">Saldo de Cashback</p>
+                                            <p class="profile-pagetitle">R$ 4390,00</p>
+                                        </div>
+                                        <div>
+                                            <p class="profile-subtitle">Cashback a ser resgatado</p>
+                                            <p class="profile-pagetitle">R$ 110,00</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <svg id="visa-button" width="272" height="48" viewBox="0 0 272 48" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <rect width="272" height="48" rx="24" fill="#EC0080" />
+                                <path
+                                    d="M36.2921 29L34.2481 25.29H33.6741V29H31.2801V19.172H35.2981C36.0728 19.172 36.7308 19.3073 37.2721 19.578C37.8228 19.8487 38.2334 20.222 38.5041 20.698C38.7748 21.1647 38.9101 21.6873 38.9101 22.266C38.9101 22.9193 38.7234 23.5027 38.3501 24.016C37.9861 24.5293 37.4448 24.8933 36.7261 25.108L38.9941 29H36.2921ZM33.6741 23.596H35.1581C35.5968 23.596 35.9234 23.4887 36.1381 23.274C36.3621 23.0593 36.4741 22.756 36.4741 22.364C36.4741 21.9907 36.3621 21.6967 36.1381 21.482C35.9234 21.2673 35.5968 21.16 35.1581 21.16H33.6741V23.596ZM42.8069 21.09V23.078H46.0129V24.926H42.8069V27.082H46.4329V29H40.4129V19.172H46.4329V21.09H42.8069ZM51.5431 29.098C50.8245 29.098 50.1805 28.9813 49.6111 28.748C49.0418 28.5147 48.5845 28.1693 48.2391 27.712C47.9031 27.2547 47.7258 26.704 47.7071 26.06H50.2551C50.2925 26.424 50.4185 26.704 50.6331 26.9C50.8478 27.0867 51.1278 27.18 51.4731 27.18C51.8278 27.18 52.1078 27.1007 52.3131 26.942C52.5185 26.774 52.6211 26.5453 52.6211 26.256C52.6211 26.0133 52.5371 25.8127 52.3691 25.654C52.2105 25.4953 52.0098 25.3647 51.7671 25.262C51.5338 25.1593 51.1978 25.0427 50.7591 24.912C50.1245 24.716 49.6065 24.52 49.2051 24.324C48.8038 24.128 48.4585 23.8387 48.1691 23.456C47.8798 23.0733 47.7351 22.574 47.7351 21.958C47.7351 21.0433 48.0665 20.3293 48.7291 19.816C49.3918 19.2933 50.2551 19.032 51.3191 19.032C52.4018 19.032 53.2745 19.2933 53.9371 19.816C54.5998 20.3293 54.9545 21.048 55.0011 21.972H52.4111C52.3925 21.6547 52.2758 21.4073 52.0611 21.23C51.8465 21.0433 51.5711 20.95 51.2351 20.95C50.9458 20.95 50.7125 21.0293 50.5351 21.188C50.3578 21.3373 50.2691 21.5567 50.2691 21.846C50.2691 22.1633 50.4185 22.4107 50.7171 22.588C51.0158 22.7653 51.4825 22.9567 52.1171 23.162C52.7518 23.3767 53.2651 23.582 53.6571 23.778C54.0585 23.974 54.4038 24.2587 54.6931 24.632C54.9825 25.0053 55.1271 25.486 55.1271 26.074C55.1271 26.634 54.9825 27.1427 54.6931 27.6C54.4131 28.0573 54.0025 28.4213 53.4611 28.692C52.9198 28.9627 52.2805 29.098 51.5431 29.098ZM63.1244 22.28C62.9471 21.9533 62.6904 21.706 62.3544 21.538C62.0278 21.3607 61.6404 21.272 61.1924 21.272C60.4178 21.272 59.7971 21.5287 59.3304 22.042C58.8638 22.546 58.6304 23.2227 58.6304 24.072C58.6304 24.9773 58.8731 25.6867 59.3584 26.2C59.8531 26.704 60.5298 26.956 61.3884 26.956C61.9764 26.956 62.4711 26.8067 62.8724 26.508C63.2831 26.2093 63.5818 25.78 63.7684 25.22H60.7304V23.456H65.9384V25.682C65.7611 26.2793 65.4578 26.8347 65.0284 27.348C64.6084 27.8613 64.0718 28.2767 63.4184 28.594C62.7651 28.9113 62.0278 29.07 61.2064 29.07C60.2358 29.07 59.3678 28.86 58.6024 28.44C57.8464 28.0107 57.2538 27.418 56.8244 26.662C56.4044 25.906 56.1944 25.0427 56.1944 24.072C56.1944 23.1013 56.4044 22.238 56.8244 21.482C57.2538 20.7167 57.8464 20.124 58.6024 19.704C59.3584 19.2747 60.2218 19.06 61.1924 19.06C62.3684 19.06 63.3578 19.3447 64.1604 19.914C64.9724 20.4833 65.5091 21.272 65.7704 22.28H63.1244ZM73.3825 27.264H69.7145L69.1265 29H66.6205L70.1765 19.172H72.9485L76.5045 29H73.9705L73.3825 27.264ZM72.7665 25.416L71.5485 21.818L70.3445 25.416H72.7665ZM84.6568 19.172V21.09H82.0528V29H79.6588V21.09H77.0548V19.172H84.6568ZM91.9762 27.264H88.3082L87.7202 29H85.2142L88.7702 19.172H91.5422L95.0982 29H92.5642L91.9762 27.264ZM91.3602 25.416L90.1422 21.818L88.9382 25.416H91.3602ZM106.637 22.336C106.637 22.9053 106.507 23.428 106.245 23.904C105.984 24.3707 105.583 24.7487 105.041 25.038C104.5 25.3273 103.828 25.472 103.025 25.472H101.541V29H99.1473V19.172H103.025C103.809 19.172 104.472 19.3073 105.013 19.578C105.555 19.8487 105.961 20.222 106.231 20.698C106.502 21.174 106.637 21.72 106.637 22.336ZM102.843 23.568C103.301 23.568 103.641 23.4607 103.865 23.246C104.089 23.0313 104.201 22.728 104.201 22.336C104.201 21.944 104.089 21.6407 103.865 21.426C103.641 21.2113 103.301 21.104 102.843 21.104H101.541V23.568H102.843ZM114.002 27.264H110.334L109.746 29H107.24L110.796 19.172H113.568L117.124 29H114.59L114.002 27.264ZM113.386 25.416L112.168 21.818L110.964 25.416H113.386ZM123.218 29L121.174 25.29H120.6V29H118.206V19.172H122.224C122.999 19.172 123.657 19.3073 124.198 19.578C124.749 19.8487 125.159 20.222 125.43 20.698C125.701 21.1647 125.836 21.6873 125.836 22.266C125.836 22.9193 125.649 23.5027 125.276 24.016C124.912 24.5293 124.371 24.8933 123.652 25.108L125.92 29H123.218ZM120.6 23.596H122.084C122.523 23.596 122.849 23.4887 123.064 23.274C123.288 23.0593 123.4 22.756 123.4 22.364C123.4 21.9907 123.288 21.6967 123.064 21.482C122.849 21.2673 122.523 21.16 122.084 21.16H120.6V23.596ZM133.457 27.264H129.789L129.201 29H126.695L130.251 19.172H133.023L136.579 29H134.045L133.457 27.264ZM132.841 25.416L131.623 21.818L130.419 25.416H132.841ZM151.758 19.172V29H149.364V23.106L147.166 29H145.234L143.022 23.092V29H140.628V19.172H143.456L146.214 25.976L148.944 19.172H151.758ZM155.873 19.172V29H153.479V19.172H155.873ZM166.4 29H164.006L160.002 22.938V29H157.608V19.172H160.002L164.006 25.262V19.172H166.4V29ZM176.648 19.172V29H174.254V24.954H170.53V29H168.136V19.172H170.53V23.022H174.254V19.172H176.648ZM184.494 27.264H180.826L180.238 29H177.732L181.288 19.172H184.06L187.616 29H185.082L184.494 27.264ZM183.878 25.416L182.66 21.818L181.456 25.416H183.878ZM191.259 24.072C191.259 23.1013 191.469 22.238 191.889 21.482C192.309 20.7167 192.892 20.124 193.639 19.704C194.395 19.2747 195.249 19.06 196.201 19.06C197.368 19.06 198.366 19.368 199.197 19.984C200.028 20.6 200.583 21.44 200.863 22.504H198.231C198.035 22.0933 197.755 21.7807 197.391 21.566C197.036 21.3513 196.63 21.244 196.173 21.244C195.436 21.244 194.838 21.5007 194.381 22.014C193.924 22.5273 193.695 23.2133 193.695 24.072C193.695 24.9307 193.924 25.6167 194.381 26.13C194.838 26.6433 195.436 26.9 196.173 26.9C196.63 26.9 197.036 26.7927 197.391 26.578C197.755 26.3633 198.035 26.0507 198.231 25.64H200.863C200.583 26.704 200.028 27.544 199.197 28.16C198.366 28.7667 197.368 29.07 196.201 29.07C195.249 29.07 194.395 28.86 193.639 28.44C192.892 28.0107 192.309 27.418 191.889 26.662C191.469 25.906 191.259 25.0427 191.259 24.072ZM206.977 29.098C206.053 29.098 205.204 28.8833 204.429 28.454C203.664 28.0247 203.052 27.4273 202.595 26.662C202.147 25.8873 201.923 25.0193 201.923 24.058C201.923 23.0967 202.147 22.2333 202.595 21.468C203.052 20.7027 203.664 20.1053 204.429 19.676C205.204 19.2467 206.053 19.032 206.977 19.032C207.901 19.032 208.746 19.2467 209.511 19.676C210.286 20.1053 210.892 20.7027 211.331 21.468C211.779 22.2333 212.003 23.0967 212.003 24.058C212.003 25.0193 211.779 25.8873 211.331 26.662C210.883 27.4273 210.276 28.0247 209.511 28.454C208.746 28.8833 207.901 29.098 206.977 29.098ZM206.977 26.914C207.761 26.914 208.386 26.6527 208.853 26.13C209.329 25.6073 209.567 24.9167 209.567 24.058C209.567 23.19 209.329 22.4993 208.853 21.986C208.386 21.4633 207.761 21.202 206.977 21.202C206.184 21.202 205.549 21.4587 205.073 21.972C204.606 22.4853 204.373 23.1807 204.373 24.058C204.373 24.926 204.606 25.6213 205.073 26.144C205.549 26.6573 206.184 26.914 206.977 26.914ZM222.127 29H219.733L215.729 22.938V29H213.335V19.172H215.729L219.733 25.262V19.172H222.127V29ZM230.932 19.172V21.09H228.328V29H225.934V21.09H223.33V19.172H230.932ZM238.252 27.264H234.584L233.996 29H231.49L235.046 19.172H237.818L241.374 29H238.84L238.252 27.264ZM237.636 25.416L236.418 21.818L235.214 25.416H237.636Z"
+                                    fill="white" />
+                            </svg>
+
+
+                        </section>
+                    </section>
+
+                    <!-- Modal Cancelar Assinatura -->
+                    <section v-show='showModalAssinatura'>
+                        <div class="modal-container">
+                            <div class="modal-content modal-assinatura-size">
+                                <div class="modal-close">
+                                    <i class="far fa-times" @click="showModalAssinatura = false"></i>
+                                </div>
+
+                                <p class="modal-title">Cancelar sua poupança de viagens?</p>
+                                <p class="modal-subtitle">Você tem certeza que deseja interromper a sua poupança de
+                                    viagens? Com o cancelamento, seus {{parseInt(this.balance.available)}} Allpoints
+                                    passam a vencer em 6 meses.</p>
+                                <textarea name="motivo-cancelamento" id="" placeholder="Motivo do cancelamento"
+                                    v-model="motivoCancelamento"></textarea>
+                                <button class="modal-pink-button" @click="cancelSubscription">SIM, QUERO
+                                    CANCELAR</button>
+                                <button class="modal-black-button" @click="showModalAssinatura = false">NÃO, QUERO
+                                    CONTINUAR</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Modal Alterar Plano -->
+                    <section v-show='showModalPlano'>
+                        <div class="modal-container">
+                            <div class="modal-content modal-plano-size">
+                                <div class="modal-close">
+                                    <i class="far fa-times" @click="showModalPlano = false"></i>
+                                </div>
+
+                                <p class="modal-title">Altere seu plano!</p>
+                                <span class="planValueModal">por <b> R$</b><b><span id="planValue"
+                                            class=""></span>,00</b>
+                                </span>
+
+                                <p class="recebe-por-mes">receba por mês</p>
+                                <span class="modalAllPointsValue"><span id="allpointValue"></span> Allpoints</span>
+
+                                <div class="slidecontainer">
+                                    <input @change="handleSlider" type="range" min="10" max="1000" step="10"
+                                        :value="this.subscriptions.value" class="slider" id="myRange">
+                                </div>
+
+                                <p v-show="errorPlan != null" class="erro-message">{{errorPlan}}</p>
+
+                                <button class="modal-pink-button" style="margin-top: 22px;"
+                                    @click='changeSubscription'>SIM, Alterar meu plano</button>
+                                <button class="modal-black-button" @click="showModalPlano = false">NÃO, Manter desse
+                                    jeito</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Modal de suporte e ajuda -->
+                    <section v-show='showModalSuporte'>
+                        <div class="modal-container">
+                            <div class="modal-content modal-size">
+                                <div class="modal-close">
+                                    <i class="far fa-times" @click="showModalSuporte = false"></i>
+                                </div>
+
+                                <p class="modal-title">Precisa de ajuda?</p>
+                                <p class="modal-subtitle">Fale com a gente. Em breve você receberá um retorno pelo e-mail que você utiliza para acessar Allpoints.club.</p>
+                                <textarea name="suporte" id="" placeholder="Descreva seu problema ou dúvida"></textarea>
+                                <button class="modal-pink-button">ENVIAR</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <modal-sucesso title="Assinatura cancelada com sucesso!" subtitle="" buttontext="Continuar"
+                        v-bind:showsuccess='this.showsuccess' @close="closeModal" @button="closeModal">
+                    </modal-sucesso>
+
+                    <modal-erro text="Não conseguimos cancelar sua assinatura!" buttontext="Continuar"
+                        v-bind:showerro='this.showerro' @close="closeModal" @button="closeModal">
+                    </modal-erro>
+            </section>
+            </section>
+
+            <section class="help-container">
+                <div class="help-title-container">
+                    <h2 class="help-title">COMO PODEMOS TE AJUDAR?</h2>
+                </div>
+
+                <div class="help-content">
+                    <div class="help-icon-text">
+                        <i class="fal fa-question-circle"></i>
+                        <a href="/perguntas" class="help-text">
+                            <p>Atendimento </p>
+                            <p class="help-text-pink"> ALLPOINTS</p>
+                        </a>
+                    </div>
+
+                    <!-- <hr class="help-hr"> -->
+
+                    <!-- <div class="help-icon-text">
+                        <i class="fal fa-comment-alt-lines"></i>
+                        <div class="help-text">
+                            <p>Fale conosco no </p>
+                            <p class="help-text-pink"> chat</p>
+                        </div>
+                    </div> -->
+                </div>
+            </section>
+        </main>
+        <footer class="home-footer">
+            <section class="footer-links">
+                <div class="footer-logo">
+                    <img src="/_assets/_imgs/logo-allpoints-white.png" alt="">
+                </div>
+                <div class="footer-content footer-about-us">
+                    <!-- <h3>Sobre nós</h3> -->
+                    <!-- <a href=""><span>A ALLPOINTS</span></a>
+                    <a href=""><span>TIME</span></a> -->
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">NEWSROOM</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">CARREIRA</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-how-it-works">
+                    <h3>Como funciona</h3>
+                    <!-- <a href=""><span>GANHE ALLPOINTS</span></a> -->
+                    <a href="/empresas"><span>PARA EMPRESAS</span></a>
+                    <a href="/carreira"><span>CARREIRA</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span>PARA HOTEIS </span></a> -->
+                    <!-- <a href=""><span>FAQ</span></a> -->
+                </div>
+                <div class="footer-content footer-know-more">
+                    <h3>Sobre</h3>
+                    <a href="/sobre"><span>A ALLPOINTS</span></a>
+                    <a href="/time"><span>TIME</span></a>
+                    <a href="/perguntas"><span>FAQ</span></a>
+                    <a href="/termos"><span>REGULAMENTO</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">BLOG</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">ALLPOINTS ACADEMY</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-contact">
+                    <h3>Contato</h3>
+                    <a href=""><span><b>E-mail:</b> contato@allpointshotels.com</span></a>
+                    <a href=""><span><b>Whatsapp:</b> +55 (11) 99022-3760</span></a>
+                    <a href=""><span><b>www.allpoints.club</b></span></a>
+                </div>
+            </section>
+            <div class="footer-line-division"></div>
+            <section class="footer-copyrigth">
+                <span>© 2015-2021 Allpoints<br>
+                    Todos os direitos reservados.</span>
+            </section>
+        </footer>
+
+        <cookies></cookies>
+
+        <section class="modal-intro" v-if="showModalIntro1">
+            <section class="modal-intro-container">
+                <div class="modal-intro-banner">
+                    <img style="margin: auto;" src="/_assets/_icons/profile-intro.svg" alt="">
+                </div>
+                <div class="modal-intro-body">
+                    <h3>Apresentando o novo extrato!</h3>
+                    <p style="margin-top: 8px;">Agora vai ficar muito mais fácil de entender seus Allpoints,
+                        pois <b>1 Allpoints = R$1,00!</b></p>
+                    <p v-if="balance != 204">Você tinha {{balance.oldAvailable}} Allpoints que agora são <b>{{balance.available}}</b></p>
+                        
+                    <button class="modal-intro-button" @click="nextIntro"> ENTENDA COMO FUNCIONA </button>
+                    <button @click="showModalIntro1 = false" class="modal-intro-black-button"> Agora não </button>
+                </div>
+            </section>
+        </section>
+
+        <section class="modal-intro" v-if="showModalIntro2">
+            <section class="modal-intro-container">
+                <div class="modal-intro-banner2">
+                    <img style="margin: auto;" src="/_assets/_icons/profile-intro2.svg" alt="">
+                </div>
+                <div class="modal-intro-body">
+                    <h3>Você só ganha com a mudança!</h3>
+                    <p style="margin-top: 8px;">O que você adquiria com 1000 Allpoints, vai conseguir adquirir com 25
+                        Allpoints <b>e ainda vai ganhar mais 10% de bônus extra.</b></p>
+                    <button @click="showModalIntro2 = false" class="modal-intro-button">Começar</button>
+                </div>
+            </section>
+        </section>
+
+    </div>
+    <script type="module" src="/profile/profile-viewmodel.js"></script>
+    <script type="module" src="/profile/profile-viewmodel.js"></script>
+
+
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+    </script>
+
+    <script type="text/javascript">
+        zE('webWidget', 'setLocale', 'pt_br');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZZQSLK2SP6');
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+
+</body>
+
+
+</html>

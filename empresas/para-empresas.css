@@ -1,0 +1,193 @@
+.para-empresas-banner{
+    position: relative;
+    height: 384px;
+    background-image: url("/_assets/_imgs/para-empresas.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.para-empresas-banner-info {
+    position: absolute;
+    top: 80px;
+    left: 80px;
+    color: white;
+}
+
+.para-empresas-banner-info h2 {
+    font-family: 'Poppins';
+    font-size: 48px;
+    line-height: 72px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    width: 80%;
+}
+
+.para-empresas-banner-info p {
+    width: 50%;
+    font-size: 18px;
+    line-height: 27px;
+    margin-bottom: 32px;
+}
+
+.para-empresas-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.para-empresas-content h3{
+    font-size: 24px;
+    line-height: 24px;
+    font-family: 'Poppins-Bold';
+    margin-bottom: 16px;
+    margin-top: 60px;
+    color: #1C1C1C;
+}
+
+.para-empresas-content > p{
+    width: 55%;
+    margin-bottom: 20px;
+    color: #1C1C1C;
+}
+
+.para-empresas-cards{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.para-empresas-card{
+    background-color: white;
+    max-width: 432px;
+    width: 30%;
+    min-height: 303px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 24px;
+    border-radius: 8px;
+    margin-right: 16px;
+}
+
+.para-empresas-card img{
+    width: 80px;
+    height: 80px;
+    margin-bottom: 16px;
+}
+
+.para-empresas-card h4{
+    font-size: 18px;
+    line-height: 27px;
+    font-family: 'Poppins-Bold';
+    color: var(--pink);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.para-empresas-card p{
+    font-size: 14px;
+    line-height: 21px;
+    font-family: 'Poppins';
+    color: #1C1C1C;
+}
+
+.para-empresas-form{
+    max-width: 656px;
+    width: 50%;
+    background-color: var(--purple);
+    margin: 80px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 80px;
+    border-radius: 16px;
+}
+
+.para-empresas-input{
+    width: 100%;
+    height: 48px;
+    background: #FFFFFF;
+    border: 1px solid #BBBBBB;
+    box-sizing: border-box;
+    border-radius: 24px;
+    margin-bottom: 24px;
+    padding-left: 24px;
+}
+
+.para-empresas-button{
+    width: 100%;
+    height: 48px;
+    background-color: var(--pink);
+    color: white;
+    border-radius: 24px;
+    font-size: 14px;
+    line-height: 16px;
+    font-family: 'Poppins-Bold';
+}
+
+#empresa-number{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+@media(max-width: 1000px){
+    .para-empresas-cards{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .para-empresas-card{
+        margin-bottom: 16px;
+        width: 50%;
+    }
+    .para-empresas-banner-info h2 {
+        font-size: 38px;
+        line-height: 50px;
+    }
+    .para-empresas-banner-info {
+        left: 30px;
+    }
+    .para-empresas-banner-info p {
+        font-size: 16px;
+        width: 70%;
+    }
+    .para-empresas-form{
+        width: 60%;
+    }
+}
+
+@media(max-width: 650px){
+    .para-empresas-banner-info h2 {
+        font-size: 24px;
+        line-height: 30px;
+    }
+    .para-empresas-banner-info {
+        top: 60px;
+        left: 30px;
+    }
+    .para-empresas-banner-info p {
+        font-size: 14px;
+        width: 70%;
+    }
+    .para-empresas-content > p{
+        width: 75%;
+    }
+    .para-empresas-card{
+        width: 70%;
+    }
+    .para-empresas-form{
+        width: 80%;
+        padding: 40px;
+    }
+}
+
+.iti__flag {background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/img/flags.png");}
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .iti__flag {background-image: url("https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/img/flags@2x.png");}
+}

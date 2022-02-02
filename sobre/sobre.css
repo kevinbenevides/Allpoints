@@ -1,0 +1,129 @@
+.sobre-banner{
+    /* margin-top: 96px; */
+    position: relative;
+    height: 384px;
+    background-image: url("/_assets/_imgs/sobre.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.sobre-banner-info {
+    position: absolute;
+    top: 80px;
+    left: 80px;
+    color: white;
+}
+
+.sobre-banner-info h2 {
+    font-family: 'Poppins';
+    font-size: 48px;
+    line-height: 72px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    width: 80%;
+}
+
+.sobre-banner-info p {
+    width: 50%;
+    font-size: 18px;
+    line-height: 27px;
+    margin-bottom: 32px;
+}
+
+.sobre-nos{
+    width: 60%;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 40px 30px;
+    border-radius: 16px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.sobre-nos p {
+    margin-bottom: 14px;
+}
+
+.sobre-nos p:nth-child(7) {
+    margin-bottom: 0;
+}
+
+.onde-estamos {
+    display: flex;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 100px;
+}
+
+.onde-estamos>div {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 16px;
+}
+
+@media(max-width: 1000px){
+    .sobre-cards{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .sobre-card{
+        margin-bottom: 16px;
+        width: 50%;
+    }
+    .sobre-banner-info h2 {
+        font-size: 38px;
+        line-height: 50px;
+    }
+    .sobre-banner-info {
+        left: 30px;
+    }
+    .sobre-banner-info p {
+        font-size: 16px;
+        width: 70%;
+    }
+    .sobre-form{
+        width: 60%;
+    }
+    .sobre-nos{
+        margin-top: 20px;
+        width: 90%;
+        margin-bottom: 50px;
+    }
+    
+    .onde-estamos {
+        width: 90%;
+        flex-direction: column;
+    }
+    .onde-estamos>img {
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 38px;
+    }
+}
+
+@media(max-width: 650px){
+    .sobre-banner-info h2 {
+        font-size: 24px;
+        line-height: 30px;
+    }
+    .sobre-banner-info {
+        left: 30px;
+    }
+    .sobre-banner-info p {
+        font-size: 14px;
+        width: 70%;
+    }
+    .sobre-content > p{
+        width: 75%;
+    }
+    .sobre-card{
+        width: 70%;
+    }
+    .sobre-form{
+        width: 80%;
+        padding: 40px;
+    }
+}

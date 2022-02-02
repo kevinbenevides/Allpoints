@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Perfil | Allpoints Club</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <script type="module" src="/_models/enviroment.js"></script>
+
+  <!-- Service -->
+  <script type="module" src="/_models/api/api.js"></script>
+  <script type="module" src="/_models/service-base.js"></script>
+  <script type="module" src="/_models/user/user-service.js"></script>
+  <script type="module" src="/_models/auth/auth.js"></script>
+  <script type="module" src="/_models/balance/balance-service.js"></script>
+
+  <!-- Header -->
+  <script type="module" src="/_components/header-card/header-card.js"></script>
+  <script src="/_components/dropdowns/home-menu.js"></script>
+  <script src="/_components/dropdowns/home-user-menu.js"></script>
+  <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+  <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/_assets/_css/app.css">
+  <link href="/_assets/_css/hamburgers.css" rel="stylesheet">
+  <link rel="stylesheet" href="/profile/change-password/change-password.css">
+
+  <!-- Images Mosaic -->
+  <script src="/_components/images-mosaic/images-mosaic.js"></script>
+
+  <!-- Modal -->
+  <script src="/_components/modais/modal-success.js"></script>
+  <script src="/_components/modais/modal-error.js"></script>
+
+  <script src="/_components/cookies/cookies.js"></script>
+
+</head>
+
+<body>
+  <div id="changePassword">
+    <div class="loading" v-show='loading'>
+      <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+    </div>
+
+    <header>
+      <header-card v-bind:logged='true' v-bind:subscriber='noSubscription'></header-card>
+      <section class="home-mobile-menu">
+          <home-user-menu page="" v-bind:subscription='!noSubscription'></home-user-menu>
+      </section>
+      <home-user-menu-desktop v-bind:subscription='!noSubscription'></home-user-menu-desktop>
+    </header>
+    
+      <main class="changePassword-container">
+        <section v-show="this.steps.accessType">
+          <div class="form-user-item alterar-senha">
+            <section @click='stepBack("profile")' class="form-user-return">
+              <i class="fas fa-chevron-left"></i>
+              Voltar
+            </section>
+            <h1>Alterar Senha</h1>
+            
+            <p style="margin-bottom: 25px;">Selecione em qual forma de contato você deseja receber o código de verificação para alterar sua senha?</p>
+
+            <div class="text-method-cards">
+                <div v-if="this.user.phone" class="square" @click="changeStep('accessKey', 'phone')">
+                  
+                    <span class="method-square-icon-mobile"></span>
+                    <div class="method-text">
+                        <b>Via SMS</b>
+                        <p class="method-text-description">Celular com final <b>...{{this.phoneSplit}}</b></p>
+                    </div>
+                    <span class="method-arrow-icon"></span>
+                </div>
+
+                <div v-if="this.user.email" class="square" @click="changeStep('accessKey', 'mail')">
+                    <span class="method-square-icon-email"></span>
+                    <div class="method-text">
+                        <b>Via E-Mail</b>
+                        <p class="method-text-description">E-Mail com final <b>...{{this.emailSplit}}</b></p>
+                    </div>
+                    <span class="method-arrow-icon"></span>
+                </div>
+            </div>
+          </div>
+        </section>
+
+        <section v-show="this.steps.accessKey">
+          <div class="form-user-item alterar-senha">
+            <section @click='stepBack("accessType")' class="form-user-return">
+              <i class="fas fa-chevron-left"></i>
+              Voltar
+            </section>
+            <h1 style="margin-bottom: 0;">Confirme que é você</h1>
+            
+            <p v-if="selectedMethod == 'phone'" class="text-code-authenticate">Insira o código de 5 números que enviamos para o <b>celular com o final {{this.phoneSplit}}</b> <span class="form-code-expire"> Expira em {{timeExpire}}</span></p>
+            <p v-if="selectedMethod == 'mail'" class="text-code-authenticate">Insira o código de 5 números que enviamos para o <b>e-mail com final ...{{this.emailSplit}}</b> <span class="form-code-expire"> Expira em {{timeExpire}}</span></p>
+            
+            <form class="form-code-authenticate">
+              <input v-for="(item, chave, index) in code" type="number" @keyup="copiedCode(code[chave])"
+                @keydown="alternate(chave, index)" v-model="code[chave]" >
+            </form>
+
+            <p v-show="errorMessage != null" class="erro-message">{{errorMessage}}</p>
+
+            <div class="lds-ellipsis" v-show="loadingForm">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+
+            <span class='span-nao-recebeu'>Não recebeu? <a class="text-pink" style="cursor: pointer;" @click="sendCode()">&nbsp; Enviar Novamente</a></span>
+            <!-- <a class="text-pink" href="">Alterar Chave de Acesso</a> -->
+            <button class="sign-your-plan-btn-pink btn-home" type="button" @click="changeStep('newPassword')">Avançar</button>
+          </div>
+        </section>
+
+        <section v-show="this.steps.newPassword" style="width: 40%;">
+          <div class="form-user-item alterar-senha">
+            <section @click='stepBack("accessKey")' class="form-user-return">
+              <i class="fas fa-chevron-left"></i>
+              Voltar
+            </section>
+            <h1>Escolha sua nova senha</h1>
+            
+            <input type="password" placeholder="Nova senha" name="password" class="nova-senha" v-model="newPassword">
+            <input type="password" placeholder="Repita a nova senha" name="reword_password" class="nova-senha"  v-model="newPasswordRepeat">
+
+            <p v-show="errorMessage != null" class="erro-message">{{errorMessage}}</p>
+
+            <div class="lds-ellipsis" v-show="loadingForm">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+
+            <button class="sign-your-plan-btn-pink btn-home" type="button" @click="changePassword">Salvar nova senha</button>
+          </div>
+        </section>
+
+        <modal-sucesso 
+          title="Você alterou a sua Senha!" 
+          subtitle="Seus dados foram alterados!" 
+          buttontext="Continuar" 
+          v-bind:showsuccess='this.showsuccess' 
+          @close="closeModal"
+          @button="redirectProfile">
+        </modal-sucesso>
+
+        <modal-erro text="Ocorreu um erro ao mudar a senha, por favor tente mais tarde!" buttontext="Continuar"
+          v-bind:showerro='this.showerro' @close="closeModal" @button="closeModal">
+        </modal-erro>
+
+        <image-mosaic></image-mosaic>
+      </main>
+
+    <cookies></cookies>
+
+  </div>
+
+  <script type="module" src="/profile/change-password/change-password.js"></script>
+
+  <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+  </script>
+
+  <script type="text/javascript">
+    zE('webWidget', 'setLocale', 'pt_br');
+  </script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-ZZQSLK2SP6');
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Criar Conta - Allpoints Club</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+    <script type="module" src="/_models/balance/balance-service.js"></script>
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Header -->
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <script src="/_components/dropdowns/home-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+    <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+
+    <script src="/_components/select_countries/select_countries.js"></script>
+    <link rel="stylesheet" href="/_components/select_countries/select_countries.css">
+
+    <!-- Modal -->
+    <script src="/_components/modais/modal-success.js"></script>
+    <script src="/_components/modais/modal-error.js"></script>
+    <script src="/_components/code-verify/code-verify.js"></script>
+
+    <!-- Images Mosaic -->
+    <script src="/_components/images-mosaic/images-mosaic.js"></script>
+
+    <!-- Form-AccessKey -->
+    <script src="/_components/forms/accessKey/accessKey.js"></script>
+
+    <script type="module" src="/webkit-input-range-fill-lower-master/dist/webkit-input-range-fill-lower.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/maska@1.4.4/dist/maska.js"></script>
+
+    <script src="/_components/cookies/cookies.js"></script>
+
+</head>
+
+<body>
+    <div id="createUser" class="form-user">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+
+        <header>
+            <header-card :logged="logged" v-bind:empty='true' v-bind:subscriber='false'></header-card>
+            <section class="home-mobile-menu" v-if="logged == true">
+                <home-user-menu page=""></home-user-menu>
+            </section>
+            <home-user-menu-desktop></home-user-menu-desktop>
+        </header>
+
+        <main>
+            <!-- Create-User-Form -->
+            <section class="form-user-content" v-show="steps.accessKey">
+                <section @click='stepBack("key")' class="form-user-return">
+                    <i class="fas fa-chevron-left"></i>
+                    Voltar
+                </section>
+                <div class="form-user-item">
+                    <h1>Comece a planejar sua próxima viagem agora mesmo!</h1>
+                    <form onsubmit="return false" class="form-user-form">
+                        <label>Cadastre-se utilizando seu CPF, e-mail ou celular como chave de acesso.
+                            <input type="text" v-model="accessKey" placeholder="Chave de Acesso" name="email"
+                                autocomplete="new-password" @keyup.enter="changeStep('password')" id="cpfCelEmail">
+                        </label>
+                        <p v-show="errorMessage != null" class="erro-message">{{errorMessage}}</p>
+
+                        <div class="lds-ellipsis" v-show="loadingForm">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+
+                        <button class="sign-your-plan-btn-pink btn-home" type="button"
+                            @click="changeStep('password')">Avançar</button>
+                        <p class="has-account">Já possuí uma conta? <a @click="redirectLogin">Acesse o Login</a></p>
+                        <!-- <b>ou</b>
+                        <button class="btn-home form-social-buttons form-social-buttons-face" type="submit"><img
+                                src="/_assets/_icons/facebook-icon.svg"> Continuar com o Facebook</button>
+                        <button class="btn-home form-social-buttons form-social-buttons-google" type="submit"><img
+                                src="/_assets/_icons/google-icon.svg"> Continuar com o Google</button> -->
+                    </form>
+                </div>
+            </section>
+
+            <section class="form-user-content" v-show="steps.password">
+                <section @click='stepBack("password")' class="form-user-return">
+                    <i class="fas fa-chevron-left"></i>
+                    Voltar
+                </section>
+                <div class="form-user-item">
+                    <h1>Escolha uma senha para criar sua conta</h1>
+
+                    <form onsubmit="return false" class="form-user-form">
+                        <input v-show="isEmail" type="email" v-model="user.email" placeholder="Email" name="email"
+                            autocomplete="new-password">
+                        <input v-show="isCpf" type="text" v-model="user.cpf" placeholder="CPF"
+                            autocomplete="new-password">
+                        <div v-show="isPhone" style="display: flex; width: 100%;">
+                            <select_countries v-on:change-value="onChangeValue" style="height: 42px;">
+                            </select_countries>
+                            <input id="phone-number" type="tel" name="phone" v-model="user.phone" placeholder="Telefone"
+                                autocomplete="new-password">
+                        </div>
+
+                        <input type="password" v-model="user.password" placeholder="Escolha sua senha" name="password"
+                            autocomplete="new-password">
+                        <input type="password" v-model="rewritePassword" placeholder="Repita sua senha"
+                            name="reword_password" @keyup.enter="changeStep('emailConfirm')"
+                            autocomplete="new-password">
+
+                        <p v-show="errorMessage != null" class="erro-message">{{errorMessage}}</p>
+
+                        <div class="lds-ellipsis" v-show="loadingForm">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+
+                        <button class="sign-your-plan-btn-pink btn-home" type="button"
+                            @click.prevent="changeStep('emailConfirm')">Avançar</button>
+                    </form>
+                </div>
+            </section>
+
+            <section class="form-user-content" v-show="steps.emailConfirm">
+                <section @click='stepBack("email")' class="form-user-return">
+                    <i class="fas fa-chevron-left"></i>
+                    Voltar
+                </section>
+                <h1 style="margin-bottom: 0;">Confirme que é você</h1>
+
+                <p v-if="channel == 'sms'" class="text-code-authenticate">Insira o código de 5 números que enviamos para
+                    o <b>celular com o final {{this.phoneSplit}}</b> <span class="form-code-expire"> Expira em
+                        {{timeExpire}}</span></p>
+                <p v-if="channel == 'email'" class="text-code-authenticate">Insira o código de 5 números que enviamos
+                    para o <b>e-mail com final ...{{this.emailSplit}}</b> <span class="form-code-expire"> Expira em
+                        {{timeExpire}}</span></p>
+
+                <form class="form-code-authenticate">
+                    <input v-for="(item, chave, index) in code" type="number" @keyup="copiedCode(code[chave])"
+                        @keydown="alternate(chave, index)" v-model="code[chave]">
+                </form>
+
+                <p v-show="errorMessage != null" class="erro-message">{{errorMessage}}</p>
+
+                <div class="lds-ellipsis" v-show="loadingForm">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+
+                <span class='span-nao-recebeu'>Não recebeu? <a class="text-pink" style="cursor: pointer;"
+                        @click="sendCode()">&nbsp; Enviar Novamente</a></span>
+                <!-- <a class="text-pink" href="">Alterar Chave de Acesso</a> -->
+                <button class="sign-your-plan-btn-pink btn-home" type="button"
+                    @click="changeStep('profile')">Avançar</button>
+            </section>
+
+            <section class="form-user-content" v-show="steps.profile">
+                <div class="form-user-item">
+                    <h1>Complete seu perfil</h1>
+                    <form class="form-user-form">
+                        <!-- <label class="form-user-image-profile"> -->
+                        <!-- <img src="/_assets/_imgs/user.png"> -->
+                        <!-- <input type="file"> -->
+                        <!-- <input type="file" v-model="pictureFile" @change="createUserImg"> -->
+                        <!-- </label> -->
+                        <input v-show="isEmail" type="email" v-model="user.email" disabled name="email">
+                        <div v-show="isPhone" style="display: flex; width: 100%;">
+                            <select_countries v-on:change-value="onChangeValue" style="height: 42px;">
+                            </select_countries>
+                            <input id="phone-number" type="tel" name="phone" v-model="user.phone" placeholder="Telefone"
+                                autocomplete="new-password" disabled>
+                        </div>
+                        <input v-show="isCpf" type="text" v-model="user.cpf" disabled name="cpf" maxlength="11">
+
+                        <input type="text" v-model="user.name" placeholder="Nome Completo">
+
+                        <input v-show="!isEmail" type="email" v-model="user.email" placeholder="Email">
+                        <input v-show="!isCpf" type="text" v-model="user.cpf" placeholder="CPF" maxlength="11">
+                        <div v-show="!isPhone" style="display: flex; width: 100%; margin-top: 10px;">
+                            <select_countries v-on:change-value="onChangeValue" style="height: 42px;">
+                            </select_countries>
+                            <input id="phone-number" type="tel" name="phone" v-model="user.phone" placeholder="Telefone"
+                                autocomplete="new-password">
+                        </div>
+
+                        <label class="form-user-checkbox">Desejo receber informações e promoções sobre a Allpoints e
+                            seus Parceiros por e-mail e celular
+                            <input type="checkbox" v-model="user.accepted_receive_promotional_emails">
+                            <span class="checkmark" v-model="user.accepted_receive_promotional_emails"></span>
+                        </label>
+                        <label class="form-user-checkbox">
+                            <p>Criando a conta você concorda com os <a class="text-pink" target="_blank"
+                                    href="/termos">Termos de Uso</a> e <a class="text-pink" target="_blank"
+                                    href="/termos">Regulamento</a> da Allpoints</p>
+
+                            <input type="checkbox" v-model="user.terms_accepted">
+                            <span class="checkmark" v-model="user.terms_accepted"></span>
+                        </label>
+
+                        <p v-show="errorMessage != null" class="erro-message">{{errorMessage}}</p>
+
+                        <div class="lds-ellipsis" v-show="loadingForm">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+
+                        <button :disabled="!user.terms_accepted" style="opacity: 0.4; cursor:not-allowed;"
+                            v-if="!user.terms_accepted" class="sign-your-plan-btn-pink btn-home" type="button"
+                            @click="createUser(user)">Criar minha
+                            conta</button>
+                        <button v-else class="sign-your-plan-btn-pink btn-home" type="button"
+                            @click="createUser(user)">Criar minha
+                            conta</button>
+
+                    </form>
+                </div>
+            </section>
+
+            <!-- Cadastro cartão -->
+            <section class="form-user-content" v-show="steps.card">
+                <section @click='stepBack("card")' class="form-user-return" style="margin-bottom: 18px;">
+                    <i class="fas fa-chevron-left"></i>
+                    Voltar
+                </section>
+                <div class="form-user-item" style="width: 100%;">
+                    <h1 style="color: #1c1c1c; margin-bottom: 18px;">Adicione seu cartão para completar a assinatura
+                    </h1>
+
+                    <p class="seu-plano">Escolha seu plano:</p>
+                    <span class="plano-points" style="font-size: 18px !important;">R$ <span id="planValue"
+                            class="plano-points"></span>,00 = <span id="allpointValue" class="plano-points"
+                            style="font-size: 18px !important;"></span>
+                        Allpoints</span>
+                    <div class="slidecontainer">
+                        <input @change="handleSlider" type="range" min="10" max="1000" step="10" value="10"
+                            class="slider" id="myRange" style="width: 97%; padding: 0px; 
+                            -webkit-appearance: none;
+                            -moz-appearance: none;
+                            appearance: none; 
+                            background-color: var(--pink);
+                            border-bottom-left-radius: 6px;
+                            border-bottom-right-radius: 6px;
+                            border-top-left-radius: 6px;
+                            border-top-right-radius: 6px;
+                            box-sizing: border-box;
+                            color: green;
+                            height: 6px;
+                            margin-bottom: 0px;
+                            margin-left: 0px;
+                            margin-right: 0px;
+                            margin-top: 0px;
+                            outline-color: blue;
+                            outline-style: none;
+                            outline-width: 0px;
+                            padding-bottom: 0px;
+                            padding-left: 0px;
+                            padding-right: 0px;
+                            padding-top: 0px;
+                            text-align: start;
+                            border:0px;
+                            lighting-color: yellow;
+                            scrollbar-color: red;">
+                    </div>
+
+                    <input type="text" v-model="creditCard.full_name" placeholder="Nome no cartão" style="width: 100%;">
+                    <div style="display: flex;">
+                        <img :src="bandeira" class="bandeira">
+                        <input v-maska="'#### #### #### ####'" type="text" v-model="creditCard.number"
+                            placeholder="Número do cartão" style="width: 82%;">
+                    </div>
+                    <input v-maska="['###.###.###-##', '##.###.###/####-##']" type="text" v-model="cpf_cnpj"
+                        placeholder="CPF/CNPJ" style="width: 100%;">
+
+                    <div style="display: flex; width: 100%;">
+                        <input v-maska="'##/##'" type="text" v-model="creditCard.expiration" placeholder="Expiração"
+                            style="margin-right: 5%; width: 47%;">
+                        <input v-maska="['###', '####']" type="text" v-model="creditCard.verification_value"
+                            placeholder="CCV" style=" width: 47%;">
+                    </div>
+                    <div class="input-pais">
+                        <img src="/_assets/_icons/brasil.svg">
+                        <input type="text" placeholder="Brasil" style="width: 100%;" disabled>
+                    </div>
+
+                    <button class="sign-your-plan-btn-pink btn-card" @click="createTokenPayment()">
+                        <i class="fas fa-lock"></i> Confirmar e assinar</button>
+                </div>
+            </section>
+
+            <image-mosaic></image-mosaic>
+
+            <modal-sucesso title="Cadastrado com sucesso" subtitle="Bem vindo à Allpoints.club!" buttontext="Continuar"
+                v-bind:showsuccess='this.showsuccess' @close="closeModal" @button="changeLocation">
+            </modal-sucesso>
+
+            <modal-erro text="Ocorreu um erro no seu cadastro, por favor tente mais tarde!" buttontext="Continuar"
+                v-bind:showerro='this.showerro' @close="closeModal" @button="closeModal">
+            </modal-erro>
+        </main>
+
+        <cookies></cookies>
+
+    </div>
+    <script type="module" src="/create-profile/create-profile-viewmodel.js"></script>
+
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+    </script>
+
+    <script type="text/javascript">
+        zE('webWidget', 'setLocale', 'pt_br');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZZQSLK2SP6');
+    </script>
+
+
+</body>
+
+</html>

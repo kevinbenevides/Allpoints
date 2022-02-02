@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Allpoints - Para empresas</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+    <script type="module" src="/_models/auth/auth.js"></script>
+    <script type="module" src="/_models/balance/balance-service.js"></script>
+    <script type="module" src="/_models/promo/promo-service.js"></script>
+
+    <!-- Header -->
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <script src="/_components/dropdowns/home-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+    <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+    
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+
+    <script src="/_components/select_countries/select_countries.js"></script>
+    <link rel="stylesheet" href="/_components/select_countries/select_countries.css">
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link href="/_assets/_css/hamburgers.css" rel="stylesheet">
+    <link href="/empresas/para-empresas.css" rel="stylesheet">
+
+    <script src="/_components/cookies/cookies.js"></script>
+
+</head>
+
+<body>
+    <div id="para-empresas">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+        <header>
+            <header-card v-bind:logged='logged' v-bind:subscriber='noSubscription'></header-card>
+            <section class="home-mobile-menu">
+                <home-user-menu page="" v-bind:subscription='!noSubscription'></home-user-menu>
+            </section>
+            <home-user-menu-desktop v-bind:subscription='!noSubscription'></home-user-menu-desktop>
+        </header>
+        <main>
+            <section class="para-empresas-banner">
+                <div class="para-empresas-banner-info">
+                    <h2>Com Allpoints seus colaboradores irão <b>viajar mais pagando menos</b></h2>
+                    <p>Líderes de RH enfrentam desafios complexos para construir um ambiente de trabalho cada
+                        vez melhor e mais saudável</p>
+                </div>
+            </section>
+            <section class="para-empresas-content">
+                <h3>Nossa solução</h3>
+                <p>Sabemos que os esforços para continuar atraindo e retendo colaboradores é gigante e ter um
+                    pacote de <b>benefícios diferenciado dentro da empresa</b> é uma vantagem para empresas que
+                    investem em novos atrativos.</p>
+                <p>Pensando nisso, a Allpoints passa a ser uma parceria indispensável para a empresa que
+                    adiquirir o <b>Allpoints Club como benefício flexível.</b></p>
+
+                <h3>Benefícios da parceria</h3>
+                <div class="para-empresas-cards">
+                    <div class="para-empresas-card">
+                        <img src="/_assets/_icons/check-allpoints.svg">
+                        <h4>Atração e retenção de talentos</h4>
+                        <p>A concorrência pelos talentos está fazendo com que as empresas criem pacotes para atrait e
+                            reter colaboradores</p>
+                    </div>
+
+                    <div class="para-empresas-card">
+                        <img src="/_assets/_icons/check-allpoints.svg">
+                        <h4>Melhoria da Produtividade</h4>
+                        <p>As perdas por abstenção representam, em média, de 10% a 22% dos custos da folha de pagamento,
+                            e isso afeta negativamente a produtividade e a competitividade da empresa</p>
+                    </div>
+
+                    <div class="para-empresas-card" style="margin-right: 0;">
+                        <img src="/_assets/_icons/check-allpoints.svg">
+                        <h4>Custos com saúde e bem-estar</h4>
+                        <p>Apesar do aumento dos custos com saúde, as empresas permanecem comprometidas com a criação de
+                            um ambiente de trabalho melhor por meio de investimentos específicos</p>
+                    </div>
+                </div>
+
+                <div class="para-empresas-form">
+                    <h3 style="color: white; margin-top: 0; margin-bottom: 24px;">Quer se tornar um parceiro?</h3>
+
+                    <input v-model="name" type="text" name="nome" placeholder="Nome Completo"
+                        class="para-empresas-input">
+                    <input v-model="email" type="email" name="email" placeholder="E-mail" class="para-empresas-input">
+                    <input v-model="company_name" type="text" name="empresa" placeholder="Nome da empresa"
+                    class="para-empresas-input">
+                    <div style="display: flex; width: 100%;">
+                        <select_countries v-on:change-value="onChangeValue"></select_countries>
+                        <input id="empresa-number" type="tel" name="phone" v-model="phone" class="para-empresas-input" placeholder="Celular">
+                    </div>
+                    <input v-model="position" type="text" name="cargo" placeholder="Cargo" class="para-empresas-input">
+                    <div class="lds-ellipsis" v-if="this.loadingForm">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                    <span v-else style="height: 40px;"></span>
+                    <button @click="this.registerEmpresa" class="para-empresas-button">SOLICITAR CONTATO</button>
+                    <p v-if="this.message != ''" style="color: red; margin-top: 20px;">{{this.message}}</p>
+                </div>
+            </section>
+        </main>
+        <footer class="home-footer">
+            <section class="footer-links">
+                <div class="footer-logo">
+                    <img src="/_assets/_imgs/logo-allpoints-white.png" alt="">
+                </div>
+                <div class="footer-content footer-about-us">
+                    <!-- <h3>Sobre nós</h3> -->
+                    <!-- <a href=""><span>A ALLPOINTS</span></a>
+                    <a href=""><span>TIME</span></a> -->
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">NEWSROOM</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">CARREIRA</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-how-it-works">
+                    <h3>Como funciona</h3>
+                    <!-- <a href=""><span>GANHE ALLPOINTS</span></a> -->
+                    <a href="/empresas"><span>PARA EMPRESAS</span></a>
+                    <a href="/carreira"><span>CARREIRA</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span>PARA HOTEIS </span></a> -->
+                    <!-- <a href=""><span>FAQ</span></a> -->
+                </div>
+                <div class="footer-content footer-know-more">
+                    <h3>Sobre</h3>
+                    <a href="/sobre"><span>A ALLPOINTS</span></a>
+                    <a href="/time"><span>TIME</span></a>
+                    <a href="/perguntas"><span>FAQ</span></a>
+                    <a href="/termos"><span>REGULAMENTO</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">BLOG</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">ALLPOINTS ACADEMY</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-contact">
+                    <h3>Contato</h3>
+                    <a href=""><span><b>E-mail:</b> contato@allpointshotels.com</span></a>
+                    <a href=""><span><b>Whatsapp:</b> +55 (11) 99022-3760</span></a>
+                    <a href=""><span><b>www.allpoints.club</b></span></a>
+                </div>
+            </section>
+            <div class="footer-line-division"></div>
+            <section class="footer-copyrigth">
+                <span>© 2015-2021 Allpoints<br>
+                    Todos os direitos reservados.</span>
+            </section>
+        </footer>
+
+        <cookies></cookies>
+
+    </div>
+
+    <script type="module" src="/empresas/para-empresas-viewmodel.js"></script>
+
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+    </script>
+
+    <script type="text/javascript">
+        zE('webWidget', 'setLocale', 'pt_br');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZZQSLK2SP6');
+    </script>
+
+</body>
+
+</html>

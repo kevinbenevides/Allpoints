@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Niara</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/_components/header-card/header-card.js"></script>
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <script src="/_components/cookies/cookies.js"></script>
+
+</head>
+
+<body>
+    <div id="niara" class="create-user">
+        <!-- <header>
+            <header-card logged="null"></header-card>
+        </header> -->
+        <section class="create-user-content">
+            <h1>Niara</h1>
+            <form action="">
+                <!-- <label for=""> Email:
+                    <input v-model="user.email" autocomplete="off" type="email" name="email">
+                </label>
+                <label for=""> Senha:
+                    <input v-model="user.password" type="password" name="password">
+                </label> -->
+                <button style="width: 200px;" class="sign-your-plan-btn-pink btn-home"
+                    @click.prevent="login()">Entrar</button>
+                <!-- <a href="/create-profile">Cadastrar-se</a> -->
+            </form>
+        </section>
+
+        <cookies></cookies>
+    </div>
+
+
+    <script type="module" src="/niara/niara-home.js"></script>
+
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+    </script>
+
+    <script type="text/javascript">
+        zE('webWidget', 'setLocale', 'pt_br');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-ZZQSLK2SP6');
+    </script>
+</body>
+
+</html>

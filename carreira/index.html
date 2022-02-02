@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Allpoints - Carreira</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <!-- Enviroment -->
+    <script type="module" src="/_models/enviroment.js"></script>
+
+    <!-- Service -->
+    <script type="module" src="/_models/api/api.js"></script>
+    <script type="module" src="/_models/service-base.js"></script>
+    <script type="module" src="/_models/user/user-service.js"></script>
+    <script type="module" src="/_models/auth/auth.js"></script>
+    <script type="module" src="/_models/balance/balance-service.js"></script>
+    <script type="module" src="/_models/promo/promo-service.js"></script>
+
+    <!-- Header -->
+    <script type="module" src="/_components/header-card/header-card.js"></script>
+    <script src="/_components/dropdowns/home-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu.js"></script>
+    <script src="/_components/dropdowns/home-user-menu-desktop.js"></script>
+    <link rel="stylesheet" href="/_components/dropdowns/dropdown.css">
+    
+    <link rel="stylesheet" href="/_assets/_css/app.css">
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link href="/_assets/_css/hamburgers.css" rel="stylesheet">
+    <link href="/carreira/carreira.css" rel="stylesheet">
+
+    <script src="/_components/cookies/cookies.js"></script>
+
+</head>
+
+<body>
+    <div id="carreira">
+        <div class="loading" v-show='loading'>
+            <div class="lds-heart"><img src="/_assets/_icons/allpoints-loading.svg" alt=""></div>
+        </div>
+        <header>
+            <header-card v-bind:logged='logged' v-bind:subscriber='noSubscription'></header-card>
+            <section class="home-mobile-menu">
+                <home-user-menu page="" v-bind:subscription='!noSubscription'></home-user-menu>
+            </section>
+            <home-user-menu-desktop v-bind:subscription='!noSubscription'></home-user-menu-desktop>
+        </header>
+        <main>
+            <section class="carreira-banner">
+                <div class="carreira-banner-info">
+                    <h2>Olá, <b>SÃO PAULO!</b></h2>
+                    <p><b>Explore as nossas vagas</b> para o escritório Allpoints localizado na capital paulista!</p>
+                </div>
+            </section>
+            <section class="carreira-content">
+                <div class="carreira-first-content">
+                    <img src="/_assets/_imgs/sao-paulo.png" alt="imagem de são paulo">
+                    <div class="carreira-first-content-text">
+                        <h3>Onde nós estamos</h3>
+                        <p style="margin-bottom: 20px;">Nosso escritório no moderno edifício Spaces, localizado a
+                            noroeste do centro da capital paulista.</p>
+                        <p>Rua Irmã Gabriela 51 , São Paulo, São Paulo 04571-130</p>
+                        <a target="_blank"
+                            href="https://www.google.com.br/maps/place/R.+Irm%C3%A3+Gabriela,+51+-+Cidade+Mon%C3%A7%C3%B5es,+S%C3%A3o+Paulo+-+SP,+04571-130/@-23.6047432,-46.6955132,17z/data=!3m1!4b1!4m5!3m4!1s0x94ce5734f3389797:0xf1ad3d19d6894084!8m2!3d-23.6047481!4d-46.6933245?hl=pt-BR">
+                            <i class="fal fa-map-marker-alt"></i> Ver no mapa</a>
+                    </div>
+                </div>
+
+                <h3>Qual é o seu próximo destino?</h3>
+                <p>Estamos sempre abertos para que pessoas apaixonadas se juntem à nossa equipe. Envie seu currículo
+                    para <b>talents@allpointshotels.com</b></p>
+
+                <div class="carreira-card">
+                    <div class="carreira-card-left">
+                        <h4>Hotel Acquisition Expert</h4>
+                        <p class="carreira-tag carreira-tag-pink">Aquisição</p>
+                    </div>
+                    <div class="carreira-card-right">
+                        <p class="carreira-place">Remoto no Brasil</p>
+                        <p class="carreira-tempo">Permanente</p>
+                        <a href="">Ver detalhes</a>
+                    </div>
+                </div>
+
+                <div class="carreira-card">
+                    <div class="carreira-card-left">
+                        <h4>Head of Product</h4>
+                        <p class="carreira-tag carreira-tag-purple">Produto</p>
+                    </div>
+                    <div class="carreira-card-right">
+                        <p class="carreira-place">Remoto no Brasil</p>
+                        <p class="carreira-tempo">Permanente</p>
+                        <a href="">Ver detalhes</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="home-footer">
+            <section class="footer-links">
+                <div class="footer-logo">
+                    <img src="/_assets/_imgs/logo-allpoints-white.png" alt="">
+                </div>
+                <div class="footer-content footer-about-us">
+                    <!-- <h3>Sobre nós</h3> -->
+                    <!-- <a href=""><span>A ALLPOINTS</span></a>
+                    <a href=""><span>TIME</span></a> -->
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">NEWSROOM</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">CARREIRA</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-how-it-works">
+                    <h3>Como funciona</h3>
+                    <!-- <a href=""><span>GANHE ALLPOINTS</span></a> -->
+                    <a href="/empresas"><span>PARA EMPRESAS</span></a>
+                    <a href="/carreira"><span>CARREIRA</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span>PARA HOTEIS </span></a> -->
+                    <!-- <a href=""><span>FAQ</span></a> -->
+                </div>
+                <div class="footer-content footer-know-more">
+                    <h3>Sobre</h3>
+                    <a href="/sobre"><span>A ALLPOINTS</span></a>
+                    <a href="/time"><span>TIME</span></a>
+                    <a href="/perguntas"><span>FAQ</span></a>
+                    <a href="/termos"><span>REGULAMENTO</span></a>
+                    <!-- <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">BLOG</span> EM BREVE</a>
+                    <a href="" onclick="return false;" class="default-cursor"><span class="em-breve">ALLPOINTS ACADEMY</span> EM BREVE</a> -->
+                </div>
+                <div class="footer-content footer-contact">
+                    <h3>Contato</h3>
+                    <a href=""><span><b>E-mail:</b> contato@allpointshotels.com</span></a>
+                    <a href=""><span><b>Whatsapp:</b> +55 (11) 99022-3760</span></a>
+                    <a href=""><span><b>www.allpoints.club</b></span></a>
+                </div>
+            </section>
+            <div class="footer-line-division"></div>
+            <section class="footer-copyrigth">
+                <span>© 2015-2021 Allpoints<br>
+                    Todos os direitos reservados.</span>
+            </section>
+        </footer>
+
+        <cookies></cookies>
+
+    </div>
+
+
+
+</body>
+<script type="module" src="/carreira/carreira-viewmodel.js"></script>
+
+
+<script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=377bef18-4963-43d2-ba7e-ccfee4c4c644">
+</script>
+
+<script type="text/javascript">
+    zE('webWidget', 'setLocale', 'pt_br');
+</script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZZQSLK2SP6"></script>
+
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-ZZQSLK2SP6');
+</script>
+
+
+</html>
